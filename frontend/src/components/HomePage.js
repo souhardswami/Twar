@@ -9,6 +9,8 @@ import {
 	Button,
 	Box,
 	useDisclosure,
+    VStack,
+    Text,
 	Spinner,
 } from "@chakra-ui/react";
 import AddAccountForm from "./AddAccountForm"
@@ -16,14 +18,17 @@ import AccountTable from "./AccountTable";
 import UpdateKeywordModal from "./UpdateKeywordModal";
 import UpdatePromptModal from "./UpdatePromptModal";
 import UpdateKpiModal from "./UpdateKpiModal";
+import Subscription from './Subscription';
 
-function HomePage() {
+function HomePage({selectedPlan, onSelectPlan}) {
 	const [accounts, setAccounts] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [selectedAccount, setSelectedAccount] = useState(null);
-	const accountsPerPage = 4;
+	const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const accountsPerPage = 4;
 	const API_URL = 'http://127.0.0.1:5000'
 
 
@@ -192,7 +197,49 @@ function HomePage() {
 	}
 
 	return (
+
+    
+        
 		<Container py={8} maxW="container.lg">
+
+<Box
+        
+        // display="flex"
+        // alignItems="center"
+        // justifyContent="center"
+        bg="gray.50"
+        p={4}
+        >
+      <Box
+        // maxW="md"
+        w="full"
+        bg="white"
+        p={10}
+        borderRadius="lg"
+        boxShadow="lg"
+      >
+        <Heading as="h1" size="xl" textAlign="center" mb={6}>
+          Welcome to the Home Page
+        </Heading>
+        {selectedPlan ? (
+          <VStack spacing={4}>
+            <Text>Selected Plan: {selectedPlan}</Text>
+            <Button colorScheme="blue" onClick={onOpen}>
+              Change Subscription Plan
+            </Button>
+          </VStack>
+        ) : (
+            <VStack spacing={4}>
+          <Button colorScheme="blue" onClick={onOpen}>
+            View Subscription Options
+          </Button>
+          </VStack>
+        )}
+        {isOpen && <Subscription onSelectPlan={onSelectPlan} />}
+      </Box>
+    </Box>
+
+
 			<Heading as="h1" size="xl" mb={6} textAlign="center">
 				All Accounts
 			</Heading>
