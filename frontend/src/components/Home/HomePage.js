@@ -13,12 +13,12 @@ import {
     Text,
 	Spinner,
 } from "@chakra-ui/react";
-import AddAccountForm from "./AddAccountForm"
-import AccountTable from "./AccountTable";
-import UpdateKeywordModal from "./UpdateKeywordModal";
-import UpdatePromptModal from "./UpdatePromptModal";
-import UpdateKpiModal from "./UpdateKpiModal";
-import Subscription from './Subscription';
+import AddAccountForm from "../Bot/AddAccountForm"
+import AccountTable from "../Bot/AccountTable";
+import UpdateKeywordModal from "../Bot/UpdateKeywordModal";
+import UpdatePromptModal from "../Bot/UpdatePromptModal";
+import UpdateKpiModal from "../Bot/UpdateKpiModal";
+import Subscription from '../Subscription/Subscription';
 
 function HomePage({selectedPlan, onSelectPlan}) {
 	const [accounts, setAccounts] = useState([]);

@@ -1,10 +1,10 @@
 import React,  { useState } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LoginPage from './components/LoginPage';
-import HomePage from './components/HomePage';
-import Success from './components/Success';
-import Cancel from './components/Cancel';
+import LoginPage from './components/Auth/LoginPage';
+import HomePage from './components/Home/HomePage';
+import Success from './components/Subscription/Success';
+import Cancel from './components/Subscription/Cancel';
 
 function App() {
 	const [selectedPlan, setSelectedPlan] = useState(null);
