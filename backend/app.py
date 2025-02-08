@@ -3,6 +3,7 @@ from flask_cors import CORS
 from requests_oauthlib import OAuth1Session
 from config import *
 from bot import run
+from payment import handle_checkout_session
 import json, os
 
 
@@ -132,6 +133,12 @@ def run_bot():
     accounts = run(accounts, BEARER_TOKEN, CONSUMER_KEY, CONSUMER_SECRET)
     save_data(accounts)
     return 'Bot Work is Done!!!!'
+
+
+@app.route("/create-checkout-session", methods=["POST"])
+def create_checkout_session():
+    response = handle_checkout_session(request)
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True)

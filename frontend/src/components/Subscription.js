@@ -11,15 +11,38 @@ import {
 const Subscription = ({ onSelectPlan }) => {
   const toast = useToast();
 
-  const handleSelectPlan = (plan) => {
-    onSelectPlan(plan);
+  const handleSelectPlan = async (plan) => {
     toast({
-      title: 'Plan selected.',
+      title: "Redirecting to Stripe...",
       description: `You've selected the ${plan} plan.`,
-      status: 'success',
-      duration: 5000,
+      status: "info",
+      duration: 3000,
       isClosable: true,
     });
+
+    try {
+      const response = await fetch("http://127.0.0.1:5000/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan }),
+      });
+
+      const data = await response.json();
+
+      if (data.url) {
+        window.location.href = data.url; // Redirect to Stripe Checkout
+      } else {
+        throw new Error("Failed to create Stripe session");
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
