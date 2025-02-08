@@ -8,29 +8,12 @@ import {
   Heading,
   VStack,
   useToast,
-  Text,
-  Link,
 } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
 
-const LoginPage = () => {
+const SignUpPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLogin, setIsLogin] = useState(true);
   const toast = useToast();
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    // Perform login logic here (e.g., API call)
-    // For demonstration, we'll just show a toast message
-    toast({
-      title: 'Login successful.',
-      description: "You've successfully logged in.",
-      status: 'success',
-      duration: 5000,
-      isClosable: true,
-    });
-  };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -63,9 +46,9 @@ const LoginPage = () => {
         boxShadow="lg"
       >
         <Heading as="h1" size="xl" textAlign="center" mb={6}>
-          {isLogin ? 'Company Login' : 'Company Sign Up'}
+          Company Sign Up
         </Heading>
-        <form onSubmit={isLogin ? handleLogin : handleSignUp}>
+        <form onSubmit={handleSignUp}>
           <VStack spacing={4}>
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
@@ -84,30 +67,13 @@ const LoginPage = () => {
               />
             </FormControl>
             <Button type="submit" colorScheme="blue" width="full">
-              {isLogin ? 'Login' : 'Sign Up'}
+              Sign Up
             </Button>
           </VStack>
         </form>
-        <Text mt={4} textAlign="center">
-          {isLogin ? (
-            <>
-              Don't have an account?{' '}
-              <Link color="blue.500" onClick={() => setIsLogin(false)}>
-                Sign Up
-              </Link>
-            </>
-          ) : (
-            <>
-              Already have an account?{' '}
-              <Link color="blue.500" onClick={() => setIsLogin(true)}>
-                Login
-              </Link>
-            </>
-          )}
-        </Text>
       </Box>
     </Box>
   );
 };
 
-export default LoginPage;
+export default SignUpPage;
