@@ -1,338 +1,124 @@
-
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import {
-	Container,
-	Heading,
-	Center,
-	Input,
-	Button,
-	Box,
-	useDisclosure,
-    VStack,
-    Text,
-	Spinner,
+  Container,
+  Heading,
+  Text,
+  Box,
+  Button,
+  VStack,
+  HStack,
+  Icon,
+  Stack,
+  Image,
 } from "@chakra-ui/react";
-import AddAccountForm from "../Bot/AddAccountForm"
-import AccountTable from "../Bot/AccountTable";
-import UpdateKeywordModal from "../Bot/UpdateKeywordModal";
-import UpdatePromptModal from "../Bot/UpdatePromptModal";
-import UpdateKpiModal from "../Bot/UpdateKpiModal";
-import Subscription from '../Subscription/Subscription';
+import { FaRobot, FaChartLine, FaCogs, FaArrowRight } from "react-icons/fa";
 
-function HomePage({selectedPlan, onSelectPlan}) {
-	const [accounts, setAccounts] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [searchTerm, setSearchTerm] = useState("");
-	const [currentPage, setCurrentPage] = useState(1);
-	const [selectedAccount, setSelectedAccount] = useState(null);
-	const { isOpen, onOpen, onClose } = useDisclosure();
-
-    const accountsPerPage = 4;
-	const API_URL = 'http://127.0.0.1:5000'
-
-
-	const {
-		isOpen: isKeywordModalOpen,
-		onOpen: onKeywordModalOpen,
-		onClose: onKeywordModalClose,
-	} = useDisclosure();
-	const {
-		isOpen: isPromptModalOpen,
-		onOpen: onPromptModalOpen,
-		onClose: onPromptModalClose,
-	} = useDisclosure();
-	const {
-		isOpen: isAddAccountModalOpen,
-		onOpen: onAddAccountModalOpen,
-		onClose: onAddAccountModalClose,
-	} = useDisclosure();
-	const {
-		isOpen: isKpiModalOpen,
-		onOpen: onKpiModalOpen,
-		onClose: onKpiModalClose,
-	} = useDisclosure();
-
-	useEffect(() => {
-		const fetchAccounts = async () => {
-			try {
-				const response = await axios.get(`${API_URL}/accounts`);
-				setAccounts(response.data);
-			} catch (error) {
-				console.error("Error fetching accounts:", error);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchAccounts();
-	}, []);
-
-	const addAccount = async (account) => {
-		try {
-			const response = await axios.post(
-				`${API_URL}/account`,
-				account
-			);
-			setAccounts([...accounts, response.data]);
-			onAddAccountModalClose();
-		} catch (error) {
-			console.error("Error adding account:", error);
-		}
-	};
-
-	const deleteAccount = async (accountId) => {
-		try {
-			await axios.delete(`${API_URL}/account/${accountId}`);
-			setAccounts(accounts.filter((account) => account.id !== accountId));
-		} catch (error) {
-			console.error("Error deleting account:", error);
-		}
-	};
-
-	const deactivateAccount = async (accountId) => {
-		try {
-			const response = await axios.put(
-				`${API_URL}/account/${accountId}/deactivate`
-			);
-
-			setAccounts(
-				accounts.map((account) =>
-					account.id === accountId
-						? { ...account, status: response.data.status }
-						: account
-				)
-			);
-		} catch (error) {
-			console.error("Error deactivating account:", error);
-		}
-	};
-
-	const updateKeyword = async (accountId, newKeyword) => {
-		try {
-			const response = await axios.post(
-				`${API_URL}/keyword/${accountId}`,
-				{ keyword: newKeyword }
-			);
-			setAccounts(
-				accounts.map((account) =>
-					account.id === accountId
-						? { ...account, keywords: response.data.keywords }
-						: account
-				)
-			);
-			onKeywordModalClose();
-		} catch (error) {
-			console.error("Error updating keyword:", error);
-		}
-	};
-
-	const updatePrompt = async (accountId, newPrompt) => {
-		try {
-			const response = await axios.post(
-				`${API_URL}/prompt/${accountId}`,
-				{ prompt: newPrompt }
-			);
-			setAccounts(
-				accounts.map((account) =>
-					account.id === accountId
-						? { ...account, prompt: response.data.prompt }
-						: account
-				)
-			);
-			onPromptModalClose();
-		} catch (error) {
-			console.error("Error updating prompt:", error);
-		}
-	};
-
-	// Handle search term change
-	const handleSearchChange = (e) => {
-		setSearchTerm(e.target.value);
-		setCurrentPage(1); // Reset to page 1 when search term changes
-	};
-
-  const updateKpi = async (accountId, newKpi) => {
-    try {
-      const response = await axios.post(`${API_URL}/kpi/${accountId}`, { kpi: newKpi });
-      setAccounts(accounts.map(account =>
-        
-        account.id === accountId ? { ...account, kpi: response.data.kpi } : account
-        
-      ));
-      onKpiModalClose();
-    } catch (error) {
-      console.error('Error updating KPI:', error);
-    }
-  };
-  
-
-	const openKpiModalHandler = (account) => {
-		setSelectedAccount(account);
-		onKpiModalOpen();
-	};
-
-	// Filter accounts based on search term
-	const filteredAccounts = accounts.filter((account) =>
-		account.screen_name.toLowerCase().includes(searchTerm.toLowerCase())
-	);
-
-	// Pagination logic
-	const indexOfLastAccount = currentPage * accountsPerPage;
-	const indexOfFirstAccount = indexOfLastAccount - accountsPerPage;
-	const currentAccounts = filteredAccounts.slice(
-		indexOfFirstAccount,
-		indexOfLastAccount
-	);
-
-	// Change page
-	const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-	if (loading) {
-		return (
-			<Center>
-				<Spinner size="xl" />
-			</Center>
-		);
-	}
-
-	return (
-
-    
-        
-		<Container py={8} maxW="container.lg">
-
-<Box
-        
-        // display="flex"
-        // alignItems="center"
-        // justifyContent="center"
-        bg="gray.50"
-        p={4}
-        >
-      <Box
-        // maxW="md"
-        w="full"
-        bg="white"
-        p={10}
-        borderRadius="lg"
-        boxShadow="lg"
-      >
-        <Heading as="h1" size="xl" textAlign="center" mb={6}>
-          Welcome to the Home Page
+function HomePage() {
+  return (
+    <Container maxW="container.xl" p={4}>
+      {/* Hero Section */}
+      <Box textAlign="center" py={10} bg="blue.500" color="white" borderRadius="md" mb={8}>
+        <Heading as="h1" size="2xl" mb={4}>
+          Welcome to Twitter Bots Agent
         </Heading>
-        {selectedPlan ? (
-          <VStack spacing={4}>
-            <Text>Selected Plan: {selectedPlan}</Text>
-            <Button colorScheme="blue" onClick={onOpen}>
-              Change Subscription Plan
-            </Button>
-          </VStack>
-        ) : (
-            <VStack spacing={4}>
-          <Button colorScheme="blue" onClick={onOpen}>
-            View Subscription Options
-          </Button>
-          </VStack>
-        )}
-        {isOpen && <Subscription onSelectPlan={onSelectPlan} />}
+        <Text fontSize="lg">
+          Automate your Twitter interactions with ease and efficiency.
+        </Text>
+        <Button colorScheme="teal" size="lg" mt={6}>
+          Get Started
+        </Button>
       </Box>
-    </Box>
 
+      {/* About Section */}
+      <Box mb={8}>
+        <Heading as="h2" size="xl" mb={4} textAlign="center">
+          About Twitter Bots Agent
+        </Heading>
+        <Text fontSize="lg" textAlign="center">
+          Twitter Bots Agent is a powerful tool designed to help you manage and automate your Twitter accounts. Whether you want to schedule tweets, analyze performance, or customize bot behaviors, we've got you covered.
+        </Text>
+      </Box>
 
-			<Heading as="h1" size="xl" mb={6} textAlign="center">
-				All Accounts
-			</Heading>
-			<Center mb={6}>
-				<Input
-					width="300px"
-					placeholder="Search Account"
-					value={searchTerm}
-					onChange={handleSearchChange}
-					mr={2}
-				/>
-				<Button colorScheme="blue">
-					<a
-						href={`${API_URL}/login`}
-						target="_blank"
-					>
-						{" "}
-						Add Account
-					</a>
-				</Button>
-			</Center>
-			<Center>
-				<Box
-					borderWidth="1px"
-					borderRadius="lg"
-					p={4}
-					mb={8}
-					boxShadow="md"
-					maxW="1000px"
-					w="100%"
-				>
-					<AccountTable
-						accounts={currentAccounts}
-						deleteAccount={deleteAccount}
-						openKeywordModal={(account) => {
-							setSelectedAccount(account);
-							onKeywordModalOpen();
-						}}
-						openPromptModal={(account) => {
-							setSelectedAccount(account);
-							onPromptModalOpen();
-						}}
-						deactivateAccount={deactivateAccount} // Pass deactivateAccount function
-						openKpiModal={openKpiModalHandler}
-					/>
-				</Box>
-			</Center>
-			{/* Pagination controls */}
-			<Center>
-				<Button
-					variant="outline"
-					colorScheme="blue"
-					onClick={() => paginate(currentPage - 1)}
-					disabled={currentPage === 1}
-					mr={2}
-				>
-					Prev
-				</Button>
-				<Button
-					variant="outline"
-					colorScheme="blue"
-					onClick={() => paginate(currentPage + 1)}
-					disabled={currentAccounts.length < accountsPerPage}
-				>
-					Next
-				</Button>
-			</Center>
-			<AddAccountForm
-				isOpen={isAddAccountModalOpen}
-				onClose={onAddAccountModalClose}
-				addAccount={addAccount}
-			/>
-			<UpdateKeywordModal
-				isOpen={isKeywordModalOpen}
-				onClose={onKeywordModalClose}
-				updateKeyword={updateKeyword}
-				selectedAccount={selectedAccount}
-			/>
-			<UpdatePromptModal
-				isOpen={isPromptModalOpen}
-				onClose={onPromptModalClose}
-				updatePrompt={updatePrompt}
-				selectedAccount={selectedAccount}
-			/>
-      <UpdateKpiModal
-        isOpen={isKpiModalOpen}
-        onClose={onKpiModalClose}
-        updateKpi={updateKpi}
-        selectedAccount={selectedAccount}
-      />
+      {/* Features Section */}
+      <Box mb={8}>
+        <Heading as="h2" size="xl" mb={4} textAlign="center">
+          Features
+        </Heading>
+        <Stack direction={['column', 'row']} spacing={8} justify="center">
+          <VStack>
+            <Icon as={FaRobot} w={10} h={10} color="blue.500" />
+            <Text fontSize="lg" fontWeight="bold">Automated Tweet Scheduling</Text>
+            <Text textAlign="center">Schedule your tweets to be posted at the optimal times.</Text>
+          </VStack>
+          <VStack>
+            <Icon as={FaChartLine} w={10} h={10} color="blue.500" />
+            <Text fontSize="lg" fontWeight="bold">Real-Time Analytics</Text>
+            <Text textAlign="center">Get real-time insights into your account's performance.</Text>
+          </VStack>
+          <VStack>
+            <Icon as={FaCogs} w={10} h={10} color="blue.500" />
+            <Text fontSize="lg" fontWeight="bold">Customizable Bot Behaviors</Text>
+            <Text textAlign="center">Customize your bot's behavior to suit your needs.</Text>
+          </VStack>
+        </Stack>
+      </Box>
 
-		</Container>
-	);
+      {/* How It Works Section */}
+      <Box mb={8}>
+        <Heading as="h2" size="xl" mb={4} textAlign="center">
+          How It Works
+        </Heading>
+        <Stack direction={['column', 'row']} spacing={8} justify="center">
+          <VStack>
+            <Image src="/images/step1.png" alt="Step 1" boxSize="100px" />
+            <Text fontSize="lg" fontWeight="bold">Step 1: Sign Up</Text>
+            <Text textAlign="center">Create an account to get started.</Text>
+          </VStack>
+          <VStack>
+            <Image src="/images/step2.png" alt="Step 2" boxSize="100px" />
+            <Text fontSize="lg" fontWeight="bold">Step 2: Add Accounts</Text>
+            <Text textAlign="center">Connect your Twitter accounts to the platform.</Text>
+          </VStack>
+          <VStack>
+            <Image src="/images/step3.png" alt="Step 3" boxSize="100px" />
+            <Text fontSize="lg" fontWeight="bold">Step 3: Automate</Text>
+            <Text textAlign="center">Set up your bots and start automating.</Text>
+          </VStack>
+        </Stack>
+      </Box>
+
+      {/* Call to Action */}
+      <Box textAlign="center" py={10} bg="gray.100" borderRadius="md" mb={8}>
+        <Heading as="h2" size="xl" mb={4}>
+          Ready to Get Started?
+        </Heading>
+        <Text fontSize="lg" mb={6}>
+          Sign up today and take your Twitter management to the next level.
+        </Text>
+        <Button colorScheme="teal" size="lg" rightIcon={<FaArrowRight />}>
+          Sign Up Now
+        </Button>
+      </Box>
+
+      {/* Footer */}
+      <Box textAlign="center" py={4} borderTop="1px" borderColor="gray.200">
+        <HStack spacing={8} justify="center">
+          <Button variant="link" colorScheme="blue">
+            Docs
+          </Button>
+          <Button variant="link" colorScheme="blue">
+            Pricing
+          </Button>
+          <Button variant="link" colorScheme="blue">
+            Contact
+          </Button>
+        </HStack>
+        <Text fontSize="sm" color="gray.500" mt={4}>
+          &copy; {new Date().getFullYear()} Twitter Bots Agent. All rights reserved.
+        </Text>
+      </Box>
+    </Container>
+  );
 }
 
 export default HomePage;
