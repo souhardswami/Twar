@@ -6,7 +6,7 @@ import LoginPage from './components/Auth/LoginPage';
 import HomePage from './components/Home/HomePage';
 import PricingPage from './components/Subscription/PricingPage';
 import DocsPage from './components/NavBar/DocsPage';
-import WorkspacePage from './components/NavBar/WorkspacePage';
+import WorkspacePage from './components/Bot/WorkspacePage';
 import Success from './components/Subscription/Success';
 import Cancel from './components/Subscription/Cancel';
 
