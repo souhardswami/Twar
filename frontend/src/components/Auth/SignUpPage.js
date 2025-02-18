@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -8,11 +8,11 @@ import {
   Heading,
   VStack,
   useToast,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
 const SignUpPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const toast = useToast();
 
   const handleSignUp = async (e) => {
@@ -20,9 +20,9 @@ const SignUpPage = () => {
     // Perform sign-up logic here (e.g., API call)
     // For demonstration, we'll just show a toast message
     toast({
-      title: 'Sign-up successful.',
+      title: "Sign-up successful.",
       description: "You've successfully signed up.",
-      status: 'success',
+      status: "success",
       duration: 5000,
       isClosable: true,
     });
@@ -37,14 +37,7 @@ const SignUpPage = () => {
       bg="gray.50"
       p={4}
     >
-      <Box
-        maxW="md"
-        w="full"
-        bg="white"
-        p={8}
-        borderRadius="lg"
-        boxShadow="lg"
-      >
+      <Box maxW="md" w="full" bg="white" p={8} borderRadius="lg" boxShadow="lg">
         <Heading as="h1" size="xl" textAlign="center" mb={6}>
           Company Sign Up
         </Heading>

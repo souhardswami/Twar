@@ -1,7 +1,13 @@
-import React from 'react';
-import { Tr, Td, Button } from '@chakra-ui/react';
+import React from "react";
+import { Tr, Td, Button } from "@chakra-ui/react";
 
-function AccountRow({ account, index, deleteAccount, openKeywordModal, openPromptModal }) {
+function AccountRow({
+  account,
+  index,
+  deleteAccount,
+  openKeywordModal,
+  openPromptModal,
+}) {
   return (
     <Tr>
       <Td>{account.name}</Td>

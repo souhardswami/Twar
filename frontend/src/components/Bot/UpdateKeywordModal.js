@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -9,10 +9,15 @@ import {
   ModalCloseButton,
   Button,
   Input,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-const UpdateKeywordModal = ({ isOpen, onClose, updateKeyword, selectedAccount }) => {
-  const [newKeyword, setNewKeyword] = useState('');
+const UpdateKeywordModal = ({
+  isOpen,
+  onClose,
+  updateKeyword,
+  selectedAccount,
+}) => {
+  const [newKeyword, setNewKeyword] = useState("");
 
   useEffect(() => {
     if (selectedAccount) {

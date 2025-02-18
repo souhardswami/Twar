@@ -1,17 +1,7 @@
-import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Heading,
-  VStack,
-  Text,
-  useToast,
-} from '@chakra-ui/react';
-
-
+import React, { useState } from "react";
+import { Box, Button, Heading, VStack, Text, useToast } from "@chakra-ui/react";
 
 const PricingPage = ({ selectedPlan, onSelectPlan }) => {
-  const [clientSecret, setClientSecret] = useState('');
   const toast = useToast();
 
   const handleSelectPlan = async (plan) => {
@@ -24,11 +14,14 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
     });
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan }),
-      });
+      const response = await fetch(
+        "http://127.0.0.1:5000/create-checkout-session",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ plan }),
+        }
+      );
 
       const data = await response.json();
 
@@ -57,41 +50,51 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
       bg="gray.50"
       p={4}
     >
-      <Box
-        maxW="md"
-        w="full"
-        bg="white"
-        p={8}
-        borderRadius="lg"
-        boxShadow="lg"
-      >
+      <Box maxW="md" w="full" bg="white" p={8} borderRadius="lg" boxShadow="lg">
         <Heading as="h1" size="xl" textAlign="center" mb={6}>
           Pricing and Subscription
         </Heading>
         <VStack spacing={4}>
           <Box p={4} borderWidth={1} borderRadius="lg" w="full">
-            <Heading as="h2" size="md">Free Plan</Heading>
+            <Heading as="h2" size="md">
+              Free Plan
+            </Heading>
             <Text>Access to basic features.</Text>
-            <Button mt={2} colorScheme="blue" onClick={() => onSelectPlan('Free')}>
+            <Button
+              mt={2}
+              colorScheme="blue"
+              onClick={() => onSelectPlan("Free")}
+            >
               Select Free Plan
             </Button>
           </Box>
           <Box p={4} borderWidth={1} borderRadius="lg" w="full">
-            <Heading as="h2" size="md">$10/Month Plan</Heading>
+            <Heading as="h2" size="md">
+              $10/Month Plan
+            </Heading>
             <Text>Access to premium features.</Text>
-            <Button mt={2} colorScheme="blue" onClick={() => handleSelectPlan('$10/Month', 1000)}>
+            <Button
+              mt={2}
+              colorScheme="blue"
+              onClick={() => handleSelectPlan("$10/Month", 1000)}
+            >
               Select $10/Month Plan
             </Button>
           </Box>
           <Box p={4} borderWidth={1} borderRadius="lg" w="full">
-            <Heading as="h2" size="md">Enterprise Plan</Heading>
+            <Heading as="h2" size="md">
+              Enterprise Plan
+            </Heading>
             <Text>Access to all features and priority support.</Text>
-            <Button mt={2} colorScheme="blue" onClick={() => handleSelectPlan('Enterprise', 5000)}>
+            <Button
+              mt={2}
+              colorScheme="blue"
+              onClick={() => handleSelectPlan("Enterprise", 5000)}
+            >
               Select Enterprise Plan
             </Button>
           </Box>
         </VStack>
-        
       </Box>
     </Box>
   );
