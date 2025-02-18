@@ -18,7 +18,6 @@ import AccountTable from "../Bot/AccountTable";
 import UpdateKeywordModal from "../Bot/UpdateKeywordModal";
 import UpdatePromptModal from "../Bot/UpdatePromptModal";
 import UpdateKpiModal from "../Bot/UpdateKpiModal";
-import Subscription from '../Subscription/Subscription';
 
 function WorkspacePage({selectedPlan, onSelectPlan}) {
 	const [accounts, setAccounts] = useState([]);

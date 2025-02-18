@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/NavBar/NavBar';
 import LoginPage from './components/Auth/LoginPage';
 import HomePage from './components/Home/HomePage';
-import PricingPage from './components/NavBar/PricingPage';
+import PricingPage from './components/Subscription/PricingPage';
 import DocsPage from './components/NavBar/DocsPage';
 import WorkspacePage from './components/NavBar/WorkspacePage';
 import Success from './components/Subscription/Success';
