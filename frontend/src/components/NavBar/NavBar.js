@@ -1,63 +1,28 @@
-import React from "react";
-import { Box, Flex, Link, Button, Heading } from "@chakra-ui/react";
+import { Box, Flex, Link, Button } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-
-const Navbar = () => {
+export default function NavBar() {
   return (
-    <Box bg="blue.500" px={4}>
-      <Flex h={16} alignItems="center" justifyContent="space-between">
-        <Heading as="h1" size="lg" color="white">
+    <Box as="nav" py={4}>
+      <Flex justify="space-between" maxW="1200px" mx="auto" px={4}>
+        <Button variant="brand" size="lg" fontWeight="bold">
           Twitter Bots Agent
-        </Heading>
-        <Flex alignItems="center">
-          <Link
-            as={RouterLink}
-            to="/home"
-            px={2}
-            py={1}
-            rounded="md"
-            _hover={{ textDecoration: "none", bg: "blue.700" }}
-            color="white"
-          >
-            Home
+        </Button>
+        <Flex gap={4}>
+          <Link as={RouterLink} to="/home" _hover={{ textDecoration: "none" }}>
+            <Button variant="ghost">Home</Button>
           </Link>
-          <Link
-            as={RouterLink}
-            to="/pricing"
-            px={2}
-            py={1}
-            rounded="md"
-            _hover={{ textDecoration: "none", bg: "blue.700" }}
-            color="white"
-          >
-            Pricing
+          
+          <Link as={RouterLink} to="/docs" _hover={{ textDecoration: "none" }}>
+            <Button variant="ghost">Docs</Button>
           </Link>
-          <Link
-            as={RouterLink}
-            to="/docs"
-            px={2}
-            py={1}
-            rounded="md"
-            _hover={{ textDecoration: "none", bg: "blue.700" }}
-            color="white"
-          >
-            Docs
+          <Link as={RouterLink} to="/pricing" _hover={{ textDecoration: "none" }}>
+            <Button variant="ghost">Pricing</Button>
           </Link>
-          <Link
-            as={RouterLink}
-            to="/workspace"
-            px={2}
-            py={1}
-            rounded="md"
-            _hover={{ textDecoration: "none", bg: "blue.700" }}
-            color="white"
-          >
-            Workspace
+          <Link as={RouterLink} to="/workspace" _hover={{ textDecoration: "none" }}>
+            <Button variant="ghost">Workspace</Button>
           </Link>
         </Flex>
       </Flex>
     </Box>
   );
-};
-
-export default Navbar;
+}
