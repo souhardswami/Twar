@@ -1,12 +1,14 @@
-import { Box, Flex, Link, Button } from "@chakra-ui/react";
+import { Box, Flex, Link, Button, Image } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 export default function NavBar() {
   return (
     <Box as="nav" py={4}>
       <Flex justify="space-between" maxW="1200px" mx="auto" px={4}>
         <Button variant="brand" size="lg" fontWeight="bold">
-          Twitter Bots Agent
+          <Image src="/logo.png" alt="Logo" boxSize="50px" objectFit="cover" />
+          Twar
         </Button>
+        
         <Flex gap={4}>
           <Link as={RouterLink} to="/home" _hover={{ textDecoration: "none" }}>
             <Button variant="ghost">Home</Button>
