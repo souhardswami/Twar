@@ -3,6 +3,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/NavBar/NavBar";
 import LoginPage from "./components/Auth/LoginPage";
+import Registration from "./components/Auth/Registration";
 import HomePage from "./components/Home/HomePage";
 import PricingPage from "./components/Subscription/PricingPage";
 import DocsPage from "./components/Documentation/DocsPage";
@@ -17,6 +18,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<Registration />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/docs" element={<DocsPage />} />
