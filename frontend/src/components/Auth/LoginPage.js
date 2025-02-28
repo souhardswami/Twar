@@ -10,19 +10,22 @@ import {
   useToast,
   Text,
   Link,
+  useColorModeValue,
+  Flex,
 } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { Link as RouterLink } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLogin, setIsLogin] = useState(true);
   const toast = useToast();
+  const bg = useColorModeValue("white", "gray.800");
+  const color = useColorModeValue("gray.800", "white");
 
   const handleLogin = async (e) => {
     e.preventDefault();
     // Perform login logic here (e.g., API call)
-    // For demonstration, we'll just show a toast message
     toast({
       title: "Login successful.",
       description: "You've successfully logged in.",
@@ -32,73 +35,138 @@ const LoginPage = () => {
     });
   };
 
-  const handleSignUp = async (e) => {
-    e.preventDefault();
-    // Perform sign-up logic here (e.g., API call)
-    // For demonstration, we'll just show a toast message
-    toast({
-      title: "Sign-up successful.",
-      description: "You've successfully signed up.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
-  };
-
   return (
-    <Box
-      minH="100vh"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      bg="gray.50"
-      p={4}
-    >
-      <Box maxW="md" w="full" bg="white" p={8} borderRadius="lg" boxShadow="lg">
-        <Heading as="h1" size="xl" textAlign="center" mb={6}>
-          {isLogin ? "Company Login" : "Company Sign Up"}
-        </Heading>
-        <form onSubmit={isLogin ? handleLogin : handleSignUp}>
-          <VStack spacing={4}>
-            <FormControl id="email" isRequired>
-              <FormLabel>Email address</FormLabel>
-              <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </FormControl>
-            <FormControl id="password" isRequired>
-              <FormLabel>Password</FormLabel>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </FormControl>
-            <Button type="submit" colorScheme="blue" width="full">
-              {isLogin ? "Login" : "Sign Up"}
-            </Button>
-          </VStack>
-        </form>
-        <Text mt={4} textAlign="center">
-          {isLogin ? (
-            <>
-              Don't have an account?{" "}
-              <Link color="blue.500" onClick={() => setIsLogin(false)}>
-                Sign Up
-              </Link>
-            </>
-          ) : (
-            <>
-              Already have an account?{" "}
-              <Link color="blue.500" onClick={() => setIsLogin(true)}>
-                Login
-              </Link>
-            </>
-          )}
-        </Text>
-      </Box>
+    <Box minH="100vh" bgGradient="linear(135deg, #f5f6fa 0%, #c3cfe2 100%)" py={8}>
+      <Flex align="center" justify="center" h="100%">
+        <Box
+          maxW="xl"
+          w="90%"
+          bg={useColorModeValue("white", "gray.800")}
+          p={8}
+          borderRadius="2xl"
+          boxShadow="0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"
+          pos="relative"
+          overflow="hidden"
+        >
+          <Box pos="absolute" top={0} left={0} w="100%" h="100%">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              bg="rgba(255, 255, 255, 0.1)"
+              borderRadius="50%"
+              size="2xl"
+              pos="absolute"
+              top={-100}
+              left={-100}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              bg="rgba(255, 255, 255, 0.1)"
+              borderRadius="50%"
+              size="2xl"
+              pos="absolute"
+              top={-100}
+              right={-100}
+            />
+          </Box>
+
+          <Box textAlign="center" mb={8}>
+            <Heading
+              as="h1"
+              size="3xl"
+              fontWeight="bold"
+              color={color}
+              mb={4}
+            >
+              Welcome Back
+            </Heading>
+            <Text fontSize="lg" color="gray.600">
+              Please enter your credentials to access your account
+            </Text>
+          </Box>
+
+          <form onSubmit={handleLogin}>
+            <VStack spacing={6}>
+              <FormControl id="email" isRequired>
+                <FormLabel
+                  htmlFor="email"
+                  fontSize="md"
+                  fontWeight="medium"
+                  color={color}
+                >
+                  Email address
+                </FormLabel>
+                <Input
+                  as={motion.input}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  _focus={{
+                    boxShadow: "0 0 0 3px rgba(81, 180, 194, 0.5)",
+                    border: "none",
+                  }}
+                />
+              </FormControl>
+              <FormControl id="password" isRequired>
+                <FormLabel
+                  htmlFor="password"
+                  fontSize="md"
+                  fontWeight="medium"
+                  color={color}
+                >
+                  Password
+                </FormLabel>
+                <Input
+                  as={motion.input}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  _focus={{
+                    boxShadow: "0 0 0 3px rgba(81, 180, 194, 0.5)",
+                    border: "none",
+                  }}
+                />
+              </FormControl>
+              <Button
+                as={motion.button}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                type="submit"
+                colorScheme="teal"
+                width="full"
+                py={3}
+                fontSize="md"
+                fontWeight="medium"
+                textTransform="uppercase"
+              >
+                Sign In
+              </Button>
+            </VStack>
+          </form>
+
+          <Text mt={8} textAlign="center" fontSize="md" color="gray.600">
+            Don't have an account?{" "}
+            <Link
+              // as={motion.link}
+              whileHover={{ scale: 1.05 }}
+              color="teal.500"
+              as={RouterLink}
+              to="/register"
+            >
+              <Button variant="plain">Sign Up</Button>
+            </Link>
+          </Text>
+        </Box>
+      </Flex>
     </Box>
   );
 };
