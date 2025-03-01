@@ -36,13 +36,7 @@ const AccountTable = ({
               ></Button>
             </Td>
             <Td>
-              <Button
-                size="sm"
-                colorScheme="purple"
-                onClick={() => openKeywordModal(account)}
-              >
-                Update Keyword
-              </Button>
+              
               <Button
                 size="sm"
                 colorScheme="teal"
