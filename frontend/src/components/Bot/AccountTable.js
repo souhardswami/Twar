@@ -37,14 +37,7 @@ const AccountTable = ({
             </Td>
             <Td>
               
-              <Button
-                size="sm"
-                colorScheme="teal"
-                ml={2}
-                onClick={() => openPromptModal(account)}
-              >
-                Update Prompt
-              </Button>
+              
 
               <Button
                 size="sm"
