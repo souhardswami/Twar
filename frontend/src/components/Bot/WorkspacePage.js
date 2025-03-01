@@ -15,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 import AddAccountForm from "./AddAccountForm";
 import AccountTable from "./AccountTable";
-import UpdatePromptModal from "./UpdatePromptModal";
 import UpdateKpiModal from "./UpdateKpiModal";
 
 function WorkspacePage({ selectedPlan, onSelectPlan }) {
@@ -260,12 +259,7 @@ function WorkspacePage({ selectedPlan, onSelectPlan }) {
         addAccount={addAccount}
       />
       
-      <UpdatePromptModal
-        isOpen={isPromptModalOpen}
-        onClose={onPromptModalClose}
-        updatePrompt={updatePrompt}
-        selectedAccount={selectedAccount}
-      />
+      
       <UpdateKpiModal
         isOpen={isKpiModalOpen}
         onClose={onKpiModalClose}
