@@ -11,6 +11,7 @@ import {
   VStack,
   Text,
   Spinner,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import AddAccountForm from "./AddAccountForm";
 import AccountTable from "./AccountTable";
@@ -183,16 +184,11 @@ function WorkspacePage({ selectedPlan, onSelectPlan }) {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  if (loading) {
-    return (
-      <Center>
-        <Spinner size="xl" />
-      </Center>
-    );
-  }
+  
 
   return (
-    <Container py={8} maxW="container.lg">
+    <Box as="main" py={8} bgGradient="linear(135deg, #f5f6fa 0%, #c3cfe2 100%)">
+    <Container  maxW="container.lg" height={"100vh"}>
       <Heading as="h1" size="xl" mb={6} textAlign="center">
         All Accounts
       </Heading>
@@ -203,6 +199,7 @@ function WorkspacePage({ selectedPlan, onSelectPlan }) {
           value={searchTerm}
           onChange={handleSearchChange}
           mr={2}
+          bg={"white"}
         />
         <Button colorScheme="blue">
           <a href={`${API_URL}/login`} target="_blank">
@@ -220,6 +217,7 @@ function WorkspacePage({ selectedPlan, onSelectPlan }) {
           boxShadow="md"
           maxW="1000px"
           w="100%"
+          bg={useColorModeValue("white", "gray.600")}
         >
           <AccountTable
             accounts={currentAccounts}
@@ -281,6 +279,7 @@ function WorkspacePage({ selectedPlan, onSelectPlan }) {
         selectedAccount={selectedAccount}
       />
     </Container>
+    </Box>
   );
 }
 
