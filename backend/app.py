@@ -5,17 +5,14 @@ from config import *
 from bot import run
 from payment import handle_checkout_session
 import json, os
+import db_connection
 
 
 app = Flask(__name__)
 app.secret_key = 'YOUR_SECRET_KEY'
 CORS(app)
 
-def load_data():
-    if not os.path.exists(DATA_FILE):
-        return []
-    with open(DATA_FILE, 'r') as file:
-        return json.load(file)
+
 
 def save_data(data):
     with open(DATA_FILE, 'w') as file:
@@ -38,7 +35,7 @@ def index():
 
 @app.route('/accounts', methods=['GET'])
 def get_accounts():
-    accounts = load_data()
+    accounts = db_connection.get_bot_auth_details()
     return jsonify(accounts)
 
 @app.route('/account/<int:account_id>', methods=['DELETE'])
