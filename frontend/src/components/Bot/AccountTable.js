@@ -1,5 +1,24 @@
 import React from "react";
-import { Table, Thead, Tbody, Tr, Th, Td, Button } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td, Button, Icon } from "@chakra-ui/react";
+
+
+const Status = (props) => (
+  <>
+    { props.status == 'active' ? 
+      <>
+        <Icon viewBox='0 0 200 200' color='green.600'>
+        <path
+          fill='currentColor'
+          d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
+        /> </Icon>
+        'Working...'  
+      </>: 
+      <> Stopped &#10071; 
+      </>
+    }
+  </>
+)
+
 
 const AccountTable = ({
   accounts,
