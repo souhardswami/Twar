@@ -40,9 +40,9 @@ def get_accounts():
 
 @app.route('/account/<int:account_id>', methods=['DELETE'])
 def delete_account(account_id):
-    accounts = load_data()
-    accounts = [account for account in accounts if int(account['id']) != account_id]
-    save_data(accounts)
+    res = db_connection.delete_account(account_id)
+    if not res:
+        return 'Account not Found', 404
     return '', 204
 
 @app.route('/account/<int:account_id>/swichStatus', methods=['PUT'])

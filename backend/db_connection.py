@@ -51,6 +51,17 @@ def switch_account_status(account_id):
         print (f"Error : {ex} While Switching Status for {account_id}")
         return False
     
+def delete_account(account_id):
+    try:
+        sql = f'delete from bot where id={account_id}'
+        res = execute(sql)
+        db.commit()
+        return True
+    except Exception as ex:
+        print (f"Error : {ex} While deleting account for {account_id}")
+        return False
+        
+    
 
 def get_bot_auth_details():
     sql = 'select * from BotAuth'
