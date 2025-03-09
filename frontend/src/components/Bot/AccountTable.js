@@ -24,10 +24,7 @@ const Status = (props) => (
 const AccountTable = ({
   accounts,
   deleteAccount,
-  openKeywordModal,
-  openPromptModal,
   deactivateAccount,
-  
 }) => {
 
   const [isKPIModelOpen, setIsKPIModelOpen] = useState(false);
