@@ -25,6 +25,7 @@ const AccountTable = ({
   accounts,
   deleteAccount,
   deactivateAccount,
+  handleKPIPage
 }) => {
 
   const [isKPIModelOpen, setIsKPIModelOpen] = useState(false);
@@ -73,20 +74,10 @@ const AccountTable = ({
                 size="sm"
                 colorScheme="blue"
                 ml={2}
-                onClick={() => handleToggle()}
+                onClick={() => handleKPIPage(account) }
               >
                 Update KPI
               </Button>
-
-              
-              <UpdateKpiModal
-                isOpen={isKPIModelOpen}
-                onClose={handleToggle}
-                // updateKpi={updateKpi}
-                selectedAccount={account}
-              /> 
-
-
               <Button
                 size="sm"
                 colorScheme="red"

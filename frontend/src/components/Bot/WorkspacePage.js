@@ -10,11 +10,15 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import AccountTable from "./AccountTable";
+import UpdateKpiModal from "./UpdateKpiModal";
 
 const WorkspacePage = () => {
   const [accounts, setAccounts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [account, setAccount] = useState();
+  const [isKPIModelOpen, setIsKPIModelOpen] = useState(false);
+
   const accountsPerPage = 4;
   const API_URL = "http://127.0.0.1:5000";
 
@@ -29,6 +33,15 @@ const WorkspacePage = () => {
     };
     fetchAccounts();
   }, []);
+
+
+  const handleKPIPage = (account) => {
+      setAccount(account)
+      setIsKPIModelOpen(!isKPIModelOpen);
+  }
+  const handleToggle = () => {
+    setIsKPIModelOpen(!isKPIModelOpen);
+  }
 
   const deleteAccount = async (accountId) => {
     try {
@@ -55,6 +68,17 @@ const WorkspacePage = () => {
       console.error("Error deactivating account:", error);
     }
   };
+  
+  const updateKpi = async (accountId, payload) => {
+    try {
+      const response = await axios.post(
+        `${API_URL}/kpi/${accountId}`, payload
+      );
+      handleToggle();
+    } catch (error) {
+      console.error("Error while updating KPIs:", error);
+    }
+  }
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -111,7 +135,14 @@ const WorkspacePage = () => {
             accounts={currentAccounts}
             deleteAccount={deleteAccount}
             deactivateAccount={deactivateAccount} 
+            handleKPIPage={handleKPIPage}
           />
+          <UpdateKpiModal
+            isOpen={isKPIModelOpen}
+            onClose={handleToggle}
+            updateKpi={updateKpi}
+            selectedAccount={account}
+          /> 
         </Box>
       </Center>
       {/* Pagination controls */}

@@ -77,15 +77,13 @@ def update_prompt(account_id):
 
 @app.route('/kpi/<int:account_id>', methods=['POST'])
 def update_kpi(account_id):
-    new_kpi = request.json.get('kpi')
-    accounts = load_data()
-    for account in accounts:
-        if int(account['id']) == account_id:
-                account['kpi'] = new_kpi
-                account['left_kpi'] = new_kpi
-                save_data(accounts)
-                return jsonify(account)
-    return 'Account not found', 404
+    daily = request.json.get('daily')
+    weekly = request.json.get('weekly')
+    res = db_connection.update_kpi_deatils(account_id, daily, weekly)
+
+    if not res:
+        return 'Account not found', 404
+    return 'Suceesss', 200
 
 
 @app.route('/login')

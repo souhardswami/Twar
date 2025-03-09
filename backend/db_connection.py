@@ -17,6 +17,20 @@ def get_auth_details():
     sql = 'select * from Auth'
     result = execute(sql)
     print (result)
+    
+
+
+def update_kpi_deatils(account_id, daily, weekly):
+    try:
+        sql = f'update kpi set daily={daily}, weekly={weekly} where id = (select kpi_id from bot where id={account_id})'
+        res = execute(sql)
+        db.commit()
+        return True
+    except Exception as ex:
+        print (f"Error : {ex} While Updating KPI for {account_id}")
+        return False
+    
+
 
 def get_bot_auth_details():
     sql = 'select * from BotAuth'
