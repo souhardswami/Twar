@@ -55,25 +55,7 @@ def deactivate_account(account_id):
     save_data(accounts)
     return jsonify(account)
 
-@app.route('/keyword/<int:account_id>', methods=['POST'])
-def update_keyword(account_id):
-    accounts = load_data()
-    for account in accounts:
-        if int(account['id']) == account_id:
-            account['keywords'] = request.json.get('keyword', account.get('keywords', ''))
-            break
-    save_data(accounts)
-    return jsonify(account)
 
-@app.route('/prompt/<int:account_id>', methods=['POST'])
-def update_prompt(account_id):
-    accounts = load_data()
-    for account in accounts:
-        if int(account['id']) == account_id :
-            account['prompt'] = request.json.get('prompt', account.get('prompt', ''))
-            break
-    save_data(accounts)
-    return jsonify(account)
 
 @app.route('/kpi/<int:account_id>', methods=['POST'])
 def update_kpi(account_id):
