@@ -17,10 +17,11 @@ const UpdateKpiModal = ({ isOpen, onClose, updateKpi, selectedAccount }) => {
   const [weeklyKpi, setWeeklyKpi] = useState("");
   const [dailyKpi, setDailyKpi] = useState("");
 
+
   useEffect(() => {
     if (selectedAccount) {
-      setWeeklyKpi(selectedAccount.kpi.weekly);
-      setDailyKpi(selectedAccount.kpi.daily);
+      setWeeklyKpi(selectedAccount.weekly);
+      setDailyKpi(selectedAccount.daily);
     }
   }, [selectedAccount]);
 
@@ -30,6 +31,7 @@ const UpdateKpiModal = ({ isOpen, onClose, updateKpi, selectedAccount }) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
+
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
@@ -38,6 +40,13 @@ const UpdateKpiModal = ({ isOpen, onClose, updateKpi, selectedAccount }) => {
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
+        <FormControl>
+            <FormLabel>Daily KPI</FormLabel>
+            <Input
+              value={dailyKpi}
+              onChange={(e) => setDailyKpi(e.target.value)}
+            />
+          </FormControl>
           <FormControl mb={4}>
             <FormLabel>Weekly KPI</FormLabel>
             <Input
@@ -45,13 +54,7 @@ const UpdateKpiModal = ({ isOpen, onClose, updateKpi, selectedAccount }) => {
               onChange={(e) => setWeeklyKpi(e.target.value)}
             />
           </FormControl>
-          <FormControl>
-            <FormLabel>Daily KPI</FormLabel>
-            <Input
-              value={dailyKpi}
-              onChange={(e) => setDailyKpi(e.target.value)}
-            />
-          </FormControl>
+          
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={handleUpdateKpi}>

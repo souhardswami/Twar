@@ -229,7 +229,7 @@ function WorkspacePage({ selectedPlan, onSelectPlan }) {
               onPromptModalOpen();
             }}
             deactivateAccount={deactivateAccount} // Pass deactivateAccount function
-            openKpiModal={openKpiModalHandler}
+            // openKpiModal={openKpiModalHandler}
           />
         </Box>
       </Center>

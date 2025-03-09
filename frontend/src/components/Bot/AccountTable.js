@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import UpdateKpiModal from "./UpdateKpiModal";
 import { Table, Thead, Tbody, Tr, Th, Td, Button, Icon } from "@chakra-ui/react";
 
 
@@ -26,8 +27,15 @@ const AccountTable = ({
   openKeywordModal,
   openPromptModal,
   deactivateAccount,
-  openKpiModal,
+  
 }) => {
+
+  const [isKPIModelOpen, setIsKPIModelOpen] = useState(false);
+
+  const handleToggle = () => {
+      setIsKPIModelOpen(!isKPIModelOpen);
+  }
+
   return (
     <Table variant="simple">
       <Thead>
@@ -68,10 +76,19 @@ const AccountTable = ({
                 size="sm"
                 colorScheme="blue"
                 ml={2}
-                onClick={() => openKpiModal(account)}
+                onClick={() => handleToggle()}
               >
                 Update KPI
               </Button>
+
+              
+              <UpdateKpiModal
+                isOpen={isKPIModelOpen}
+                onClose={handleToggle}
+                // updateKpi={updateKpi}
+                selectedAccount={account}
+              /> 
+
 
               <Button
                 size="sm"
