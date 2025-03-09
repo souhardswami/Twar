@@ -63,7 +63,7 @@ def update_kpi(account_id):
 
     if not res:
         return 'Account not found', 404
-    return 'Suceesss', 200
+    return jsonify(db_connection.get_details()), 200
 
 
 @app.route('/login')

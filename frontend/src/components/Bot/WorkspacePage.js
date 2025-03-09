@@ -68,6 +68,7 @@ const WorkspacePage = () => {
       const response = await axios.post(
         `${API_URL}/kpi/${accountId}`, payload
       );
+      setAccounts(response.data);
       handleToggle();
     } catch (error) {
       console.error("Error while updating KPIs:", error);
