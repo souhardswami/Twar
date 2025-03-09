@@ -4,14 +4,14 @@ import { Table, Thead, Tbody, Tr, Th, Td, Button, Icon } from "@chakra-ui/react"
 
 const Status = (props) => (
   <>
-    { props.status == 'active' ? 
+    { props.status == '1' ? 
       <>
         <Icon viewBox='0 0 200 200' color='green.600'>
         <path
           fill='currentColor'
           d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
         /> </Icon>
-        'Working...'  
+        Working... 
       </>: 
       <> Stopped &#10071; 
       </>
@@ -32,10 +32,11 @@ const AccountTable = ({
     <Table variant="simple">
       <Thead>
         <Tr>
-          <Th>Name</Th>
+          <Th>Bot</Th>
           <Th>Status</Th>
-          <Th></Th>
-          <Th>Actions</Th>
+          <Th>Daily KPI</Th>
+          <Th>Weekly KPI</Th>
+          <Th>More Actions</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -46,25 +47,30 @@ const AccountTable = ({
                 <span colorScheme="blue">{account.screen_name}</span>
               </a>
             </Td>
-            <Td>{account.status}</Td>
             <Td>
-              <Button
-                colorScheme={account.status == "active" ? "pink" : "green"}
-                size="sm"
-                onClick={() => deactivateAccount(account.id)}
-              ></Button>
+              <Status boxSize={5} color={account.status == "1" ? "green.500" : "red.600"} status={account.status} />
             </Td>
             <Td>
-              
-              
-
-              <Button
+              {account.used_daily}/{account.daily}
+            </Td>
+            <Td>
+              {account.used_weekly}/{account.weekly}
+            </Td>
+            <Td>
+            
+            <Button
+                colorScheme={account.status == "1" ? "pink" : "green"}
+                size="sm"
+                onClick={() => deactivateAccount(account.id)}>
+                {account.status == "0" ? "Activate" : "Deactivate"}
+            </Button>
+            <Button
                 size="sm"
                 colorScheme="blue"
                 ml={2}
                 onClick={() => openKpiModal(account)}
               >
-                View KPI
+                Update KPI
               </Button>
 
               <Button
@@ -73,8 +79,10 @@ const AccountTable = ({
                 ml={2}
                 onClick={() => deleteAccount(account.id)}
               >
-                Delete
+                Delete Bot
               </Button>
+
+
             </Td>
           </Tr>
         ))}
