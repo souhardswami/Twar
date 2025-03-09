@@ -52,18 +52,12 @@ const WorkspacePage = () => {
     }
   };
 
-  const deactivateAccount = async (accountId) => {
+  const switchStatus = async (accountId) => {
     try {
       const response = await axios.put(
-        `${API_URL}/account/${accountId}/deactivate`
+        `${API_URL}/account/${accountId}/swichStatus`
       );
-      setAccounts(
-        accounts.map((account) =>
-          account.id === accountId
-            ? { ...account, status: response.data.status }
-            : account
-        )
-      );
+      setAccounts(response.data);
     } catch (error) {
       console.error("Error deactivating account:", error);
     }
@@ -134,7 +128,7 @@ const WorkspacePage = () => {
           <AccountTable
             accounts={currentAccounts}
             deleteAccount={deleteAccount}
-            deactivateAccount={deactivateAccount} 
+            switchStatus={switchStatus} 
             handleKPIPage={handleKPIPage}
           />
           <UpdateKpiModal

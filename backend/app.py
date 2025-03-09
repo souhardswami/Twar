@@ -45,15 +45,13 @@ def delete_account(account_id):
     save_data(accounts)
     return '', 204
 
-@app.route('/account/<int:account_id>/deactivate', methods=['PUT'])
-def deactivate_account(account_id):
-    accounts = load_data()
-    for account in accounts:
-        if int(account['id']) == account_id:
-            account['status'] = "inactive" if account["status"] == "active" else "active"
-            break
-    save_data(accounts)
-    return jsonify(account)
+@app.route('/account/<int:account_id>/swichStatus', methods=['PUT'])
+def swich_status(account_id):
+    res = db_connection.switch_account_status(account_id)
+    if not res:
+        return 'Account not Found', 404
+    
+    return jsonify(db_connection.get_details())
 
 
 

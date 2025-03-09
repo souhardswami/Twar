@@ -31,6 +31,26 @@ def update_kpi_deatils(account_id, daily, weekly):
         return False
     
 
+def get_status(account_id):
+    sql = f'select status from bot where id = {account_id}'
+    res = execute(sql)
+    return res[0][0]
+    
+def switch_account_status(account_id):
+    try:
+        current_status = get_status(account_id)
+        new_status = '0'
+        if current_status == '0':
+            new_status = '1'
+        sql = f'update bot set status = {new_status} where id={account_id}'
+        execute(sql)
+        db.commit()
+        return True
+    
+    except Exception as ex:
+        print (f"Error : {ex} While Switching Status for {account_id}")
+        return False
+    
 
 def get_bot_auth_details():
     sql = 'select * from BotAuth'

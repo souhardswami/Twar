@@ -24,7 +24,7 @@ const Status = (props) => (
 const AccountTable = ({
   accounts,
   deleteAccount,
-  deactivateAccount,
+  switchStatus,
   handleKPIPage
 }) => {
 
@@ -67,7 +67,7 @@ const AccountTable = ({
             <Button
                 colorScheme={account.status == "1" ? "pink" : "green"}
                 size="sm"
-                onClick={() => deactivateAccount(account.id)}>
+                onClick={() => switchStatus(account.id)}>
                 {account.status == "0" ? "Activate" : "Deactivate"}
             </Button>
             <Button
