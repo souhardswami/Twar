@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, session, redirect
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from requests_oauthlib import OAuth1Session
 from config import *
 from bot import run
@@ -12,7 +13,7 @@ app = Flask(__name__)
 app.secret_key = 'YOUR_SECRET_KEY'
 CORS(app)
 
-
+jwt = JWTManager(app)
 
 def save_data(data):
     with open(DATA_FILE, 'w') as file:
@@ -64,6 +65,24 @@ def update_kpi(account_id):
     if not res:
         return 'Account not found', 404
     return jsonify(db_connection.get_details()), 200
+
+@app.route('/user-login', methods=['POST'])
+def user_login():
+    email = request.json.get('email')
+    password = request.json.get('password')
+    res, username = db_connection.login_user(email, password)
+    
+    if not res:
+        return 'Email/Password Wrong !!!', 404
+    
+    
+    access_token = create_access_token(identity=username, expires_delta=False)
+    
+    return jsonify({
+        "msg": "User Logged in.",
+        "token": access_token
+    }), 200
+    
 
 
 @app.route('/login')

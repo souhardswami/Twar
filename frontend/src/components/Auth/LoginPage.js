@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { Link as RouterLink } from "react-router-dom";
+import axios from "axios";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -22,17 +23,37 @@ const LoginPage = () => {
   const toast = useToast();
   const bg = useColorModeValue("white", "gray.800");
   const color = useColorModeValue("gray.800", "white");
+  const API_URL = "http://127.0.0.1:5000";
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    // Perform login logic here (e.g., API call)
+    try {
+      const res = await axios.post(`${API_URL}/user-login`, 
+        { 
+          email: email,
+          password: password
+        }
+      );
+      localStorage.setItem('myData', res.data.token);
     toast({
       title: "Login successful.",
-      description: "You've successfully logged in.",
+        description: "You've successfully Login.",
       status: "success",
       duration: 5000,
       isClosable: true,
     });
+    } catch (error) {
+      console.error("Error while logging user ", error);
+
+      toast({
+        title: "Login Failure.",
+        description: `Id/Password is not correct.`,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+
   };
 
   return (

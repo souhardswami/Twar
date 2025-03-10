@@ -61,7 +61,16 @@ def delete_account(account_id):
         print (f"Error : {ex} While deleting account for {account_id}")
         return False
         
+def login_user(email, password):
+    try:
+        sql = f'select username from user_auth where email = "{email}" AND password = "{password}"'
+        res = execute(sql)
+        user = res[0]
+        return True, user
     
+    except Exception as ex:
+        print (f"Error : {ex} While logging User for {email}")
+        return False, None
 
 def get_bot_auth_details():
     sql = 'select * from BotAuth'
