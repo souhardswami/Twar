@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -20,6 +21,7 @@ import axios from "axios";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const nav = useNavigate();
   const toast = useToast();
   const bg = useColorModeValue("white", "gray.800");
   const color = useColorModeValue("gray.800", "white");
@@ -42,6 +44,7 @@ const LoginPage = () => {
       duration: 5000,
       isClosable: true,
     });
+      nav("/home");
     } catch (error) {
       console.error("Error while logging user ", error);
 
