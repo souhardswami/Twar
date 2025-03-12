@@ -66,6 +66,17 @@ def update_kpi(account_id):
         return 'Account not found', 404
     return jsonify(db_connection.get_details()), 200
 
+@app.route('/user-register', methods=['POST'])
+def user_register():
+    username = request.json.get('username')
+    email = request.json.get('email')
+    password = request.json.get('password')
+    res = db_connection.register_user(username, email, password)
+    
+    if not res:
+        return 'User is Already registered', 200
+    return 'Registration successfull', 200
+
 @app.route('/user-login', methods=['POST'])
 def user_login():
     email = request.json.get('email')

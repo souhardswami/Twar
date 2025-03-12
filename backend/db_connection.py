@@ -60,6 +60,16 @@ def delete_account(account_id):
     except Exception as ex:
         print (f"Error : {ex} While deleting account for {account_id}")
         return False
+def register_user(username, email, password):
+    try:
+        sql = f'insert into user_auth values("{username}", "{email}", "{password}")'
+        execute(sql)
+        db.commit()
+        return True
+    
+    except Exception as ex:
+        print (f"Error : {ex} While Registering User for {username}")
+        return False
         
 def login_user(email, password):
     try:

@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { Link as RouterLink } from "react-router-dom";
+import axios from "axios";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
@@ -24,18 +25,47 @@ const RegisterPage = () => {
   const toast = useToast();
   const bg = useColorModeValue("white", "gray.800");
   const color = useColorModeValue("gray.800", "white");
+  const API_URL = "http://127.0.0.1:5000";
 
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    // Perform registration logic here (e.g., API call)
-    toast({
-      title: "Registration successful.",
-      description: "You've successfully registered.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
+    try {
+
+      await axios.post(`${API_URL}/user-register`, 
+        { 
+          username: username,
+          email: email,
+          password: password
+        }
+      );
+
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+
+      toast({
+        title: "Registration successful.",
+        description: "You've successfully registered.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      
+    } catch (error) {
+      console.error("Error while registering user ", error);
+
+      toast({
+        title: "Registration Failure.",
+        description: `Error while registering user ${error}`,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+
+    }
+    
   };
 
   return (
