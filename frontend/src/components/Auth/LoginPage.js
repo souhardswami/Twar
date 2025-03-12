@@ -36,14 +36,14 @@ const LoginPage = () => {
           password: password
         }
       );
-      localStorage.setItem('myData', res.data.token);
-    toast({
-      title: "Login successful.",
+      localStorage.setItem('token', res.data.token);
+      toast({
+        title: "Login successful.",
         description: "You've successfully Login.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
       nav("/home");
     } catch (error) {
       console.error("Error while logging user ", error);
