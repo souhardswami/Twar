@@ -93,30 +93,28 @@ def subscription_plan_details():
     res = execute_with_column(sql)
     return res
     
-def get_bot_auth_details():
-    sql = 'select * from BotAuth'
+def get_details():
+    # Todo - Need to correct this
+    sql ='select * from bot;'
     result = execute(sql)
-    print (result)
     
+    sql = 'select * from bot as b inner join kpi as k on b.kpi_id=k.id'
+    result = execute(sql)
     
     ans = []
-    
-    keys = ['id', 'screen_name', 'status', 'sss' ]
-    
-    print (result)
+    keys = ['id', 'screen_name', 'kpi-id', 'status', 'kpi-id', 'daily', 'weekly', 'used_daily', 'used_weekly'  ]
     for res in result:
-        print (list(res))
-        
         mp = {}
         mp[keys[0]]=res[0]
         mp[keys[1]]=res[1]
         mp[keys[2]]=res[2]
         mp[keys[3]]=res[3]
+        mp[keys[4]]=res[4]
+        mp[keys[5]]=res[5]
+        mp[keys[6]]=res[6]
+        mp[keys[7]]=res[7]
+        mp[keys[8]]=res[8]
         ans.append(mp)
     return ans
-
+   
     
-    
-    
-
-
