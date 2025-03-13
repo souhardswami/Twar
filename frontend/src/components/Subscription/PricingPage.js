@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Container,
@@ -10,46 +9,64 @@ import {
   Button,
   useToast,
 } from "@chakra-ui/react";
+import axios from "axios";
 
 const PricingPage = ({ selectedPlan, onSelectPlan }) => {
+  const [plans, setPlans] = useState([]);
   const toast = useToast();
 
-  const handleSelectPlan = async (plan) => {
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:5000/get_plans");
+        setPlans(response.data);
+      } catch (error) {
+        console.error("Error fetching plans:", error);
         toast({
-          title: "Redirecting to Stripe...",
-          description: `You've selected the ${plan} plan.`,
-          status: "info",
-          duration: 3000,
+          title: "Error",
+          description: "Failed to fetch subscription plans",
+          status: "error",
+          duration: 5000,
           isClosable: true,
         });
-    
-        try {
-          const response = await fetch(
-            "http://127.0.0.1:5000/create-checkout-session",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ plan }),
-            }
-          );
-    
-          const data = await response.json();
-    
-          if (data.url) {
-            window.location.href = data.url; // Redirect to Stripe Checkout
-          } else {
-            throw new Error("Failed to create Stripe session");
-          }
-        } catch (error) {
-          toast({
-            title: "Error",
-            description: error.message,
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
-        }
-      };
+      }
+    };
+
+    fetchPlans();
+  }, []);
+
+  const handleSelectPlan = async (planId) => {
+    try {
+      toast({
+        title: "Redirecting to Stripe...",
+        description: `You've selected the ${planId} plan.`,
+        status: "info",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      const response = await axios.post(
+        "http://127.0.0.1:5000/create-checkout-session",
+        { planId }
+      );
+
+      const data = await response.json();
+
+      if (data.url) {
+        window.location.href = data.url; // Redirect to Stripe Checkout
+      } else {
+        throw new Error("Failed to create Stripe session");
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <Box bg="gray.50" minH="100vh" py={10}>
@@ -64,59 +81,27 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
         </VStack>
 
         <Stack direction={{ base: "column", md: "row" }} spacing={8} justify="center">
-          <Box bg="white" p={6} rounded="lg" shadow="lg" maxW="sm">
-            <Heading as="h3" size="lg" mb={4} color="brand.600">
-              Basic Plan
-            </Heading>
-            <Text fontSize="2xl" fontWeight="bold" mb={4}>
-              Free
-            </Text>
-            <VStack align="start" spacing={3} mb={6}>
-              <Text>✔️ Feature 1</Text>
-              <Text>✔️ Feature 2</Text>
-              <Text>✔️ Feature 3</Text>
-            </VStack>
-            <Button colorScheme="teal" onClick={() => onSelectPlan("Free")}>
-              Select Free Plan
-            </Button>
-          </Box>
-
-          <Box bg="white" p={6} rounded="lg" shadow="lg" maxW="sm">
-            <Heading as="h3" size="lg" mb={4} color="brand.600">
-              Pro Plan
-            </Heading>
-            <Text fontSize="2xl" fontWeight="bold" mb={4}>
-              $10/month
-            </Text>
-            <VStack align="start" spacing={3} mb={6}>
-              <Text>✔️ Feature 1</Text>
-              <Text>✔️ Feature 2</Text>
-              <Text>✔️ Feature 3</Text>
-              <Text>✔️ Feature 4</Text>
-            </VStack>
-            <Button colorScheme="teal" onClick={() => handleSelectPlan("$10/Month", 1000)}>
-              Select Pro Plan
-            </Button>
-          </Box>
-
-          <Box bg="white" p={6} rounded="lg" shadow="lg" maxW="sm">
-            <Heading as="h3" size="lg" mb={4} color="brand.600">
-              Enterprise Plan
-            </Heading>
-            <Text fontSize="2xl" fontWeight="bold" mb={4}>
-              $50/month
-            </Text>
-            <VStack align="start" spacing={3} mb={6}>
-              <Text>✔️ Feature 1</Text>
-              <Text>✔️ Feature 2</Text>
-              <Text>✔️ Feature 3</Text>
-              <Text>✔️ Feature 4</Text>
-              <Text>✔️ Feature 5</Text>
-            </VStack>
-            <Button colorScheme="teal" onClick={() => handleSelectPlan("Enterprise", 5000)}>
-              Select Enterprise Plan
-            </Button>
-          </Box>
+          {plans.map((plan) => (
+            <Box key={plan.id} bg="white" p={6} rounded="lg" shadow="lg" maxW="sm">
+              <Heading as="h3" size="lg" mb={4} color="brand.600">
+                {plan.name}
+              </Heading>
+              <Text fontSize="2xl" fontWeight="bold" mb={4}>
+                ${plan.price}/month
+              </Text>
+              <VStack align="start" spacing={3} mb={6}>
+                {plan.features.split(", ").map((feature, index) => (
+                  <Text key={index}>✔️ {feature}</Text>
+                ))}
+              </VStack>
+              <Button
+                colorScheme="teal"
+                onClick={() => handleSelectPlan(plan.id)}
+              >
+                Select {plan.name} Plan
+              </Button>
+            </Box>
+          ))}
         </Stack>
       </Container>
     </Box>
