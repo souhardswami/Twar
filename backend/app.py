@@ -94,7 +94,10 @@ def user_login():
         "token": access_token
     }), 200
     
-
+@app.route('/get_plans', methods=['GET'])
+def subscription_plan():
+    return db_connection.subscription_plan_details()
+    
 
 @app.route('/login')
 def login():

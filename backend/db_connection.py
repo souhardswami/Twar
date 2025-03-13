@@ -87,7 +87,12 @@ def login_user(email, password):
     except Exception as ex:
         print (f"Error : {ex} While logging User for {email}")
         return False, None
-
+    
+def subscription_plan_details():
+    sql = 'select * from subscription_plan;'
+    res = execute_with_column(sql)
+    return res
+    
 def get_bot_auth_details():
     sql = 'select * from BotAuth'
     result = execute(sql)
