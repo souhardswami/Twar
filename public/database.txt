@@ -1,0 +1,52 @@
+# Maintaining all db creation details
+
+## DB Name - Twar
+Query - CREATE DATABASE `Twar`
+
+### 1. kpi
+Query - CREATE TABLE `kpi` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `daily` int DEFAULT NULL,
+  `weekly` int DEFAULT NULL,
+  `used_daily` int DEFAULT NULL,
+  `used_weekly` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+
+### 2. bot
+Query - CREATE TABLE `bot` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `screen_name` varchar(30) DEFAULT NULL,
+  `kpi_id` int NOT NULL,
+  `status` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `kpi_id` (`kpi_id`),
+  FOREIGN KEY (`kpi_id`) REFERENCES `kpi` (`id`)
+)
+
+### 3. user_auth
+Query - CREATE TABLE `user_auth` (
+  `username` varchar(30) NOT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `password` varchar(30) NOT NULL,
+  PRIMARY KEY (`username`)
+)
+
+### 4. subscription_plan
+Query - CREATE TABLE `subscription_plan` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `price` int DEFAULT NULL,
+  `features` text,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+)
+
+### 5. user_subscription_plan
+Query - CREATE TABLE `user_subscription_plan` (
+  `user_id` int NOT NULL,
+  `subscription_plan_id` int NOT NULL,
+  PRIMARY KEY (`user_id`),
+  KEY `subscription_plan_id` (`subscription_plan_id`),
+  CONSTRAINT `user_subscription_plan_ibfk_1` FOREIGN KEY (`subscription_plan_id`) REFERENCES `subscription_plan` (`id`)
+)
