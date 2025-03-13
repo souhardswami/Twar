@@ -69,7 +69,7 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
   };
 
   return (
-    <Box bg="gray.50" minH="100vh" py={10}>
+    <Box bgGradient="linear(135deg, #f5f6fa 0%, #c3cfe2 100%)" minH="100vh" py={10}>
       <Container maxW="container.xl">
         <VStack spacing={8} align="center" mb={10}>
           <Heading as="h1" size="2xl" color="brand.600">
