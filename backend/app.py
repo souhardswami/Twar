@@ -36,7 +36,7 @@ def index():
 
 @app.route('/accounts', methods=['GET'])
 def get_accounts():
-    accounts = db_connection.get_bot_auth_details()
+    accounts = db_connection.get_details()
     return jsonify(accounts)
 
 @app.route('/account/<int:account_id>', methods=['DELETE'])
