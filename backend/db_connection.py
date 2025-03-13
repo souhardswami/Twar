@@ -8,6 +8,12 @@ db = pymysql.connect(
     database="Twar"
 )
 
+def execute_with_column(sql):
+    with db.cursor() as cursor:
+        cursor.execute(sql)
+        columns = [desc[0] for desc in cursor.description]  
+        return [dict(zip(columns, row)) for row in cursor.fetchall()] 
+
 def execute(sql):
     with db.cursor() as cursor:
         cursor.execute(sql)
