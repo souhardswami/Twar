@@ -5,7 +5,7 @@ db = pymysql.connect(
     port=3307,
     user="root", 
     password="mysql", 
-    database="Twar"
+    database="Twar_read_db"
 )
 
 def execute_with_column(sql):
@@ -81,7 +81,7 @@ def login_user(email, password):
     try:
         sql = f'select username from user_auth where email = "{email}" AND password = "{password}"'
         res = execute(sql)
-        user = res[0]
+        user = res[0][0]
         return True, user
     
     except Exception as ex:
