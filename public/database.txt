@@ -44,9 +44,9 @@ Query - CREATE TABLE `subscription_plan` (
 
 ### 5. user_subscription_plan
 Query - CREATE TABLE `user_subscription_plan` (
-  `user_id` int NOT NULL,
+  `user` varchar(30) NOT NULL,
   `subscription_plan_id` int NOT NULL,
-  PRIMARY KEY (`user_id`),
+  PRIMARY KEY (`user`),
   KEY `subscription_plan_id` (`subscription_plan_id`),
   CONSTRAINT `user_subscription_plan_ibfk_1` FOREIGN KEY (`subscription_plan_id`) REFERENCES `subscription_plan` (`id`)
 )
