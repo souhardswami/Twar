@@ -144,8 +144,11 @@ def run_bot():
 
 
 @app.route("/create-checkout-session", methods=["POST"])
+@jwt_required()
 def create_checkout_session():
-    response = handle_checkout_session(request)
+    username = get_jwt_identity()
+    plan_name = request.json.get('planName')
+    response = handle_checkout_session(username, plan_name)
     return response
 
 if __name__ == '__main__':

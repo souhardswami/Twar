@@ -1,21 +1,19 @@
 import os
 import stripe
 from flask import jsonify
+from db_connection import subscribe_plan
 
 
 stripe.api_key = os.getenv('STRIPE_API_KEY')
 
 PRICES = {
-    "Free": 0,
-    "$10/Month": "price_RGJ771",  
-    "Enterprise": "price_DXY590"  
+    "Basic Plan": 0,
+    "Pro Plan": "price_RGJ771",  
+    "Enterprise Plan": "price_DXY590"  
 }
 
-def handle_checkout_session(request):
+def handle_checkout_session(username, plan_name):
     try:
-        data = request.json
-        plan_name = data.get("plan")
-
         if plan_name not in PRICES:
             return jsonify({"error": "Invalid plan"}), 400
 
@@ -32,6 +30,7 @@ def handle_checkout_session(request):
             cancel_url="http://localhost:3000/cancel",
         )
         
+        subscribe_plan(username, plan_name)
         return jsonify({"url": session.url}), 200
 
     except Exception as e:

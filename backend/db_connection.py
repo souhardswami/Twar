@@ -116,5 +116,19 @@ def get_details():
         mp[keys[8]]=res[8]
         ans.append(mp)
     return ans
+      
    
-    
+def subscribe_plan(username, plan_name):
+    try:
+        # Get plan id 
+        sql = f'select id from subscription_plan where name="{plan_name}"'
+        res = execute(sql)
+        
+        plan_id = res[0][0]
+        sql = f'insert into user_subscription_plan values("{username}", "{plan_id}")'
+        res = execute(sql)
+        db.commit()
+        return True
+    except Exception as ex:
+        print (f"Error : {ex} While subscribe user {username} with plan {plan_name}")
+        return False

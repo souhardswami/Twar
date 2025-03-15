@@ -15,6 +15,8 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
   const [plans, setPlans] = useState([]);
   const toast = useToast();
 
+  const jwtToken = localStorage.getItem("token");
+
   useEffect(() => {
     const fetchPlans = async () => {
       try {
@@ -35,25 +37,25 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
     fetchPlans();
   }, []);
 
-  const handleSelectPlan = async (planId) => {
+  const handleSelectPlan = async (planName) => {
     try {
       toast({
         title: "Redirecting to Stripe...",
-        description: `You've selected the ${planId} plan.`,
+        description: `You've selected the ${planName} plan.`,
         status: "info",
         duration: 3000,
         isClosable: true,
       });
 
       const response = await axios.post(
-        "http://127.0.0.1:5000/create-checkout-session",
-        { planId }
-      );
-
-      const data = await response.json();
-
+        "http://127.0.0.1:5000/create-checkout-session", 
+        {planName},
+        {headers: { Authorization: `Bearer ${jwtToken}` }},
+       )
+      
+      const data = await response.data;
       if (data.url) {
-        window.location.href = data.url; // Redirect to Stripe Checkout
+        window.location.href = data.url;
       } else {
         throw new Error("Failed to create Stripe session");
       }
@@ -96,7 +98,7 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
               </VStack>
               <Button
                 colorScheme="teal"
-                onClick={() => handleSelectPlan(plan.id)}
+                onClick={() => handleSelectPlan(plan.name)}
               >
                 Select {plan.name} Plan
               </Button>
