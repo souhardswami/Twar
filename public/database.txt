@@ -50,3 +50,15 @@ Query - CREATE TABLE `user_subscription_plan` (
   KEY `subscription_plan_id` (`subscription_plan_id`),
   CONSTRAINT `user_subscription_plan_ibfk_1` FOREIGN KEY (`subscription_plan_id`) REFERENCES `subscription_plan` (`id`)
 )
+
+### 6. user_bots
+Query - CREATE TABLE `user_bots` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(30) NOT NULL,
+  `bot_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `username` (`username`),
+  KEY `bot_id` (`bot_id`),
+  CONSTRAINT `user_bots_ibfk_1` FOREIGN KEY (`username`) REFERENCES `user_auth` (`username`),
+  CONSTRAINT `user_bots_ibfk_2` FOREIGN KEY (`bot_id`) REFERENCES `bot` (`id`)
+)

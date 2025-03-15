@@ -104,12 +104,9 @@ def subscription_plan_details(username):
             plan['is_subscribed']=True
     return plans
     
-def get_details():
+def get_details(username):
     # Todo - Need to correct this
-    
-    
-    
-    sql = 'select * from bot as b inner join kpi as k on b.kpi_id=k.id'
+    sql = f'select * from bot as b inner join kpi as k on b.kpi_id=k.id inner join user_bots as ub on b.id=ub.bot_id where ub.username="{username}"'
     result = execute(sql)
     
     ans = []

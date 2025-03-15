@@ -35,8 +35,10 @@ def index():
     return 'System is Working'
 
 @app.route('/accounts', methods=['GET'])
+@jwt_required(optional=True)
 def get_accounts():
-    accounts = db_connection.get_details()
+    username = get_jwt_identity() if get_jwt_identity() else None
+    accounts = db_connection.get_details(username)
     return jsonify(accounts)
 
 @app.route('/account/<int:account_id>', methods=['DELETE'])

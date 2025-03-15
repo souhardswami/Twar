@@ -18,6 +18,7 @@ const WorkspacePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [account, setAccount] = useState();
   const [isKPIModelOpen, setIsKPIModelOpen] = useState(false);
+  const jwtToken = localStorage.getItem("token");
 
   const accountsPerPage = 4;
   const API_URL = "http://127.0.0.1:5000";
@@ -25,7 +26,7 @@ const WorkspacePage = () => {
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
-        const response = await axios.get(`${API_URL}/accounts`);
+        const response = await axios.get(`${API_URL}/accounts`, {headers : { Authorization : jwtToken ? `Bearer ${jwtToken}` : undefined}});
         setAccounts(response.data);
       } catch (error) {
         console.error("Error fetching accounts:", error);
