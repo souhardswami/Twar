@@ -106,8 +106,8 @@ def subscription_plan_details(username):
     
 def get_details():
     # Todo - Need to correct this
-    sql ='select * from bot;'
-    result = execute(sql)
+    
+    
     
     sql = 'select * from bot as b inner join kpi as k on b.kpi_id=k.id'
     result = execute(sql)
