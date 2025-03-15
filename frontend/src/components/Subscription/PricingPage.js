@@ -20,7 +20,7 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/get_plans");
+        const response = await axios.get("http://127.0.0.1:5000/get_plans", {headers : { Authorization : jwtToken ? `Bearer ${jwtToken}` : undefined}});
         setPlans(response.data);
       } catch (error) {
         console.error("Error fetching plans:", error);
@@ -84,10 +84,22 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
 
         <Stack direction={{ base: "column", md: "row" }} spacing={8} justify="center">
           {plans.map((plan) => (
-            <Box key={plan.id} bg="white" p={6} rounded="lg" shadow="lg" maxW="sm">
-              <Heading as="h3" size="lg" mb={4} color="brand.600">
-                {plan.name}
-              </Heading>
+             <Box 
+             key={plan.id} 
+             bg="white" 
+             p={plan.is_subscribed ? 8 : 6} 
+             rounded="lg" 
+             shadow={plan.is_subscribed ? "xl" : "lg"} 
+             maxW="lg"
+             border={plan.is_subscribed ? "2px solid black" : "none"}
+           ><Heading as="h3" size="lg" mb={4} color="brand.600">
+           {plan.name}
+           {plan.is_subscribed && (
+             <Text fontSize="sm" color="teal.500" ml={2}>
+               (Current Plan)
+             </Text>
+           )}
+         </Heading>
               <Text fontSize="2xl" fontWeight="bold" mb={4}>
                 ${plan.price}/month
               </Text>
@@ -97,10 +109,11 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
                 ))}
               </VStack>
               <Button
-                colorScheme="teal"
+                colorScheme={plan.is_subscribed ? "teal" : "teal"}
                 onClick={() => handleSelectPlan(plan.name)}
+                isDisabled={plan.is_subscribed}
               >
-                Select {plan.name} Plan
+                {plan.is_subscribed ? "Activated" : `Select ${plan.name} Plan`}
               </Button>
             </Box>
           ))}

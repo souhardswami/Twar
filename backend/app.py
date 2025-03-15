@@ -95,8 +95,10 @@ def user_login():
     }), 200
     
 @app.route('/get_plans', methods=['GET'])
+@jwt_required(optional=True)
 def subscription_plan():
-    return db_connection.subscription_plan_details()
+    username = get_jwt_identity() if get_jwt_identity() else None
+    return db_connection.subscription_plan_details(username)
     
 
 @app.route('/login')

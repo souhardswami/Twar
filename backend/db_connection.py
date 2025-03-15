@@ -88,10 +88,21 @@ def login_user(email, password):
         print (f"Error : {ex} While logging User for {email}")
         return False, None
     
-def subscription_plan_details():
+def subscription_plan_details(username):
     sql = 'select * from subscription_plan;'
-    res = execute_with_column(sql)
-    return res
+    plans = execute_with_column(sql)
+    
+    sql = f'select subscription_plan_id from user_subscription_plan where user="{username}"'
+    _id = None
+    subscribe_plan_id = execute(sql)
+    if subscribe_plan_id:
+        _id = subscribe_plan_id[0][0]
+    
+    for plan in plans:
+        plan['is_subscribed'] = False
+        if (plan['id'] == _id):
+            plan['is_subscribed']=True
+    return plans
     
 def get_details():
     # Todo - Need to correct this
