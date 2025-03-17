@@ -7,10 +7,12 @@ from bot import run
 from payment import handle_checkout_session
 import json, os
 import db_connection
+from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__)
 app.secret_key = 'YOUR_SECRET_KEY'
+app.config['UPLOAD_FOLDER'] = 'uploads/rag-knowledge-base'
 CORS(app)
 
 jwt = JWTManager(app)
@@ -154,6 +156,27 @@ def create_checkout_session():
     plan_name = request.json.get('planName')
     response = handle_checkout_session(username, plan_name)
     return response
+
+@app.route('/upload-rag-document', methods=['POST'])
+@jwt_required()
+def upload_rag_document():
+    user_id = get_jwt_identity()
+    if 'document' not in request.files:
+        return jsonify({"msg": "No document uploaded"}), 400
+    
+    document = request.files['document']
+    if document.filename == '':
+        return jsonify({"msg": "No document selected"}), 400
+    
+    if document and allowed_file(document.filename):
+        filename = secure_filename(document.filename)
+        document.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        
+        return jsonify({"msg": "Document uploaded successfully"}), 200
+    return jsonify({"msg": "Invalid file type"}), 400
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'pdf', 'docx', 'txt', 'csv'}
 
 if __name__ == '__main__':
     app.run(debug=True)
