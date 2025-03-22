@@ -9,7 +9,8 @@ import {
   Box,
   useColorModeValue,
   Text, 
-  useToast
+  useToast,
+  Spinner
 } from "@chakra-ui/react";
 import AccountTable from "./AccountTable";
 import UpdateKpiModal from "./UpdateKpiModal";
@@ -23,6 +24,7 @@ const WorkspacePage = () => {
   const [selectedRagFile, setSelectedRagFile] = useState(null);
   const jwtToken = localStorage.getItem("token");
   const firstRenderRef = useRef(true);
+  const [isLoading, setIsLoading] = useState(false)
   const toast = useToast();
 
   const accountsPerPage = 4;
@@ -113,6 +115,7 @@ const WorkspacePage = () => {
     const formData = new FormData();
     formData.append('document', selectedRagFile);
     try {
+      setIsLoading(true);
       const response = await axios.post(`${API_URL}/upload-rag-document`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -136,6 +139,7 @@ const WorkspacePage = () => {
         isClosable: true,
       });
     }
+    setIsLoading(false);
   };
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -191,7 +195,12 @@ const WorkspacePage = () => {
             fontWeight="medium"
             color={useColorModeValue("gray.600", "gray.300")}
           >
-            Upload 📂
+           Upload  {isLoading ? <Spinner
+              thickness='4px'
+              speed='1s'
+              color='red.600'
+              size='sm'
+            /> : "📂" }
           </Text>
         </Box> 
       </Center>
