@@ -35,12 +35,12 @@ import StrategyNode from "./Components/StrategyNode";
 import SafeguardNode from "./Components/SafeguardNode";
 
 const agentTypes = [
-  { id: "1", label: "🤖 Bot Monitoring", showLabel: 'Bot Monitoring' },
-  { id: "2", label: "#️⃣ Hashtag Agent", showLabel: 'Hashtag Agent' },
-  { id: "3", label: "📥 Fetch Data", showLabel: 'Fetch Agent' },
-  { id: "4", label: "💡 Strategy Agent", showLabel: 'Strategy Agent' },
-  { id: "5", label: "🛡 Safeguard Agent", showLabel: "Safeguard Agent"},
-  { id: "6", label: "💬 Reply Data", showLabel: 'Reply Agent' },
+  { id: "1", label: "🤖 Bot Monitoring", showLabel: 'Monitoring' },
+  { id: "2", label: "#️⃣ Hashtag Agent", showLabel: 'Hashtag ' },
+  { id: "3", label: "📥 Fetch Data", showLabel: 'Fetch ' },
+  { id: "4", label: "💡 Strategy Agent", showLabel: 'Strategy ' },
+  { id: "5", label: "🛡 Safeguard Agent", showLabel: "Safeguard "},
+  { id: "6", label: "💬 Reply Data", showLabel: 'Reply' },
   { id: "7", label: "🔚 End", showLabel: 'End' },
 ];
 const nodeDefaults = {
@@ -53,10 +53,15 @@ const initialNode = [
     id: '0',
     type: 'input',
     data: {
-      label: 'start'
+      label: 'Start'
     },
-    position: { x: 50, y: 80 },
-    sourcePosition: Position.Right
+    position: { x: 0, y: 0 },
+    sourcePosition: Position.Right,
+    style: {
+      width: 80,
+      height: 30,
+      padding: 5,
+    },
   }
 ]
 
@@ -80,9 +85,8 @@ const AgentStudio = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const bgColor = useColorModeValue("gray.50", "gray.900");
-  const getType = (type) => {
-    
-    if (type == 'end') {
+  const getPositioning = (type) => {
+    if (type == 7) {
       return { type: 'output', targetPosition: Position.Left}
     }
     return nodeDefaults;
@@ -90,7 +94,7 @@ const AgentStudio = () => {
 
   const handleNodeClick = (event, node) => {
     console.log(node)
-    if (node.data.label !== 'start' && node.data.label !== 'end') {
+    if (node.data.label !== 'Start' && node.data.label !== 'End') {
       setSelectedNode(node);
       setInputValue("");
       onOpen();
@@ -125,21 +129,21 @@ const AgentStudio = () => {
   const addNode = useCallback(
     (type) => {
       const newNode = {
-
-        
         id: `${idCounter}`,
-
-        
         position: {
-          x: 0 + Math.random() * 400,
-          y: 0 + Math.random() * 250,
+          x: 220 - Math.random() * 440,
+          y: 165 - Math.random() * 330,
         },
         data: {
-          label: `${agentTypes.find((a) => a.id === type)?.showLabel || type}`
+          label: `${agentTypes.find((a) => a.id === type)?.showLabel || type}`,
+          
         },
-        
-        
-        ...getType(type)
+        style: {
+          width: 80,
+          height: 30,
+          padding: 5,
+        },
+        ...getPositioning(type)
       };
 
       setIdCounter((id) => id + 1);
@@ -203,7 +207,6 @@ const AgentStudio = () => {
             {(() => {
               if (!selectedNode?.data?.label) return null;
 
-              // Extract type from label (like "Start Node" → "Start")
               const type = Object.keys(NODE_COMPONENTS).find((key) =>
                 selectedNode.data.label.startsWith(key)
               );
@@ -234,7 +237,12 @@ const AgentStudio = () => {
           onConnect={onConnect}
           onNodeClick={handleNodeClick}
           fitView
-          style={{ background: useColorModeValue("#f5f6f8", "#1a202c") }}
+          style={{ 
+            background: useColorModeValue("#f5f6f8", "#1a202c"), 
+            width: 80,
+            height: 30,
+            fontSize: 12,
+            padding: 5 }}
         >
           <MiniMap nodeStrokeWidth={3} />
           <Controls />
