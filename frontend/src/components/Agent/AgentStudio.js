@@ -66,7 +66,7 @@ const initialNode = [
 ]
 
 const NODE_COMPONENTS = {
-  Bot: BotMonitoringNode,
+  Monitoring: BotMonitoringNode,
   Hashtag: HashtagNode,
   Fetch: FetchNode,
   Strategy: StrategyNode,
