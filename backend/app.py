@@ -157,6 +157,27 @@ def create_checkout_session():
     response = handle_checkout_session(username, plan_name)
     return response
 
+
+@app.route("/create-agent", methods=["POST"])
+@jwt_required()
+def create_agent():
+    username = get_jwt_identity()
+    nodes = request.json.get('nodes')
+    edges = request.json.get('edges')
+    flow_id = db_connection.create_flow(username)
+    for step in nodes:
+        user_input = None
+        if 'user_input' in step['data']:
+            user_input = step['data']['user_input']
+        db_connection.create_flow_steps(flow_id, step['id'], step['data']['label'], user_input)
+        
+    for edge in edges:
+        source, target = edge['source'], edge['target']
+        db_connection.create_next_steps(flow_id, source, target)
+        
+    return {"flow_id": flow_id , "message": "Flow created successfully"}
+
+
 @app.route('/upload-rag-document', methods=['POST'])
 @jwt_required()
 def upload_rag_document():
