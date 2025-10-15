@@ -87,6 +87,7 @@ const AgentStudio = () => {
   const [inputValue, setInputValue] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const jwtToken = localStorage.getItem("token");
   const API_URL = "http://127.0.0.1:5000";
 
   const bgColor = useColorModeValue("gray.50", "gray.900");
@@ -165,10 +166,17 @@ const AgentStudio = () => {
 
   const saveAgent = async () => {
     try {
-      const res = await axios.post(`${API_URL}/create-agent`, {
-        edges: edges,
-        nodes: nodes
-      });
+      const res = await axios.post(`${API_URL}/create-agent` ,
+        {
+          edges,
+          nodes,
+        },
+        {
+          headers: {
+            Authorization: jwtToken ? `Bearer ${jwtToken}` : undefined,
+          },
+        }
+      );
       if (res.status === 200) {
         toast({
           title: `Agent Created 🎉,  with id ${res.data.flow_id}`,
