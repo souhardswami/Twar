@@ -23,10 +23,13 @@ import {
   ModalFooter,
   Text,
   Textarea,
+  useToast,
   useDisclosure,
   useColorModeValue,
 } from "@chakra-ui/react";
 import "reactflow/dist/style.css";
+
+import axios from "axios";
 
 import FetchNode from "./Components/FetchNode";
 import BotMonitoringNode from "./Components/BotMonitoringNode";
@@ -83,6 +86,8 @@ const AgentStudio = () => {
   const [selectedNode, setSelectedNode] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+  const API_URL = "http://127.0.0.1:5000";
 
   const bgColor = useColorModeValue("gray.50", "gray.900");
   const getPositioning = (type) => {
@@ -106,21 +111,10 @@ const AgentStudio = () => {
     if (!selectedNode) return;
     const updatedNodes = nodes.map((n) =>
       n.id === selectedNode.id
-        ? { ...n, data: { ...n.data, value: inputValue, label: `${n.data.label}: ${inputValue}` } }
+        ? { ...n, data: { ...n.data, userInput: inputValue } }
         : n
     );
     setNodes(updatedNodes);
-
-    // Auto-add next node based on current type
-    if (selectedNode.data.label.startsWith("Start")) {
-      addNode("hashtag", "Hashtag Node (Click to setup)", 250);
-      setEdges((eds) => [...eds, { id: "e1", source: selectedNode.id, target: "hashtag-1" }]);
-    } else if (selectedNode.data.label.startsWith("Hashtag")) {
-      addNode("strategy", "Strategy Node (Click to setup)", 400);
-    } else if (selectedNode.data.label.startsWith("Strategy")) {
-      addNode("safeguard", "Safeguard Node (Click to setup)", 550);
-    }
-
     onClose();
   };
 
@@ -169,6 +163,36 @@ const AgentStudio = () => {
     []
   );
 
+  const saveAgent = async () => {
+    try {
+      const res = await axios.post(`${API_URL}/create-agent`, {
+        edges: edges,
+        nodes: nodes
+      });
+      if (res.status === 200) {
+        toast({
+          title: `Agent Created 🎉,  with id ${res.data.flow_id}`,
+          description: `${res.data.message}`,
+          status: "success",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Could not create agent. Please try again.",
+          status: "error",
+        });
+      }
+    } catch (err) {
+      toast({
+        title: "Network Error",
+        description: err.message,
+        status: "error",
+      });
+    }
+
+    
+  }
+
   return (
     <Flex height="90vh" bg={bgColor}>
       {/* Left Sidebar */}
@@ -194,6 +218,8 @@ const AgentStudio = () => {
               {agent.label}
             </Button>
           ))}
+          <Button colorScheme="green"
+              variant="outline" onClick={saveAgent} > Save Agent</Button>
         </VStack>
       </Box>
 
