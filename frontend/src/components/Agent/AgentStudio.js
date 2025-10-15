@@ -179,8 +179,8 @@ const AgentStudio = () => {
         borderRight="1px solid"
         borderColor={useColorModeValue("gray.300", "gray.700")}
       >
-        <Text fontSize="lg" fontWeight="bold" mb={4} textAlign="center">
-          🧩 Agent Types
+        <Text fontSize="lg" fontWeight="bold" mb={4} textAlign="left">
+        Agents
         </Text>
         <VStack align="stretch" spacing={3}>
           {agentTypes.map((agent) => (
