@@ -124,8 +124,48 @@ def get_details(username):
         mp[keys[8]]=res[8]
         ans.append(mp)
     return ans
+
+
+
+def create_flow(username):
+    try:
+        sql = f'insert into flows (user_id) values("{username}")'
+        res = execute(sql)
+        db.commit()
+        flow_id = execute("SELECT LAST_INSERT_ID() AS id")[0][0]
+        return flow_id
+    except Exception as ex:
+        print (f"Error : {ex} While creating new flow for {username}")
+        return False
+    
+def create_flow_steps(flow_id, node_id, label, user_input):
+    try:
+
+        sql = f'INSERT INTO flow_steps (flow_id, node_id, label, user_input) VALUES ( {flow_id}, {node_id}, "{label}", "{user_input}" )'
+        res = execute(sql)
+        db.commit()
+        
+        return True
+    except Exception as ex:
+        print (f"Error : {ex} While creating steps for {flow_id}")
+        return False
       
-   
+def create_next_steps(flow_id, source, target):
+    try:
+
+        sql = f'INSERT INTO flow_next_step VALUES ( {flow_id}, {source}, {target} )'
+        
+        print (sql)
+        
+        res = execute(sql)
+        db.commit()
+        
+        return True
+    except Exception as ex:
+        print (f"Error : {ex} While creating steps for {flow_id}")
+        return False
+
+
 def subscribe_plan(username, plan_name):
     try:
         # Get plan id 
