@@ -99,7 +99,6 @@ const AgentStudio = () => {
   }
 
   const handleNodeClick = (event, node) => {
-    console.log(node)
     if (node.data.label !== 'Start' && node.data.label !== 'End') {
       setSelectedNode(node);
       setInputValue("");
@@ -183,6 +182,8 @@ const AgentStudio = () => {
           description: `${res.data.message}`,
           status: "success",
         });
+        setEdges([])
+        setNodes(initialNode)
       } else {
         toast({
           title: "Error",
