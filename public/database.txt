@@ -62,3 +62,32 @@ Query - CREATE TABLE `user_bots` (
   CONSTRAINT `user_bots_ibfk_1` FOREIGN KEY (`username`) REFERENCES `user_auth` (`username`),
   CONSTRAINT `user_bots_ibfk_2` FOREIGN KEY (`bot_id`) REFERENCES `bot` (`id`)
 )
+
+### 7. flows
+Query - CREATE TABLE `flows` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `flows_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_auth` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
+)
+
+### 8. flow_steps
+Query - CREATE TABLE `flow_steps` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `flow_id` int NOT NULL,
+  `node_id` int NOT NULL,
+  `label` varchar(255) NOT NULL,
+  `user_input` text,
+  PRIMARY KEY (`id`),
+  KEY `flow_id` (`flow_id`),
+  CONSTRAINT `flow_steps_ibfk_1` FOREIGN KEY (`flow_id`) REFERENCES `flows` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+)
+
+### 9. flow_next_step
+Query - CREATE TABLE `flow_next_step` (
+  `flow_id` int NOT NULL,
+  `node_id` int NOT NULL,
+  `next_node_id` int NOT NULL
+)
+
