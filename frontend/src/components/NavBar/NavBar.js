@@ -20,6 +20,9 @@ export default function NavBar() {
           <Link as={RouterLink} to="/pricing" _hover={{ textDecoration: "none" }}>
             <Button variant="ghost">Pricing</Button>
           </Link>
+          <Link as={RouterLink} to="/agent-studio" _hover={{ textDecoration: "none" }}>
+            <Button variant="ghost">Agent Studio</Button>
+          </Link>
           <Link as={RouterLink} to="/workspace" _hover={{ textDecoration: "none" }}>
             <Button variant="ghost">Workspace</Button>
           </Link>
