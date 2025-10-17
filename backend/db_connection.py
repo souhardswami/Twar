@@ -1,4 +1,10 @@
 import pymysql
+import chromadb
+import re
+import uuid
+import os
+
+FILE_UPLOAD_PATH='uploads/rag-knowledge-base'
 
 db = pymysql.connect(
     host="0.0.0.0", 
@@ -7,6 +13,16 @@ db = pymysql.connect(
     password="mysql", 
     database="Twar_read_db"
 )
+
+
+chroma_client = chromadb.HttpClient(host='localhost', port=8000)
+
+def get_collection(user_id):
+    
+    return chroma_client.get_or_create_collection(user_id)
+    
+
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
 def execute_with_column(sql):
     with db.cursor() as cursor:
@@ -180,3 +196,56 @@ def subscribe_plan(username, plan_name):
     except Exception as ex:
         print (f"Error : {ex} While subscribe user {username} with plan {plan_name}")
         return False
+
+def read_file(file_path):
+    with open(file_path, "r", encoding="utf-8") as f:
+        text = f.read()
+
+    text = re.sub(r'\n+', '\n', text)      
+    text = re.sub(r'\s+', ' ', text)   
+    text = text.strip()
+    return text
+
+def chunk_text(text, chunk_size=30, overlap=10):
+    words = text.split()
+    chunks = []
+    start = 0
+
+    while start < len(words):
+        end = start + chunk_size
+        chunk = " ".join(words[start:end])
+        chunks.append(chunk)
+        start += (chunk_size - overlap)  # move ahead but keep overlap
+
+        if start >= len(words):
+            break
+
+    return chunks
+    
+def store_vector(filename, user_id):
+    file_path = f'{FILE_UPLOAD_PATH}/{filename}' 
+    
+    text = read_file(file_path)
+    chunks = chunk_text(text)
+    
+    ids = [str(uuid.uuid4()) for _ in range(len(chunks))]
+    vector_embs= [model.encode(chunk) for chunk in chunks]
+    metadatas = [{ "file": os.path.basename(file_path)} for _ in chunks]
+
+    chroma_client.delete_collection(user_id)
+    collection = get_collection(user_id)
+    collection.add(documents=chunks, embeddings=vector_embs, metadatas=metadatas, ids=ids) 
+    
+    return "Done"
+            
+
+def retrieve(query, user_id):
+    collection = get_collection(user_id)
+    res = collection.query(
+            query_texts=query,
+            n_results=5,
+        )
+
+    result_documents = res["documents"]
+    return result_documents
+    
