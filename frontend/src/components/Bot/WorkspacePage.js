@@ -7,13 +7,14 @@ import {
   Input,
   Button,
   Box,
-  useColorModeValue,
+  // useColorModeValue,
   Text, 
-  useToast,
+  // useToast,
   Spinner
 } from "@chakra-ui/react";
 import AccountTable from "./AccountTable";
 import UpdateKpiModal from "./UpdateKpiModal";
+import { toaster } from "../utils/Toaster";
 
 const WorkspacePage = () => {
   const [accounts, setAccounts] = useState([]);
@@ -25,7 +26,7 @@ const WorkspacePage = () => {
   const jwtToken = localStorage.getItem("token");
   const firstRenderRef = useRef(true);
   const [isLoading, setIsLoading] = useState(false)
-  const toast = useToast();
+  // const toast = useToast();
 
   const accountsPerPage = 4;
   const API_URL = "http://127.0.0.1:5000";
@@ -122,19 +123,19 @@ const WorkspacePage = () => {
           'Authorization': `Bearer ${jwtToken}`
         }
       })
-      toast({
+      toaster.create({
         title: "Success",
         description: "Brand guidelines uploaded successfully",
-        status: "success",
+        type: "success",
         duration: 3000,
         isClosable: true,
       });
     } catch (error) {
       console.error("Upload failed:", error);
-      toast({
+      toaster.create({
         title: "Error",
         description: "Failed to upload document",
-        status: "error",
+        type: "error",
         duration: 3000,
         isClosable: true,
       });
@@ -145,7 +146,7 @@ const WorkspacePage = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <Box as="main" py={8} bgGradient="linear(135deg, #f5f6fa 0%, #c3cfe2 100%)">
+    <Box as="main" py={8} >
     <Container  maxW="container.lg" height={"100vh"}>
       <Heading as="h1" size="xl" mb={6} textAlign="center">
         All Accounts
@@ -157,9 +158,9 @@ const WorkspacePage = () => {
           value={searchTerm}
           onChange={handleSearchChange}
           mr={2}
-          bg={"white"}
+          // bg={"white"}
         />
-        <Button colorScheme="blue">
+        <Button colorPalette="blue">
           <a href={`${API_URL}/login`} target="_blank">
             {" "}
             Add Account
@@ -167,18 +168,18 @@ const WorkspacePage = () => {
         </Button>
         <Box
           as="label"
-          w="9%"
+          w="7%"
           cursor="pointer"
           py={2}
           px={2}
           mx={2}
           borderRadius="md"
           border="1px solid"
-          borderColor={useColorModeValue("gray.200", "gray.700")}
-          bg={useColorModeValue("white", "gray.800")}
+          // borderColor={useColorModeValue("gray.200", "gray.700")}
+          // bg={useColorModeValue("white", "gray.800")}
           _hover={{
-            borderColor: "blue.500",
-            bg: "blue.50",
+            borderColor: "teal.600",
+            bg: "teal.600",
           }}
           transition="all 0.2s ease"
         >
@@ -193,7 +194,7 @@ const WorkspacePage = () => {
           <Text
             fontSize="sm"
             fontWeight="medium"
-            color={useColorModeValue("gray.600", "gray.300")}
+            // color={useColorModeValue("gray.600", "gray.300")}
           >
            Upload  {isLoading ? <Spinner
               thickness='4px'
@@ -213,7 +214,7 @@ const WorkspacePage = () => {
           boxShadow="md"
           maxW="1000px"
           w="100%"
-          bg={useColorModeValue("white", "gray.600")}
+          // bg={useColorModeValue("white", "gray.600")}
         >
           <AccountTable
             accounts={currentAccounts}
@@ -233,7 +234,7 @@ const WorkspacePage = () => {
       <Center>
         <Button
           variant="outline"
-          colorScheme="blue"
+          colorPalette="blue"
           onClick={() => paginate(currentPage - 1)}
           disabled={currentPage === 1}
           mr={2}
@@ -242,7 +243,7 @@ const WorkspacePage = () => {
         </Button>
         <Button
           variant="outline"
-          colorScheme="blue"
+          colorPalette="blue"
           onClick={() => paginate(currentPage + 1)}
           disabled={currentAccounts.length < accountsPerPage}
         >

@@ -4,64 +4,53 @@ import {
   Heading,
   Text,
   VStack,
-  Divider,
   List,
   ListItem,
-  ListIcon,
   Container,
   Input,
   InputGroup,
-  InputLeftElement,
-  useColorModeValue,
 } from "@chakra-ui/react";
-import { CheckCircleIcon, SearchIcon } from "@chakra-ui/icons";
+// import { CheckCircleIcon, SearchIcon } from "@chakra-ui/icons";
 import { motion } from "framer-motion";
 
 const DocsPage = () => {
-  const bg = useColorModeValue("gray.100");
-  const color = useColorModeValue("black");
-
   return (
-    <Box as="main" py={8} bg={bg} color={color}>
+    <Box as="main" py={8}>
       <Container maxW="container.xl" px={4}>
+        {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <Box textAlign="center"  mb={16}>
-            <Heading
-              as="h1"
-              size="4xl"
-              mb={6}
-              fontWeight="bold"
-              lineHeight="1.2"
-            >
+          <Box textAlign="center" mb={16}>
+            <Heading as="h1" size="4xl" mb={6} fontWeight="bold" lineHeight="1.2">
               📚 Documentation
             </Heading>
-            <Text fontSize="xl" mb={8} color="gray.600">
+            <Text fontSize="xl" mb={8} color="fg.muted">
               🚀 Find everything you need to get started with our platform
             </Text>
           </Box>
         </motion.div>
 
+        {/* Optional Search Bar */}
+        {/* 
         <Box mb={8}>
-          <InputGroup maxWidth="600px" mx="auto">
-            <InputLeftElement pointerEvents="none">
-              <SearchIcon color="gray.400" />
-            </InputLeftElement>
+          <InputGroup maxW="600px" mx="auto">
             <Input
               placeholder="Search documentation..."
               borderRadius="full"
-              // py={3}
-              // px={4}
-              FocusBorderColor="teal.500"
-              _placeholder={{ color: "gray.400" }}
+              focusBorderColor="teal.500"
+              _placeholder={{ color: "fg.muted" }}
+              leftElement={<SearchIcon color="gray.400" />}
             />
           </InputGroup>
         </Box>
+        */}
 
+        {/* Main Documentation Sections */}
         <VStack spacing={8} align="start">
+          {/* INTRODUCTION */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -72,14 +61,13 @@ const DocsPage = () => {
                 🎮 Introduction
               </Heading>
               <Text>
-                Welcome to the Twitter Bots Agent documentation 📖. This guide will
-                help you understand how to use the platform effectively.
+                Welcome to the Twitter Bots Agent documentation 📖. This guide
+                helps you understand how to use the platform effectively.
               </Text>
             </Box>
           </motion.div>
 
-          <Divider mt={1} mb={1} />
-
+          {/* GETTING STARTED */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -89,32 +77,17 @@ const DocsPage = () => {
               <Heading as="h2" size="lg" mb={2}>
                 🚀 Getting Started
               </Heading>
-              <Text>
-                Follow these steps to get started with Twitter Bots Agent:
-              </Text>
+              <Text>Follow these steps to get started with Twitter Bots Agent:</Text>
               <List spacing={3} mt={2}>
-                <ListItem>
-                  <ListIcon as={CheckCircleIcon} color="teal.500" />
-                  📝 Sign up for an account.
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={CheckCircleIcon} color="teal.500" />
-                  ✉️ Verify your email address.
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={CheckCircleIcon} color="teal.500" />
-                  🔑 Log in to your account.
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={CheckCircleIcon} color="teal.500" />
-                  🤖 Create your first bot.
-                </ListItem>
+                <ListItem>📝 Sign up for an account.</ListItem>
+                <ListItem>✉️ Verify your email address.</ListItem>
+                <ListItem>🔑 Log in to your account.</ListItem>
+                <ListItem>🤖 Create your first bot.</ListItem>
               </List>
             </Box>
           </motion.div>
 
-          <Divider mt={1} mb={1} />
-
+          {/* FEATURES */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -129,28 +102,15 @@ const DocsPage = () => {
                 your bots:
               </Text>
               <List spacing={3} mt={2}>
-                <ListItem>
-                  <ListIcon as={CheckCircleIcon} color="teal.500" />
-                  ⏰ Automated tweet scheduling.
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={CheckCircleIcon} color="teal.500" />
-                  📊 Real-time analytics.
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={CheckCircleIcon} color="teal.500" />
-                  🔧 Customizable bot behaviors.
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={CheckCircleIcon} color="teal.500" />
-                  🔄 Integration with third-party services.
-                </ListItem>
+                <ListItem>⏰ Automated tweet scheduling.</ListItem>
+                <ListItem>📊 Real-time analytics.</ListItem>
+                <ListItem>🔧 Customizable bot behaviors.</ListItem>
+                <ListItem>🔄 Integration with third-party services.</ListItem>
               </List>
             </Box>
           </motion.div>
 
-          <Divider mt={1} mb={1} />
-
+          {/* API REFERENCE */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -166,28 +126,24 @@ const DocsPage = () => {
               </Text>
               <List spacing={3} mt={2}>
                 <ListItem>
-                  <ListIcon as={CheckCircleIcon} color="teal.500" />
                   <Text as="span" fontWeight="bold">
                     GET /api/bots
                   </Text>{" "}
                   - 📥 Retrieve a list of your bots.
                 </ListItem>
                 <ListItem>
-                  <ListIcon as={CheckCircleIcon} color="teal.500" />
                   <Text as="span" fontWeight="bold">
                     POST /api/bots
                   </Text>{" "}
                   - 📤 Create a new bot.
                 </ListItem>
                 <ListItem>
-                  <ListIcon as={CheckCircleIcon} color="teal.500" />
                   <Text as="span" fontWeight="bold">
                     PUT /api/bots/:id
                   </Text>{" "}
                   - 🔧 Update an existing bot.
                 </ListItem>
                 <ListItem>
-                  <ListIcon as={CheckCircleIcon} color="teal.500" />
                   <Text as="span" fontWeight="bold">
                     DELETE /api/bots/:id
                   </Text>{" "}
@@ -197,8 +153,7 @@ const DocsPage = () => {
             </Box>
           </motion.div>
 
-          <Divider mt={1} mb={1} />
-
+          {/* FAQS */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -211,33 +166,29 @@ const DocsPage = () => {
               <Text>Here are some frequently asked questions:</Text>
               <List spacing={3} mt={2}>
                 <ListItem>
-                  <ListIcon as={CheckCircleIcon} color="teal.500" />
                   <Text as="span" fontWeight="bold">
                     Q: How do I reset my password?
                   </Text>
                   <Text>
-                    A: You can reset your password by clicking on the "Forgot
-                    Password" link on the login page 🔑.
+                    A: Click “Forgot Password” on the login page to reset your
+                    password 🔑.
                   </Text>
                 </ListItem>
                 <ListItem>
-                  <ListIcon as={CheckCircleIcon} color="teal.500" />
                   <Text as="span" fontWeight="bold">
                     Q: How do I upgrade my subscription?
                   </Text>
                   <Text>
-                    A: You can upgrade your subscription from the Pricing page in
-                    your account settings 📈.
+                    A: Go to the Pricing page in your account settings to upgrade
+                    📈.
                   </Text>
                 </ListItem>
                 <ListItem>
-                  <ListIcon as={CheckCircleIcon} color="teal.500" />
                   <Text as="span" fontWeight="bold">
                     Q: How do I contact support?
                   </Text>
                   <Text>
-                    A: You can contact support by emailing
-                    support@twitterbotsagent.com 📧.
+                    A: You can contact us at support@twitterbotsagent.com 📧.
                   </Text>
                 </ListItem>
               </List>

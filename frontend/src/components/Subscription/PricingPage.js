@@ -7,15 +7,18 @@ import {
   VStack,
   Stack,
   Button,
-  useToast,
+  // useToast,
 } from "@chakra-ui/react";
+import { toaster } from "../utils/Toaster";
+
 import axios from "axios";
 
 const PricingPage = ({ selectedPlan, onSelectPlan }) => {
   const [plans, setPlans] = useState([]);
-  const toast = useToast();
+  // const toast = useToast();
 
   const jwtToken = localStorage.getItem("token");
+  
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -24,10 +27,10 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
         setPlans(response.data);
       } catch (error) {
         console.error("Error fetching plans:", error);
-        toast({
+        toaster.create({
           title: "Error",
           description: "Failed to fetch subscription plans",
-          status: "error",
+          type: "error",
           duration: 5000,
           isClosable: true,
         });
@@ -39,10 +42,10 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
 
   const handleSelectPlan = async (planName) => {
     try {
-      toast({
+      toaster.create({
         title: "Redirecting to Stripe...",
         description: `You've selected the ${planName} plan.`,
-        status: "info",
+        type: "info",
         duration: 3000,
         isClosable: true,
       });
@@ -60,10 +63,10 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
         throw new Error("Failed to create Stripe session");
       }
     } catch (error) {
-      toast({
+      toaster.create({
         title: "Error",
         description: error.message,
-        status: "error",
+        type: "error",
         duration: 5000,
         isClosable: true,
       });
@@ -77,7 +80,8 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
           <Heading as="h1" size="2xl" color="brand.600">
             Pricing Plans
           </Heading>
-          <Text fontSize="lg" color="gray.600" textAlign="center" maxW="600px">
+          
+          <Text fontSize="lg" color="gray.200" textAlign="center" maxW="600px">
             Choose the plan that best fits your needs. Upgrade, downgrade, or cancel anytime.
           </Text>
         </VStack>
@@ -85,14 +89,15 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
         <Stack direction={{ base: "column", md: "row" }} spacing={8} justify="center">
           {plans.map((plan) => (
              <Box 
+             opacity={plan.is_subscribed ? 0.3 : 1}
              key={plan.id} 
-             bg="white" 
+            //  bg="white" 
              p={plan.is_subscribed ? 8 : 6} 
              rounded="lg" 
              shadow={plan.is_subscribed ? "xl" : "lg"} 
              maxW="lg"
-             border={plan.is_subscribed ? "2px solid black" : "none"}
-           ><Heading as="h3" size="lg" mb={4} color="brand.600">
+             border={plan.is_subscribed ? "2px solid white" : "none"}
+           ><Heading as="h3" size="lg" mb={4} >
            {plan.name}
            {plan.is_subscribed && (
              <Text fontSize="sm" color="teal.500" ml={2}>
@@ -109,7 +114,7 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
                 ))}
               </VStack>
               <Button
-                colorScheme={plan.is_subscribed ? "teal" : "teal"}
+                colorPalette="teal"
                 onClick={() => handleSelectPlan(plan.name)}
                 isDisabled={plan.is_subscribed}
               >

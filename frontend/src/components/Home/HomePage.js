@@ -13,26 +13,23 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  useColorModeValue,
+  // useColorModeValue,
 } from "@chakra-ui/react";
 import { FaRobot, FaChartLine, FaCogs, FaArrowRight, FaSearch } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-function HomePage() {
+
+const HomePage = () => {
   const navigate = useNavigate();
-  const bg = useColorModeValue("white", "gray.800");
-  const color = useColorModeValue("gray.800", "white");
+  // const bg = useColorModeValue("white", "gray.800");
+  // const color = useColorModeValue("gray.800", "white");
 
   return (
     <Box as="main" py={8} bgGradient="linear(135deg, #f5f6fa 0%, #c3cfe2 100%)">
       {/* Hero Section */}
       <Container maxW="container.xl" px={4}>
-        <Box
-          textAlign="center"
-          py={20}
-          mb={16}
-        >
+        <Box textAlign="center" py={20} mb={16}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -42,32 +39,30 @@ function HomePage() {
               as="h1"
               size="4xl"
               mb={6}
-              color={color}
+              // color={color}
               fontWeight="bold"
               lineHeight="1.2"
             >
               
-              <Box display="flex" flexDir="row">
+              <Box display="flex" flexDir="row" justifyContent="center" flexWrap="wrap">
                 <Box as="span" mr={2}>Transform Your</Box>
                 <Box 
                   as="span" 
-                  color="teal.300" 
+                  color="teal.500" 
                   mr={2}
                 >
                   Twitter
                 </Box>
                 
-                <Box as="span">
-                   Management
-                </Box>
+                <Box as="span"> Management</Box>
               </Box>
             </Heading>
-            <Text fontSize="xl" mb={8} color="gray.600">
+            <Text fontSize="xl" mb={8} color="gray.200">
               Automate, optimize, and scale your Twitter presence with our powerful AI-powered solution
             </Text>
             <HStack justify="center" spacing={4}>
               <Button
-                colorScheme="teal"
+                colorPalette="teal"
                 size="lg"
                 px={8}
                 py={4}
@@ -103,7 +98,7 @@ function HomePage() {
           <VStack
             maxW="300px"
             p={6}
-            bg={bg}
+            // bg={bg}
             borderRadius="lg"
             boxShadow="md"
             transition="transform 0.3s ease"
@@ -113,7 +108,7 @@ function HomePage() {
             <Heading as="h3" size="lg" mb={2}>
               Create Agentic Workflows
             </Heading>
-            <Text color="gray.600">
+            <Text color="gray.200">
               Design and implement workflows for your AI agents to automate tasks and processes.
             </Text>
           </VStack>
@@ -121,17 +116,17 @@ function HomePage() {
           <VStack
             maxW="300px"
             p={6}
-            bg={bg}
+            // bg={bg}
             borderRadius="lg"
             boxShadow="md"
             transition="transform 0.3s ease"
-            _hover={{ transform: "translateY(-5px)" }}
+            _hover={{ transform: "translateY(-15px)" }}
           >
             <Icon as={FaChartLine} w={12} h={12} color="teal.500" mb={4} />
             <Heading as="h3" size="lg" mb={2}>
               Monitor Bots in Real-Time
             </Heading>
-            <Text color="gray.600">
+            <Text color="gray.200">
               Keep track of your bots' performance and activities with real-time monitoring tools.
             </Text>
           </VStack>
@@ -139,7 +134,7 @@ function HomePage() {
           <VStack
             maxW="300px"
             p={6}
-            bg={bg}
+            // bg={bg}
             borderRadius="lg"
             boxShadow="md"
             transition="transform 0.3s ease"
@@ -149,7 +144,7 @@ function HomePage() {
             <Heading as="h3" size="lg" mb={2}>
               RAG Support
             </Heading>
-            <Text color="gray.600">
+            <Text color="gray.200">
               Utilize Retrieval-Augmented Generation (RAG) to improve the accuracy and relevance of your AI solutions.
             </Text>
           </VStack>
@@ -160,7 +155,7 @@ function HomePage() {
         <Box mt={16}>
           
           
-          <Text textAlign="center" color="gray.500" fontSize="sm">
+          <Text textAlign="center" color="gray.200" fontSize="sm">
             © 2025 Twar. All rights reserved.
           </Text>
         </Box>

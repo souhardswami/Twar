@@ -6,10 +6,17 @@ import theme from "./theme";
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./components/Auth/LoginPage";
+import { Provider } from "./components/ui/provider"
+import { Toaster } from "./components/utils/Toaster";
 
+
+import "./style.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <ChakraProvider theme={theme}>
-    <App />
-  </ChakraProvider>
+  <Provider>
+     <App/>
+    <Toaster/>
+  </Provider>
+  
+  
 );

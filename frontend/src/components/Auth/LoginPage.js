@@ -3,17 +3,19 @@ import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
-  FormControl,
-  FormLabel,
+  // FormControl,
+  // FormLabel,
   Input,
   Heading,
   VStack,
-  useToast,
+  // useToast,
   Text,
   Link,
-  useColorModeValue,
-  Flex,
+  // useColorModeValue,
+  Field,
+  Flex
 } from "@chakra-ui/react";
+import { toaster } from "../utils/Toaster";
 import { motion } from "framer-motion";
 import { Link as RouterLink } from "react-router-dom";
 import axios from "axios";
@@ -22,9 +24,9 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const nav = useNavigate();
-  const toast = useToast();
-  const bg = useColorModeValue("white", "gray.800");
-  const color = useColorModeValue("gray.800", "white");
+  // const toast = useToast();
+  // const bg = useColorModeValue("white", "gray.800");
+  // const color = useColorModeValue("gray.800", "white");
   const API_URL = "http://127.0.0.1:5000";
 
   const handleLogin = async (e) => {
@@ -37,10 +39,10 @@ const LoginPage = () => {
         }
       );
       localStorage.setItem('token', res.data.token);
-      toast({
+      toaster.create({
         title: "Login successful.",
         description: "You've successfully Login.",
-        status: "success",
+        type: "success",
         duration: 5000,
         isClosable: true,
       });
@@ -48,10 +50,10 @@ const LoginPage = () => {
     } catch (error) {
       console.error("Error while logging user ", error);
 
-      toast({
+      toaster.create({
         title: "Login Failure.",
         description: `Id/Password is not correct.`,
-        status: "error",
+        type: "error",
         duration: 5000,
         isClosable: true,
       });
@@ -65,14 +67,16 @@ const LoginPage = () => {
         <Box
           maxW="xl"
           w="90%"
-          bg={useColorModeValue("white", "gray.800")}
+          // bg={useColorModeValue("white", "gray.800")}
           p={8}
           borderRadius="2xl"
           boxShadow="0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"
           pos="relative"
           overflow="hidden"
         >
-          <Box pos="absolute" top={0} left={0} w="100%" h="100%">
+
+          
+          {/* <Box pos="absolute" top={0} left={0} w="100%" h="100%">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -95,14 +99,14 @@ const LoginPage = () => {
               top={-100}
               right={-100}
             />
-          </Box>
+          </Box> */}
 
           <Box textAlign="center" mb={8}>
             <Heading
               as="h1"
               size="3xl"
               fontWeight="bold"
-              color={color}
+              // color={color}
               mb={4}
             >
               Welcome Back
@@ -114,52 +118,67 @@ const LoginPage = () => {
 
           <form onSubmit={handleLogin}>
             <VStack spacing={6}>
-              <FormControl id="email" isRequired>
-                <FormLabel
-                  htmlFor="email"
-                  fontSize="md"
-                  fontWeight="medium"
-                  color={color}
-                >
-                  Email address
-                </FormLabel>
-                <Input
-                  as={motion.input}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  _focus={{
-                    boxShadow: "0 0 0 3px rgba(81, 180, 194, 0.5)",
-                    border: "none",
-                  }}
-                />
-              </FormControl>
-              <FormControl id="password" isRequired>
-                <FormLabel
-                  htmlFor="password"
-                  fontSize="md"
-                  fontWeight="medium"
-                  color={color}
-                >
-                  Password
-                </FormLabel>
-                <Input
-                  as={motion.input}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
-                  _focus={{
-                    boxShadow: "0 0 0 3px rgba(81, 180, 194, 0.5)",
-                    border: "none",
-                  }}
-                />
-              </FormControl>
+              {/* 1. Email Field */}
+      <Field.Root required>
+        {/* Replace FormControl with Field.Root. 'isRequired' is now 'required' */}
+        
+        <Field.Label 
+          // Replace FormLabel with Field.Label
+          htmlFor="email"
+          fontSize="md"
+          fontWeight="medium"
+        
+        >
+          Email address
+        </Field.Label>
+        
+        <Input
+          as={motion.input}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          type="email"
+          id="email" // Keep ID for accessibility linking
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter your email"
+          _focus={{
+            boxShadow: "0 0 0 3px rgba(81, 180, 194, 0.5)",
+            border: "none",
+          }}
+        />
+        {/* Optional: Add Field.ErrorText or Field.HelperText here */}
+      </Field.Root>
+
+      {/* ---------------------------------------------------- */}
+
+      {/* 2. Password Field */}
+      <Field.Root required mt={4}> {/* Added margin top for spacing between fields */}
+        
+        <Field.Label 
+          htmlFor="password"
+          fontSize="md"
+          fontWeight="medium"
+          
+        >
+          Password
+        </Field.Label>
+        
+        <Input
+          as={motion.input}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          type="password"
+          id="password" // Keep ID for accessibility linking
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Enter your password"
+          _focus={{
+            boxShadow: "0 0 0 3px rgba(81, 180, 194, 0.5)",
+            border: "none",
+          }}
+        />
+        
+      </Field.Root>
               <Button
                 as={motion.button}
                 whileHover={{ scale: 1.05 }}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import UpdateKpiModal from "./UpdateKpiModal";
-import { Table, Thead, Tbody, Tr, Th, Td, Button, Icon } from "@chakra-ui/react";
-
+import { ButtonGroup, Table, Thead, Tbody, Tr, Th, Td, Button, Icon, Stack, Heading, IconButton, Pagination } from "@chakra-ui/react";
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu"
 
 const Status = (props) => (
   <>
@@ -35,64 +35,54 @@ const AccountTable = ({
   }
 
   return (
-    <Table variant="simple">
-      <Thead>
-        <Tr>
-          <Th>Bot</Th>
-          <Th>Status</Th>
-          <Th>Daily KPI</Th>
-          <Th>Weekly KPI</Th>
-          <Th>More Actions</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    // <Table variant="simple">
+<Table.Root size="sm" showColumnBorder>
+      <Table.Header>
+        <Table.Row>
+          <Table.ColumnHeader>Bot</Table.ColumnHeader>
+          <Table.ColumnHeader>Status</Table.ColumnHeader>
+          <Table.ColumnHeader>Daily KPI</Table.ColumnHeader>
+          <Table.ColumnHeader>Weekly KPI</Table.ColumnHeader>
+          <Table.ColumnHeader>More Actions</Table.ColumnHeader>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
         {accounts.map((account, index) => (
-          <Tr key={index}>
-            <Td>
-              <a href={`https://x.com/${account.screen_name}`} target="_blank">
-                <span colorScheme="blue">{account.screen_name}</span>
-              </a>
-            </Td>
-            <Td>
-              <Status boxSize={5} color={account.status == "1" ? "green.500" : "red.600"} status={account.status} />
-            </Td>
-            <Td>
-              {account.used_daily}/{account.daily}
-            </Td>
-            <Td>
-              {account.used_weekly}/{account.weekly}
-            </Td>
-            <Td>
-            
+          <Table.Row key={index}>
+            <Table.Cell><a href={`https://x.com/${account.screen_name}`} target="_blank">
+                <span colorPalette="red">{account.screen_name}</span>
+              </a></Table.Cell>
+            <Table.Cell><Status boxSize={5} color={account.status == "1" ? "green.100" : "red.100"} status={account.status} /></Table.Cell>
+            <Table.Cell >{account.used_daily}/{account.daily}</Table.Cell>
+            <Table.Cell >{account.used_weekly}/{account.weekly}</Table.Cell>
+            <Table.Cell  >
             <Button
-                colorScheme={account.status == "1" ? "pink" : "green"}
-                size="sm"
+                colorPalette={account.status == "1" ? "pink" : "green"}
+                size="xs"
                 onClick={() => switchStatus(account.id)}>
                 {account.status == "0" ? "Activate" : "Deactivate"}
             </Button>
             <Button
-                size="sm"
-                colorScheme="blue"
+                size="xs"
+                colorPalette="blue"
                 ml={2}
                 onClick={() => handleKPIPage(account) }
               >
                 Update KPI
               </Button>
               <Button
-                size="sm"
-                colorScheme="red"
+                size="xs"
+                colorPalette="red"
                 ml={2}
                 onClick={() => deleteAccount(account.id)}
               >
                 Delete Bot
               </Button>
-
-
-            </Td>
-          </Tr>
+              </Table.Cell>
+          </Table.Row>
         ))}
-      </Tbody>
-    </Table>
+      </Table.Body>
+    </Table.Root>
   );
 };
 

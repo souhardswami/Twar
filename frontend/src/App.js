@@ -13,11 +13,9 @@ import Cancel from "./components/Subscription/Cancel";
 import AgentStudio from "./components/Agent/AgentStudio";
 import ReactFlow, { ReactFlowProvider } from "reactflow";
 
+
 function App() {
   return (
-    
-    <ChakraProvider>
-      
       <Router>
         <Navbar />
         <ReactFlowProvider>
@@ -34,7 +32,6 @@ function App() {
           </Routes>
         </ReactFlowProvider>
       </Router> 
-    </ChakraProvider>
   );
 }
 
