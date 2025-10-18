@@ -8,13 +8,16 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./components/Auth/LoginPage";
 import { Provider } from "./components/ui/provider"
 import { Toaster } from "./components/utils/Toaster";
+import { AuthProvider } from "./components/utils/AuthContext";
 
 
 import "./style.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider>
-     <App/>
+    <AuthProvider>
+      <App/>
+    </AuthProvider>
     <Toaster/>
   </Provider>
   

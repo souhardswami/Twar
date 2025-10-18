@@ -19,11 +19,14 @@ import { toaster } from "../utils/Toaster";
 import { motion } from "framer-motion";
 import { Link as RouterLink } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../utils/AuthContext";
+
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const nav = useNavigate();
+  const {setToken} = useAuth();
   // const toast = useToast();
   // const bg = useColorModeValue("white", "gray.800");
   // const color = useColorModeValue("gray.800", "white");
@@ -38,7 +41,8 @@ const LoginPage = () => {
           password: password
         }
       );
-      localStorage.setItem('token', res.data.token);
+      // localStorage.setItem('token', res.data.token);
+      setToken(res.data.token)
       toaster.create({
         title: "Login successful.",
         description: "You've successfully Login.",

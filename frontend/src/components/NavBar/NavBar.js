@@ -1,6 +1,23 @@
-import { Box, Flex, Link, Button, Image } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import { Box, Flex, Link, Button, Image, Avatar, HoverCard, defineStyle, Portal, Strong, Stack, Text, HStack } from "@chakra-ui/react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { RiLogoutCircleRLine } from "react-icons/ri";
+import  Logout from "../../components/Auth/Logout";
+import { useAuth } from "../utils/AuthContext";
+import { useEffect } from "react";
+
+
+
+
+
 export default function NavBar() {
+  // const token = localStorage.getItem("token");
+  const { token } = useAuth();
+
+
+  useEffect(() => {
+      console.log(token)
+  }, [token])
+  
   return (
     <Box as="nav" py={4}>
       <Flex justify="space-between" maxW="1200px" mx="auto" px={4}>
@@ -23,6 +40,12 @@ export default function NavBar() {
           <Link as={RouterLink} to="/workspace" _hover={{ textDecoration: "none" }}>
             <Button variant="ghost">Workspace</Button>
           </Link>
+
+          { token ? 
+            <Logout /> : 
+              <Link as={RouterLink} to="/login" _hover={{ textDecoration: "none" }}>
+                <Button colorPalette="teal" variant="surface" >Login</Button>
+              </Link>  }
         </Flex>
       </Flex>
     </Box>
