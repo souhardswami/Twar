@@ -6,7 +6,6 @@ import LoginPage from "./components/Auth/LoginPage";
 import Registration from "./components/Auth/Registration";
 import HomePage from "./components/Home/HomePage";
 import PricingPage from "./components/Subscription/PricingPage";
-import DocsPage from "./components/Documentation/DocsPage";
 import WorkspacePage from "./components/Bot/WorkspacePage";
 import Success from "./components/Subscription/Success";
 import Cancel from "./components/Subscription/Cancel";
@@ -24,7 +23,6 @@ function App() {
             <Route path="/register" element={<Registration />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/pricing" element={<PricingPage />} />
-            <Route path="/docs" element={<DocsPage />} />
             <Route path="/workspace" element={<WorkspacePage />} />
             <Route path="/success" element={<Success />} />
             <Route path="/cancel" element={<Cancel />} />

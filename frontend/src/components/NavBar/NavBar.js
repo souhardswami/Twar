@@ -14,9 +14,6 @@ export default function NavBar() {
             <Button variant="ghost">Home</Button>
           </Link>
           
-          <Link as={RouterLink} to="/docs" _hover={{ textDecoration: "none" }}>
-            <Button variant="ghost">Docs</Button>
-          </Link>
           <Link as={RouterLink} to="/pricing" _hover={{ textDecoration: "none" }}>
             <Button variant="ghost">Pricing</Button>
           </Link>
