@@ -80,7 +80,14 @@ const WorkspacePage = () => {
 
   const updateKpi = async (accountId, payload) => {
     try {
-      const response = await axios.post(`${API_URL}/kpi/${accountId}`, payload);
+      const response = await axios.post(`${API_URL}/account/${accountId}/kpi`, 
+        payload,
+        {
+          headers: {
+            Authorization: jwtToken ? `Bearer ${jwtToken}` : undefined,
+          },
+        }
+      );
       setAccounts(response.data);
       handleToggle();
     } catch (error) {

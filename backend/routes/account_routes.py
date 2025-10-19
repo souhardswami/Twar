@@ -26,3 +26,15 @@ def swich_status(account_id):
         return 'Account not Found', 404
     username = get_jwt_identity()
     return jsonify(db_connection.get_details(username))
+
+@account_bp.post('/<int:account_id>/kpi')
+@jwt_required()
+def update_kpi(account_id):
+    daily = request.json.get('daily')
+    weekly = request.json.get('weekly')
+    res = db_connection.update_kpi_deatils(account_id, daily, weekly)
+
+    if not res:
+        return 'Account not found', 404
+    username = get_jwt_identity()
+    return jsonify(db_connection.get_details(username)), 200
