@@ -4,7 +4,8 @@ import { RiLogoutCircleRLine } from "react-icons/ri";
 import  Logout from "../../components/Auth/Logout";
 import { useAuth } from "../utils/AuthContext";
 import { useEffect } from "react";
-
+import { useColorMode } from "../ui/color-mode"
+import { MdLightMode, MdDarkMode } from "react-icons/md";
 
 
 
@@ -12,6 +13,7 @@ import { useEffect } from "react";
 export default function NavBar() {
   // const token = localStorage.getItem("token");
   const { token } = useAuth();
+  const { colorMode, toggleColorMode } = useColorMode()
 
 
   useEffect(() => {
@@ -46,6 +48,12 @@ export default function NavBar() {
               <Link as={RouterLink} to="/login" _hover={{ textDecoration: "none" }}>
                 <Button colorPalette="teal" variant="surface" >Login</Button>
               </Link>  }
+          <Link as={RouterLink} to="/workspace" _hover={{ textDecoration: "none" }}>
+            <Button variant="none" onClick={toggleColorMode}>
+              {colorMode === 'dark' ? <MdLightMode /> : <MdDarkMode />}
+            </Button>
+          </Link>
+          
         </Flex>
       </Flex>
     </Box>
