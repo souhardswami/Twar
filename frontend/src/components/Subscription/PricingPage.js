@@ -50,7 +50,7 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
       });
 
       const response = await axios.post(
-        "http://127.0.0.1:5000/create-checkout-session",
+        "http://127.0.0.1:5000/payment/create-checkout-session",
         { planName },
         { headers: { Authorization: `Bearer ${jwtToken}` } }
       );
