@@ -27,7 +27,7 @@ def swich_status(account_id):
     username = get_jwt_identity()
     return jsonify(db_connection.get_details(username))
 
-@account_bp.post('/<int:account_id>/kpi')
+@account_bp.put('/<int:account_id>/kpi')
 @jwt_required()
 def update_kpi(account_id):
     daily = request.json.get('daily')

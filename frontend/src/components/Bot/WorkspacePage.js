@@ -80,7 +80,7 @@ const WorkspacePage = () => {
 
   const updateKpi = async (accountId, payload) => {
     try {
-      const response = await axios.post(`${API_URL}/account/${accountId}/kpi`, 
+      const response = await axios.put(`${API_URL}/account/${accountId}/kpi`, 
         payload,
         {
           headers: {
