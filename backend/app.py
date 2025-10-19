@@ -1,203 +1,26 @@
-from flask import Flask, request, jsonify, session, redirect
+from flask import Flask
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
-from requests_oauthlib import OAuth1Session
-from config import *
-from bot import run
-from payment import handle_checkout_session
-import json, os
-import db_connection
-from werkzeug.utils import secure_filename
+from flask_jwt_extended import JWTManager
+from config import Config
+from routes.auth_routes import auth_bp
+from routes.account_routes import account_bp
 
-
-app = Flask(__name__)
-app.secret_key = 'YOUR_SECRET_KEY'
-app.config['UPLOAD_FOLDER'] = 'uploads/rag-knowledge-base'
-CORS(app)
-
-jwt = JWTManager(app)
-
-def save_data(data):
-    with open(DATA_FILE, 'w') as file:
-        json.dump(data, file, indent=4)
-
-def add_account(oauth_tokens):
-    accounts = load_data()
-    new_account = DATA_SCHEMA.copy()
-    new_account['oauth_token'] = oauth_tokens['oauth_token']
-    new_account['oauth_token_secret'] = oauth_tokens['oauth_token_secret']
-    new_account['id'] = oauth_tokens['user_id']
-    new_account['screen_name'] = oauth_tokens['screen_name']
-    accounts.append(new_account)
-    save_data(accounts)
-    print ("New Account saved Successfully")
-
-@app.route('/')
-def index():
-    return 'System is Working'
-
-@app.route('/accounts', methods=['GET'])
-@jwt_required(optional=True)
-def get_accounts():
-    username = get_jwt_identity() if get_jwt_identity() else None
-    accounts = db_connection.get_details(username)
-    return jsonify(accounts)
-
-@app.route('/account/<int:account_id>', methods=['DELETE'])
-def delete_account(account_id):
-    res = db_connection.delete_account(account_id)
-    if not res:
-        return 'Account not Found', 404
-    return '', 204
-
-@app.route('/account/<int:account_id>/swichStatus', methods=['PUT'])
-def swich_status(account_id):
-    res = db_connection.switch_account_status(account_id)
-    if not res:
-        return 'Account not Found', 404
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+    CORS(app)
+    JWTManager(app)
     
-    return jsonify(db_connection.get_details())
-
-
-
-@app.route('/kpi/<int:account_id>', methods=['POST'])
-def update_kpi(account_id):
-    daily = request.json.get('daily')
-    weekly = request.json.get('weekly')
-    res = db_connection.update_kpi_deatils(account_id, daily, weekly)
-
-    if not res:
-        return 'Account not found', 404
-    return jsonify(db_connection.get_details()), 200
-
-@app.route('/user-register', methods=['POST'])
-def user_register():
-    username = request.json.get('username')
-    email = request.json.get('email')
-    password = request.json.get('password')
-    res = db_connection.register_user(username, email, password)
-    
-    if not res:
-        return 'User is Already registered', 200
-    return 'Registration successfull', 200
-
-@app.route('/user-login', methods=['POST'])
-def user_login():
-    email = request.json.get('email')
-    password = request.json.get('password')
-    res, username = db_connection.login_user(email, password)
-    
-    if not res:
-        return 'Email/Password Wrong !!!', 404
-    
-    
-    access_token = create_access_token(identity=username, expires_delta=False)
-    
-    return jsonify({
-        "msg": "User Logged in.",
-        "token": access_token
-    }), 200
-    
-@app.route('/get_plans', methods=['GET'])
-@jwt_required(optional=True)
-def subscription_plan():
-    username = get_jwt_identity() if get_jwt_identity() else None
-    return db_connection.subscription_plan_details(username)
+    app.register_blueprint(account_bp, url_prefix="/account")
+    app.register_blueprint(auth_bp, url_prefix="/auth")
     
 
-@app.route('/login')
-def login():
-    oauth = OAuth1Session(CONSUMER_KEY, client_secret=CONSUMER_SECRET, callback_uri=CALLBACK_URL)
-    fetch_response = oauth.fetch_request_token(request_token_url)
-    session['request_token'] = fetch_response
-    authorization_redirect_url = oauth.authorization_url(authorization_url)
-    return redirect(authorization_redirect_url)
-
-@app.route('/callback')
-def callback():
-    request_token = session['request_token']
-    del session['request_token']
-    oauth = OAuth1Session(
-        CONSUMER_KEY,
-        client_secret=CONSUMER_SECRET,
-        resource_owner_key=request_token['oauth_token'],
-        resource_owner_secret=request_token['oauth_token_secret']
-    )
-    verifier = request.args.get('oauth_verifier')
-    oauth = OAuth1Session(
-        CONSUMER_KEY,
-        client_secret=CONSUMER_SECRET,
-        resource_owner_key=request_token['oauth_token'],
-        resource_owner_secret=request_token['oauth_token_secret'],
-        verifier=verifier
-    )
-    oauth_tokens = oauth.fetch_access_token(access_token_url)
-
-    session['oauth_token'] = oauth_tokens['oauth_token']
-    session['oauth_token_secret'] = oauth_tokens['oauth_token_secret']
-    session['user_id'] = oauth_tokens['user_id']
-    session['screen_name'] = oauth_tokens['screen_name']
-    add_account(oauth_tokens)
-    return "Authentication successful"
-    
-@app.route('/runbot')
-def run_bot():
-    print ("Running bot...")
-    accounts = load_data()
-    accounts = run(accounts, BEARER_TOKEN, CONSUMER_KEY, CONSUMER_SECRET)
-    save_data(accounts)
-    return 'Bot Work is Done!!!!'
+    @app.route('/')
+    def home():
+        return {"msg": "System is Working"}
+    return app
 
 
-@app.route("/create-checkout-session", methods=["POST"])
-@jwt_required()
-def create_checkout_session():
-    username = get_jwt_identity()
-    plan_name = request.json.get('planName')
-    response = handle_checkout_session(username, plan_name)
-    return response
-
-
-@app.route("/create-agent", methods=["POST"])
-@jwt_required()
-def create_agent():
-    username = get_jwt_identity()
-    nodes = request.json.get('nodes')
-    edges = request.json.get('edges')
-    flow_id = db_connection.create_flow(username)
-    for step in nodes:
-        user_input = None
-        if 'user_input' in step['data']:
-            user_input = step['data']['user_input']
-        db_connection.create_flow_steps(flow_id, step['id'], step['data']['label'], user_input)
-        
-    for edge in edges:
-        source, target = edge['source'], edge['target']
-        db_connection.create_next_steps(flow_id, source, target)
-        
-    return {"flow_id": flow_id , "message": "Flow created successfully"}
-
-
-@app.route('/upload-rag-document', methods=['POST'])
-@jwt_required()
-def upload_rag_document():
-    user_id = get_jwt_identity()
-    if 'document' not in request.files:
-        return jsonify({"msg": "No document uploaded"}), 400
-    
-    document = request.files['document']
-    if document.filename == '':
-        return jsonify({"msg": "No document selected"}), 400
-    
-    if document and allowed_file(document.filename):
-        filename = secure_filename(document.filename)
-        document.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        db_connection.store_vector(filename, user_id)
-        return jsonify({"msg": "Document uploaded successfully"}), 200
-    return jsonify({"msg": "Invalid file type"}), 400
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'pdf', 'docx', 'txt', 'csv'}
-
-if __name__ == '__main__':
+if __name__ == "__main__":
+    app = create_app()
     app.run(debug=True)
