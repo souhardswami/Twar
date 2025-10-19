@@ -1,3 +1,4 @@
+from sentence_transformers import SentenceTransformer
 import pymysql
 import chromadb
 import re
