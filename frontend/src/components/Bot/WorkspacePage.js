@@ -31,7 +31,7 @@ const WorkspacePage = () => {
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
-        const response = await axios.get(`${API_URL}/accounts`, {
+        const response = await axios.get(`${API_URL}/account`, {
           headers: {
             Authorization: jwtToken ? `Bearer ${jwtToken}` : undefined,
           },
