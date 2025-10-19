@@ -1,46 +1,36 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  // FormControl,
-  // FormLabel,
-  Input,
-  Heading,
-  VStack,
-  // useToast,
-  Text,
-  Link,
-  Field,
-  // useColorModeValue,
-  Flex,
-} from "@chakra-ui/react";
 import { toaster } from "../utils/Toaster";
 import { motion } from "framer-motion";
 import { Link as RouterLink } from "react-router-dom";
 import axios from "axios";
+import {
+  Box,
+  Button,
+  Input,
+  Heading,
+  VStack,
+  Text,
+  Link,
+  Field,
+  Flex,
+} from "@chakra-ui/react";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  // const toast = useToast();
-  // const bg = useColorModeValue("white", "gray.800");
-  // const color = useColorModeValue("gray.800", "white");
-  const API_URL = "http://127.0.0.1:5000";
 
+  const API_URL = "http://127.0.0.1:5000";
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-
-      await axios.post(`${API_URL}/user-register`, 
-        { 
-          username: username,
-          email: email,
-          password: password
-        }
-      );
+      await axios.post(`${API_URL}/user-register`, {
+        username: username,
+        email: email,
+        password: password,
+      });
 
       setUsername("");
       setEmail("");
@@ -54,7 +44,6 @@ const RegisterPage = () => {
         duration: 5000,
         isClosable: true,
       });
-      
     } catch (error) {
       console.error("Error while registering user ", error);
 
@@ -65,57 +54,27 @@ const RegisterPage = () => {
         duration: 5000,
         isClosable: true,
       });
-
     }
-    
   };
 
   return (
-    <Box minH="100vh" bgGradient="linear(135deg, #f5f6fa 0%, #c3cfe2 100%)" py={8}>
+    <Box
+      minH="100vh"
+      bgGradient="linear(135deg, #f5f6fa 0%, #c3cfe2 100%)"
+      py={8}
+    >
       <Flex align="center" justify="center" h="100%">
         <Box
           maxW="xl"
           w="90%"
-          // bg={useColorModeValue("white", "gray.800")}
           p={8}
           borderRadius="2xl"
           boxShadow="0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"
           pos="relative"
           overflow="hidden"
         >
-          {/* <Box pos="absolute" top={0} left={0} w="100%" h="100%">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              bg="rgba(255, 255, 255, 0.1)"
-              borderRadius="50%"
-              size="2xl"
-              pos="absolute"
-              top={-100}
-              left={-100}
-            />
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              bg="rgba(255, 255, 255, 0.1)"
-              borderRadius="50%"
-              size="2xl"
-              pos="absolute"
-              top={-100}
-              right={-100}
-            />
-          </Box> */}
-
           <Box textAlign="center" mb={8}>
-            <Heading
-              as="h1"
-              size="3xl"
-              fontWeight="bold"
-              // color={color}
-              mb={4}
-            >
+            <Heading as="h1" size="3xl" fontWeight="bold" mb={4}>
               Create Account
             </Heading>
             <Text fontSize="lg" color="gray.600">
@@ -125,127 +84,20 @@ const RegisterPage = () => {
 
           <form onSubmit={handleRegister}>
             <VStack spacing={6}>
-
-              {/* Assuming 'username', 'email', 'password', 'confirmPassword', and their setters are defined */}
-{/* Assuming 'color' is also available in scope (though unused in v3 without useColorModeValue) */}
-
-{/* 1. Username Field */}
-<Field.Root required>
-  <Field.Label 
-    htmlFor="username"
-    fontSize="md"
-    fontWeight="medium"
-    // color={color} // Omitted as 'color' depends on v2's useColorModeValue
-  >
-    Username
-  </Field.Label>
-  <Input
-    as={motion.input}
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    type="text"
-    id="username"
-    value={username}
-    onChange={(e) => setUsername(e.target.value)}
-    placeholder="Enter your username"
-    _focus={{
-      boxShadow: "0 0 0 3px rgba(81, 180, 194, 0.5)",
-      border: "none",
-    }}
-  />
-</Field.Root>
-
-{/* 2. Email Field */}
-<Field.Root required mt={4}>
-  <Field.Label 
-    htmlFor="email"
-    fontSize="md"
-    fontWeight="medium"
-    // color={color}
-  >
-    Email address
-  </Field.Label>
-  <Input
-    as={motion.input}
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    type="email"
-    id="email"
-    value={email}
-    onChange={(e) => setEmail(e.target.value)}
-    placeholder="Enter your email"
-    _focus={{
-      boxShadow: "0 0 0 3px rgba(81, 180, 194, 0.5)",
-      border: "none",
-    }}
-  />
-</Field.Root>
-
-{/* 3. Password Field */}
-<Field.Root required mt={4}>
-  <Field.Label 
-    htmlFor="password"
-    fontSize="md"
-    fontWeight="medium"
-    // color={color}
-  >
-    Password
-  </Field.Label>
-  <Input
-    as={motion.input}
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    type="password"
-    id="password"
-    value={password}
-    onChange={(e) => setPassword(e.target.value)}
-    placeholder="Enter your password"
-    _focus={{
-      boxShadow: "0 0 0 3px rgba(81, 180, 194, 0.5)",
-      border: "none",
-    }}
-  />
-</Field.Root>
-
-{/* 4. Confirm Password Field */}
-<Field.Root required mt={4}>
-  <Field.Label 
-    htmlFor="confirmPassword"
-    fontSize="md"
-    fontWeight="medium"
-    // color={color}
-  >
-    Confirm Password
-  </Field.Label>
-  <Input
-    as={motion.input}
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    type="password"
-    id="confirmPassword"
-    value={confirmPassword}
-    onChange={(e) => setConfirmPassword(e.target.value)}
-    placeholder="Confirm your password"
-    _focus={{
-      boxShadow: "0 0 0 3px rgba(81, 180, 194, 0.5)",
-      border: "none",
-    }}
-  />
-</Field.Root>
-              {/* <FormControl id="username" isRequired>
-                <FormLabel
+              <Field.Root required>
+                <Field.Label
                   htmlFor="username"
                   fontSize="md"
                   fontWeight="medium"
-                  color={color}
                 >
                   Username
-                </FormLabel>
+                </Field.Label>
                 <Input
                   as={motion.input}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   type="text"
+                  id="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Enter your username"
@@ -254,21 +106,18 @@ const RegisterPage = () => {
                     border: "none",
                   }}
                 />
-              </FormControl> */}
-              {/* <FormControl id="email" isRequired>
-                <FormLabel
-                  htmlFor="email"
-                  fontSize="md"
-                  fontWeight="medium"
-                  color={color}
-                >
+              </Field.Root>
+
+              <Field.Root required mt={4}>
+                <Field.Label htmlFor="email" fontSize="md" fontWeight="medium">
                   Email address
-                </FormLabel>
+                </Field.Label>
                 <Input
                   as={motion.input}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   type="email"
+                  id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
@@ -277,21 +126,22 @@ const RegisterPage = () => {
                     border: "none",
                   }}
                 />
-              </FormControl>
-              <FormControl id="password" isRequired>
-                <FormLabel
+              </Field.Root>
+
+              <Field.Root required mt={4}>
+                <Field.Label
                   htmlFor="password"
                   fontSize="md"
                   fontWeight="medium"
-                  color={color}
                 >
                   Password
-                </FormLabel>
+                </Field.Label>
                 <Input
                   as={motion.input}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   type="password"
+                  id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
@@ -300,21 +150,23 @@ const RegisterPage = () => {
                     border: "none",
                   }}
                 />
-              </FormControl>
-              <FormControl id="confirmPassword" isRequired>
-                <FormLabel
+              </Field.Root>
+
+              {/* 4. Confirm Password Field */}
+              <Field.Root required mt={4}>
+                <Field.Label
                   htmlFor="confirmPassword"
                   fontSize="md"
                   fontWeight="medium"
-                  color={color}
                 >
                   Confirm Password
-                </FormLabel>
+                </Field.Label>
                 <Input
                   as={motion.input}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   type="password"
+                  id="confirmPassword"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm your password"
@@ -323,7 +175,8 @@ const RegisterPage = () => {
                     border: "none",
                   }}
                 />
-              </FormControl> */}
+              </Field.Root>
+
               <Button
                 as={motion.button}
                 whileHover={{ scale: 1.05 }}
@@ -350,7 +203,6 @@ const RegisterPage = () => {
               as={RouterLink}
               to="/login"
             >
-            
               <Button variant="plain">Sign In</Button>
             </Link>
           </Text>

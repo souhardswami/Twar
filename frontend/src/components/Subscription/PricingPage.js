@@ -7,23 +7,22 @@ import {
   VStack,
   Stack,
   Button,
-  // useToast,
 } from "@chakra-ui/react";
-import { toaster } from "../utils/Toaster";
-
 import axios from "axios";
+import { toaster } from "../utils/Toaster";
 
 const PricingPage = ({ selectedPlan, onSelectPlan }) => {
   const [plans, setPlans] = useState([]);
-  // const toast = useToast();
-
   const jwtToken = localStorage.getItem("token");
-  
 
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/get_plans", {headers : { Authorization : jwtToken ? `Bearer ${jwtToken}` : undefined}});
+        const response = await axios.get("http://127.0.0.1:5000/get_plans", {
+          headers: {
+            Authorization: jwtToken ? `Bearer ${jwtToken}` : undefined,
+          },
+        });
         setPlans(response.data);
       } catch (error) {
         console.error("Error fetching plans:", error);
@@ -51,11 +50,11 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
       });
 
       const response = await axios.post(
-        "http://127.0.0.1:5000/create-checkout-session", 
-        {planName},
-        {headers: { Authorization: `Bearer ${jwtToken}` }},
-       )
-      
+        "http://127.0.0.1:5000/create-checkout-session",
+        { planName },
+        { headers: { Authorization: `Bearer ${jwtToken}` } }
+      );
+
       const data = await response.data;
       if (data.url) {
         window.location.href = data.url;
@@ -74,37 +73,46 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
   };
 
   return (
-    <Box bgGradient="linear(135deg, #f5f6fa 0%, #c3cfe2 100%)" minH="100vh" py={10}>
+    <Box
+      bgGradient="linear(135deg, #f5f6fa 0%, #c3cfe2 100%)"
+      minH="100vh"
+      py={10}
+    >
       <Container maxW="container.xl">
         <VStack spacing={8} align="center" mb={10}>
           <Heading as="h1" size="2xl" color="brand.600">
             Pricing Plans
           </Heading>
-          
+
           <Text fontSize="lg" color="gray.200" textAlign="center" maxW="600px">
-            Choose the plan that best fits your needs. Upgrade, downgrade, or cancel anytime.
+            Choose the plan that best fits your needs. Upgrade, downgrade, or
+            cancel anytime.
           </Text>
         </VStack>
 
-        <Stack direction={{ base: "column", md: "row" }} spacing={8} justify="center">
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          spacing={8}
+          justify="center"
+        >
           {plans.map((plan) => (
-             <Box 
-             opacity={plan.is_subscribed ? 0.3 : 1}
-             key={plan.id} 
-            //  bg="white" 
-             p={plan.is_subscribed ? 8 : 6} 
-             rounded="lg" 
-             shadow={plan.is_subscribed ? "xl" : "lg"} 
-             maxW="lg"
-             border={plan.is_subscribed ? "2px solid white" : "none"}
-           ><Heading as="h3" size="lg" mb={4} >
-           {plan.name}
-           {plan.is_subscribed && (
-             <Text fontSize="sm" color="teal.500" ml={2}>
-               (Current Plan)
-             </Text>
-           )}
-         </Heading>
+            <Box
+              opacity={plan.is_subscribed ? 0.3 : 1}
+              key={plan.id}
+              p={plan.is_subscribed ? 8 : 6}
+              rounded="lg"
+              shadow={plan.is_subscribed ? "xl" : "lg"}
+              maxW="lg"
+              border={plan.is_subscribed ? "2px solid white" : "none"}
+            >
+              <Heading as="h3" size="lg" mb={4}>
+                {plan.name}
+                {plan.is_subscribed && (
+                  <Text fontSize="sm" color="teal.500" ml={2}>
+                    (Current Plan)
+                  </Text>
+                )}
+              </Heading>
               <Text fontSize="2xl" fontWeight="bold" mb={4}>
                 ${plan.price}/month
               </Text>

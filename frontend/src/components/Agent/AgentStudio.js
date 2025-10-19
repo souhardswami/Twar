@@ -1,4 +1,12 @@
-import React, { useCallback, useState,  } from "react";
+import React, { useCallback, useState } from "react";
+import { toaster } from "../utils/Toaster";
+import "reactflow/dist/style.css";
+import axios from "axios";
+import FetchNode from "./Modals/FetchNode";
+import BotMonitoringNode from "./Modals/BotMonitoringNode";
+import HashtagNode from "./Modals/HashTagNode";
+import StrategyNode from "./Modals/StrategyNode";
+import SafeguardNode from "./Modals/SafeguardNode";
 import ReactFlow, {
   addEdge,
   useNodesState,
@@ -8,51 +16,25 @@ import ReactFlow, {
   MiniMap,
   MarkerType,
   Position,
-  ColorMode
 } from "reactflow";
 import {
-  ActionBar,
   Box,
   Button,
-  Checkbox,
   VStack,
   Flex,
-  Dialog, Field, Input, Portal, Stack,
-  // Input,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Dialog,
+  Portal,
   Text,
-  Textarea,
-  // useToast,
-  useDisclosure,
-  // useColorModeValue,
 } from "@chakra-ui/react";
 
-import { toaster } from "../utils/Toaster";
-import "reactflow/dist/style.css";
-import { useRef } from "react"
-import { LuSquarePlus, LuTrash2 } from "react-icons/lu"
-
-import axios from "axios";
-
-import FetchNode from "./Components/FetchNode";
-import BotMonitoringNode from "./Components/BotMonitoringNode";
-import HashtagNode from "./Components/HashTagNode";
-import StrategyNode from "./Components/StrategyNode";
-import SafeguardNode from "./Components/SafeguardNode";
-
 const agentTypes = [
-  { id: "1", label: "🤖 Bot Monitoring", showLabel: 'Monitoring' },
-  { id: "2", label: "#️⃣ Hashtag Agent", showLabel: 'Hashtag ' },
-  { id: "3", label: "📥 Fetch Data", showLabel: 'Fetch ' },
-  { id: "4", label: "💡 Strategy Agent", showLabel: 'Strategy ' },
-  { id: "5", label: "🛡 Safeguard Agent", showLabel: "Safeguard "},
-  { id: "6", label: "💬 Reply Data", showLabel: 'Reply' },
-  { id: "7", label: "🔚 End", showLabel: 'End' },
+  { id: "1", label: "🤖 Bot Monitoring", showLabel: "Monitoring" },
+  { id: "2", label: "#️⃣ Hashtag Agent", showLabel: "Hashtag " },
+  { id: "3", label: "📥 Fetch Data", showLabel: "Fetch " },
+  { id: "4", label: "💡 Strategy Agent", showLabel: "Strategy " },
+  { id: "5", label: "🛡 Safeguard Agent", showLabel: "Safeguard " },
+  { id: "6", label: "💬 Reply Data", showLabel: "Reply" },
+  { id: "7", label: "🔚 End", showLabel: "End" },
 ];
 const nodeDefaults = {
   sourcePosition: Position.Right,
@@ -61,10 +43,10 @@ const nodeDefaults = {
 
 const initialNode = [
   {
-    id: '0',
-    type: 'input',
+    id: "0",
+    type: "input",
     data: {
-      label: 'Start'
+      label: "Start",
     },
     position: { x: 0, y: 0 },
     sourcePosition: Position.Right,
@@ -73,8 +55,8 @@ const initialNode = [
       height: 30,
       padding: 5,
     },
-  }
-]
+  },
+];
 
 const NODE_COMPONENTS = {
   Monitoring: BotMonitoringNode,
@@ -82,31 +64,28 @@ const NODE_COMPONENTS = {
   Fetch: FetchNode,
   Strategy: StrategyNode,
   Safeguard: SafeguardNode,
-  Reply: FetchNode, 
-
+  Reply: FetchNode,
 };
 
-
 const AgentStudio = () => {
-  const [colorMode, setColorMode] = useState('dark');
+  const [colorMode, setColorMode] = useState("dark");
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNode);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [idCounter, setIdCounter] = useState(1);
 
   const [selectedNode, setSelectedNode] = useState(null);
   const [inputValue, setInputValue] = useState("");
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   const jwtToken = localStorage.getItem("token");
   const API_URL = "http://127.0.0.1:5000";
 
-  // const bgColor = useColorModeValue("gray.50", "gray.900");
   const getPositioning = (type) => {
     if (type == 7) {
-      return { type: 'output', targetPosition: Position.Left}
+      return { type: "output", targetPosition: Position.Left };
     }
     return nodeDefaults;
-  }
+  };
 
   const label = selectedNode?.data?.label?.split("(")[0] || "Node";
 
@@ -129,12 +108,11 @@ const AgentStudio = () => {
   };
 
   const handleNodeClick = (event, node) => {
-    if (node.data.label !== 'Start' && node.data.label !== 'End') {
+    if (node.data.label !== "Start" && node.data.label !== "End") {
       setSelectedNode(node);
       setInputValue("");
-      setIsOpen(true)
+      setIsOpen(true);
     }
-    
   };
 
   const handleSave = () => {
@@ -145,11 +123,9 @@ const AgentStudio = () => {
         : n
     );
     setNodes(updatedNodes);
-    setIsOpen(false)
+    setIsOpen(false);
   };
 
-
-  // Create node dynamically
   const addNode = useCallback(
     (type) => {
       const newNode = {
@@ -160,14 +136,13 @@ const AgentStudio = () => {
         },
         data: {
           label: `${agentTypes.find((a) => a.id === type)?.showLabel || type}`,
-          
         },
         style: {
           width: 80,
           height: 30,
           padding: 5,
         },
-        ...getPositioning(type)
+        ...getPositioning(type),
       };
 
       setIdCounter((id) => id + 1);
@@ -176,7 +151,6 @@ const AgentStudio = () => {
     [idCounter]
   );
 
-  // Connect nodes with animated arrow
   const onConnect = useCallback(
     (params) =>
       setEdges((eds) =>
@@ -195,7 +169,8 @@ const AgentStudio = () => {
 
   const saveAgent = async () => {
     try {
-      const res = await axios.post(`${API_URL}/create-agent` ,
+      const res = await axios.post(
+        `${API_URL}/create-agent`,
         {
           edges,
           nodes,
@@ -212,8 +187,8 @@ const AgentStudio = () => {
           description: `${res.data.message}`,
           type: "success",
         });
-        setEdges([])
-        setNodes(initialNode)
+        setEdges([]);
+        setNodes(initialNode);
       } else {
         toaster.create({
           title: "Error",
@@ -228,28 +203,17 @@ const AgentStudio = () => {
         tyoe: "error",
       });
     }
-
-    
-  }
+  };
 
   const closeModal = () => {
-    setIsOpen(false)
-  }
-
-  
+    setIsOpen(false);
+  };
 
   return (
-    <Flex height="90vh" >
-      {/* Left Sidebar */}
-      <Box
-        width="260px"
-        // bg={useColorModeValue("gray.100", "gray.800")}
-        p={4}
-        borderRight="1px solid"
-        // borderColor={useColorModeValue("gray.300", "gray.700")}
-      >
+    <Flex height="90vh">
+      <Box width="260px" p={4} borderRight="1px solid">
         <Text fontSize="lg" fontWeight="bold" mb={4} textAlign="left">
-        Agents
+          Agents
         </Text>
         <VStack align="stretch" spacing={3}>
           {agentTypes.map((agent) => (
@@ -263,72 +227,55 @@ const AgentStudio = () => {
               {agent.label}
             </Button>
           ))}
-          <Button colorPalette="green"
-              variant="outline" onClick={saveAgent} > Save Agent</Button>
+          <Button colorPalette="green" variant="outline" onClick={saveAgent}>
+            {" "}
+            Save Agent
+          </Button>
         </VStack>
       </Box>
 
-
-      
-
-      <Dialog.Root 
-        open={isOpen} // v3 uses 'open' instead of 'isOpen'
-        // onOpenChange={(details) => details.open ? onOpen() : onClose()}
-        isCentered // This prop might be replaced by placement="center" in newer v3 versions
-      >
+      <Dialog.Root open={isOpen} isCentered>
         <Portal>
-        <Dialog.Backdrop />
-        <Dialog.Positioner> {/* A required wrapper in v3 Dialog */}
-          <Dialog.Content>
-          <Dialog.Header>
-
-                {/* Header / Title */}
+          <Dialog.Backdrop />
+          <Dialog.Positioner>
+            <Dialog.Content>
+              <Dialog.Header>
                 <Dialog.Title>
                   {selectedNode?.data?.label?.split("(")[0] || "Node"} Details
                 </Dialog.Title>
+              </Dialog.Header>
 
-            </Dialog.Header>
-
-            <Dialog.Body>
-              {/* Body - Use a Box for the main content area */}
-              <Box >
-                {(() => {
-                  if (!selectedNode?.data?.label) return null;
-                  const type = Object.keys(NODE_COMPONENTS).find((key) =>
-                    selectedNode.data.label.startsWith(key)
-                  );
-                  const NodeComponent = NODE_COMPONENTS[type];
-                  return <NodeComponent value={inputValue} onChange={(e) => setInputValue(e.target.value)} />;
-                })()}
-              </Box>
-            </Dialog.Body>
-            <Dialog.Footer>
-
-            {/* Footer - Use a Box for the actions area */}
-            <Box display="flex" justifyContent="flex-end" >
-              <Button colorScheme="teal" mr={3} onClick={handleSave}>
-                Save
-              </Button>
-              <Button variant="ghost" onClick={closeModal}>
-                Cancel
-              </Button>
-            </Box>
-            </Dialog.Footer>
-          </Dialog.Content>
-        </Dialog.Positioner>
+              <Dialog.Body>
+                <Box>
+                  {(() => {
+                    if (!selectedNode?.data?.label) return null;
+                    const type = Object.keys(NODE_COMPONENTS).find((key) =>
+                      selectedNode.data.label.startsWith(key)
+                    );
+                    const NodeComponent = NODE_COMPONENTS[type];
+                    return (
+                      <NodeComponent
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                      />
+                    );
+                  })()}
+                </Box>
+              </Dialog.Body>
+              <Dialog.Footer>
+                <Box display="flex" justifyContent="flex-end">
+                  <Button colorScheme="teal" mr={3} onClick={handleSave}>
+                    Save
+                  </Button>
+                  <Button variant="ghost" onClick={closeModal}>
+                    Cancel
+                  </Button>
+                </Box>
+              </Dialog.Footer>
+            </Dialog.Content>
+          </Dialog.Positioner>
         </Portal>
       </Dialog.Root>
-
-
-
-      {/* Canvas */}
-
-
-
-
-
-
-
       <Box flex="1" position="relative">
         <ReactFlow
           colorMode={colorMode}
@@ -339,12 +286,12 @@ const AgentStudio = () => {
           onConnect={onConnect}
           onNodeClick={handleNodeClick}
           fitView
-          style={{ 
-            // background: useColorModeValue("#f5f6f8", "#1a202c"), 
+          style={{
             width: 80,
             height: 30,
             fontSize: 12,
-            padding: 5 }}
+            padding: 5,
+          }}
         >
           <MiniMap nodeStrokeWidth={3} />
           <Controls />
@@ -353,11 +300,6 @@ const AgentStudio = () => {
       </Box>
     </Flex>
   );
-}
-
-
-
-
-
+};
 
 export default AgentStudio;

@@ -9,25 +9,15 @@ import {
   HStack,
   Icon,
   Stack,
-  Image,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  // useColorModeValue,
 } from "@chakra-ui/react";
-import { FaRobot, FaChartLine, FaCogs, FaArrowRight, FaSearch } from "react-icons/fa";
+import { FaRobot, FaChartLine, FaCogs, FaArrowRight } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-
 const HomePage = () => {
   const navigate = useNavigate();
-  // const bg = useColorModeValue("white", "gray.800");
-  // const color = useColorModeValue("gray.800", "white");
-
   return (
     <Box as="main" py={8} bgGradient="linear(135deg, #f5f6fa 0%, #c3cfe2 100%)">
-      {/* Hero Section */}
       <Container maxW="container.xl" px={4}>
         <Box textAlign="center" py={20} mb={16}>
           <motion.div
@@ -39,26 +29,27 @@ const HomePage = () => {
               as="h1"
               size="4xl"
               mb={6}
-              // color={color}
               fontWeight="bold"
               lineHeight="1.2"
             >
-              
-              <Box display="flex" flexDir="row" justifyContent="center" flexWrap="wrap">
-                <Box as="span" mr={2}>Transform Your</Box>
-                <Box 
-                  as="span" 
-                  color="teal.500" 
-                  mr={2}
-                >
+              <Box
+                display="flex"
+                flexDir="row"
+                justifyContent="center"
+                flexWrap="wrap"
+              >
+                <Box as="span" mr={2}>
+                  Transform Your
+                </Box>
+                <Box as="span" color="teal.500" mr={2}>
                   Twitter
                 </Box>
-                
                 <Box as="span"> Management</Box>
               </Box>
             </Heading>
             <Text fontSize="xl" mb={8} color="gray.200">
-              Automate, optimize, and scale your Twitter presence with our powerful AI-powered solution
+              Automate, optimize, and scale your Twitter presence with our
+              powerful AI-powered solution
             </Text>
             <HStack justify="center" spacing={4}>
               <Button
@@ -91,14 +82,15 @@ const HomePage = () => {
           </motion.div>
         </Box>
 
-        
-
-        {/* Features Section */}
-        <Stack direction={["column", "row"]} spacing={8} justify="center" mb={16}>
+        <Stack
+          direction={["column", "row"]}
+          spacing={8}
+          justify="center"
+          mb={16}
+        >
           <VStack
             maxW="300px"
             p={6}
-            // bg={bg}
             borderRadius="lg"
             boxShadow="md"
             transition="transform 0.3s ease"
@@ -109,14 +101,14 @@ const HomePage = () => {
               Create Agentic Workflows
             </Heading>
             <Text color="gray.200">
-              Design and implement workflows for your AI agents to automate tasks and processes.
+              Design and implement workflows for your AI agents to automate
+              tasks and processes.
             </Text>
           </VStack>
 
           <VStack
             maxW="300px"
             p={6}
-            // bg={bg}
             borderRadius="lg"
             boxShadow="md"
             transition="transform 0.3s ease"
@@ -127,14 +119,14 @@ const HomePage = () => {
               Monitor Bots in Real-Time
             </Heading>
             <Text color="gray.200">
-              Keep track of your bots' performance and activities with real-time monitoring tools.
+              Keep track of your bots' performance and activities with real-time
+              monitoring tools.
             </Text>
           </VStack>
 
           <VStack
             maxW="300px"
             p={6}
-            // bg={bg}
             borderRadius="lg"
             boxShadow="md"
             transition="transform 0.3s ease"
@@ -145,16 +137,13 @@ const HomePage = () => {
               RAG Support
             </Heading>
             <Text color="gray.200">
-              Utilize Retrieval-Augmented Generation (RAG) to improve the accuracy and relevance of your AI solutions.
+              Utilize Retrieval-Augmented Generation (RAG) to improve the
+              accuracy and relevance of your AI solutions.
             </Text>
           </VStack>
         </Stack>
 
-
-        {/* Footer */}
         <Box mt={16}>
-          
-          
           <Text textAlign="center" color="gray.200" fontSize="sm">
             © 2025 Twar. All rights reserved.
           </Text>
@@ -162,6 +151,6 @@ const HomePage = () => {
       </Container>
     </Box>
   );
-}
+};
 
 export default HomePage;

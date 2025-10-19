@@ -1,42 +1,32 @@
-import React, { useState } from "react";
-import UpdateKpiModal from "./UpdateKpiModal";
-import { ButtonGroup, Table, Thead, Tbody, Tr, Th, Td, Button, Icon, Stack, Heading, IconButton, Pagination } from "@chakra-ui/react";
-import { LuChevronLeft, LuChevronRight } from "react-icons/lu"
+import React from "react";
+import { Table, Button, Icon } from "@chakra-ui/react";
 
 const Status = (props) => (
   <>
-    { props.status == '1' ? 
+    {props.status == "1" ? (
       <>
-        <Icon viewBox='0 0 200 200' color='green.600'>
-        <path
-          fill='currentColor'
-          d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
-        /> </Icon>
-        Working... 
-      </>: 
-      <> Stopped &#10071; 
+        <Icon viewBox="0 0 200 200" color="green.600">
+          <path
+            fill="currentColor"
+            d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
+          />{" "}
+        </Icon>
+        Working...
       </>
-    }
+    ) : (
+      <> Stopped &#10071;</>
+    )}
   </>
-)
-
+);
 
 const AccountTable = ({
   accounts,
   deleteAccount,
   switchStatus,
-  handleKPIPage
+  handleKPIPage,
 }) => {
-
-  const [isKPIModelOpen, setIsKPIModelOpen] = useState(false);
-
-  const handleToggle = () => {
-      setIsKPIModelOpen(!isKPIModelOpen);
-  }
-
   return (
-    // <Table variant="simple">
-<Table.Root size="sm" showColumnBorder>
+    <Table.Root size="sm" showColumnBorder>
       <Table.Header>
         <Table.Row>
           <Table.ColumnHeader>Bot</Table.ColumnHeader>
@@ -49,24 +39,37 @@ const AccountTable = ({
       <Table.Body>
         {accounts.map((account, index) => (
           <Table.Row key={index}>
-            <Table.Cell><a href={`https://x.com/${account.screen_name}`} target="_blank">
+            <Table.Cell>
+              <a href={`https://x.com/${account.screen_name}`} target="_blank">
                 <span colorPalette="red">{account.screen_name}</span>
-              </a></Table.Cell>
-            <Table.Cell><Status boxSize={5} color={account.status == "1" ? "green.100" : "red.100"} status={account.status} /></Table.Cell>
-            <Table.Cell >{account.used_daily}/{account.daily}</Table.Cell>
-            <Table.Cell >{account.used_weekly}/{account.weekly}</Table.Cell>
-            <Table.Cell  >
-            <Button
+              </a>
+            </Table.Cell>
+            <Table.Cell>
+              <Status
+                boxSize={5}
+                color={account.status == "1" ? "green.100" : "red.100"}
+                status={account.status}
+              />
+            </Table.Cell>
+            <Table.Cell>
+              {account.used_daily}/{account.daily}
+            </Table.Cell>
+            <Table.Cell>
+              {account.used_weekly}/{account.weekly}
+            </Table.Cell>
+            <Table.Cell>
+              <Button
                 colorPalette={account.status == "1" ? "pink" : "green"}
                 size="xs"
-                onClick={() => switchStatus(account.id)}>
+                onClick={() => switchStatus(account.id)}
+              >
                 {account.status == "0" ? "Activate" : "Deactivate"}
-            </Button>
-            <Button
+              </Button>
+              <Button
                 size="xs"
                 colorPalette="blue"
                 ml={2}
-                onClick={() => handleKPIPage(account) }
+                onClick={() => handleKPIPage(account)}
               >
                 Update KPI
               </Button>
@@ -78,7 +81,7 @@ const AccountTable = ({
               >
                 Delete Bot
               </Button>
-              </Table.Cell>
+            </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
