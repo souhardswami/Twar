@@ -7,6 +7,7 @@ from routes.account_routes import account_bp
 from routes.payment_routes import payment_bp
 from routes.flow_routes import flow_bp
 from routes.rag_routes import rag_bp
+from routes.twitter_routes import twitter_bp
 
 def create_app():
     app = Flask(__name__)
