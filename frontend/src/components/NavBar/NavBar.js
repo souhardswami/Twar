@@ -48,7 +48,7 @@ export default function NavBar() {
               <Link as={RouterLink} to="/login" _hover={{ textDecoration: "none" }}>
                 <Button colorPalette="teal" variant="surface" >Login</Button>
               </Link>  }
-          <Link as={RouterLink} to="/workspace" _hover={{ textDecoration: "none" }}>
+          <Link  _hover={{ textDecoration: "none" }}>
             <Button variant="none" onClick={toggleColorMode}>
               {colorMode === 'dark' ? <MdLightMode /> : <MdDarkMode />}
             </Button>
