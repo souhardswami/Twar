@@ -129,7 +129,7 @@ const WorkspacePage = () => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${API_URL}/upload-rag-document`,
+        `${API_URL}/rag`,
         formData,
         {
           headers: {
