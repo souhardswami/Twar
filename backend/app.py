@@ -192,7 +192,7 @@ def upload_rag_document():
     if document and allowed_file(document.filename):
         filename = secure_filename(document.filename)
         document.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        
+        db_connection.store_vector(filename, user_id)
         return jsonify({"msg": "Document uploaded successfully"}), 200
     return jsonify({"msg": "Invalid file type"}), 400
 
