@@ -64,7 +64,13 @@ const WorkspacePage = () => {
   const switchStatus = async (accountId) => {
     try {
       const response = await axios.put(
-        `${API_URL}/account/${accountId}/swichStatus`
+        `${API_URL}/account/${accountId}/switch-status`,
+        {},
+        {
+          headers: {
+            Authorization: jwtToken ? `Bearer ${jwtToken}` : undefined,
+          },
+        }
       );
       setAccounts(response.data);
     } catch (error) {
