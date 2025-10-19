@@ -175,7 +175,7 @@ const WorkspacePage = () => {
             mr={2}
           />
           <Button colorPalette="blue">
-            <a href={`${API_URL}/login`} target="_blank">
+            <a href={`${API_URL}/twitter/login`} target="_blank">
               {" "}
               Add Account
             </a>

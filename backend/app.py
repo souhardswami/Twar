@@ -19,6 +19,7 @@ def create_app():
     app.register_blueprint(payment_bp, url_prefix="/payment")
     app.register_blueprint(flow_bp, url_prefix="/flow")
     app.register_blueprint(rag_bp, url_prefix="/rag")
+    app.register_blueprint(twitter_bp, url_prefix="/twitter")
     
 
     @app.route('/')
