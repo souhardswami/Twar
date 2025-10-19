@@ -170,7 +170,7 @@ const AgentStudio = () => {
   const saveAgent = async () => {
     try {
       const res = await axios.post(
-        `${API_URL}/create-agent`,
+        `${API_URL}/flow`,
         {
           edges,
           nodes,

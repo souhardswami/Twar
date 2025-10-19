@@ -5,6 +5,7 @@ from config import Config
 from routes.auth_routes import auth_bp
 from routes.account_routes import account_bp
 from routes.payment_routes import payment_bp
+from routes.flow_routes import flow_bp
 
 def create_app():
     app = Flask(__name__)
@@ -15,6 +16,7 @@ def create_app():
     app.register_blueprint(account_bp, url_prefix="/account")
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(payment_bp, url_prefix="/payment")
+    app.register_blueprint(flow_bp, url_prefix="/flow")
     
 
     @app.route('/')
