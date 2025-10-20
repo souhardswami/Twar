@@ -47,7 +47,7 @@ const AccountTable = ({
             <Table.Cell>
               <Status
                 boxSize={5}
-                color={account.status == "1" ? "green.100" : "red.100"}
+                color={account.status ? "green.100" : "red.100"}
                 status={account.status}
               />
             </Table.Cell>
@@ -59,11 +59,11 @@ const AccountTable = ({
             </Table.Cell>
             <Table.Cell>
               <Button
-                colorPalette={account.status == "1" ? "pink" : "green"}
+                colorPalette={account.status  ? "pink" : "green"}
                 size="xs"
                 onClick={() => switchStatus(account.id)}
               >
-                {account.status == "0" ? "Activate" : "Deactivate"}
+                {!account.status ? "Active" : "InActive"}
               </Button>
               <Button
                 size="xs"
