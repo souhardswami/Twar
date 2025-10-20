@@ -7,8 +7,13 @@ class Config:
     DEBUG = os.getenv("DEBUG", True)
     
     # For DB 
+    MYSQL_HOST="0.0.0.0"
+    MYSQL_PORT=3307
+    MYSQL_USER="root"
+    MYSQL_USER_PASSWORD="mysql"
+    MYSQL_READ_DATABASE="Twar_read_db"
     SQLALCHEMY_DATABASE_URI = (
-        "mysql+pymysql://root:mysql@0.0.0.0:3307/Twar_read_db"
+        f"mysql+pymysql://{MYSQL_USER}:{MYSQL_USER_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_READ_DATABASE}"
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
