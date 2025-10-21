@@ -1,12 +1,15 @@
 from .base_agent import BaseAgent
+from services.flow_service import get_node_details
 
 class StrategyAgent(BaseAgent):
     def run(self, input_data, memory):
-        # tweets = memory.get("tweets", [])
-        # company = input_data
-        # print(f"[{self.name}] Crafting replies for {company}")
-        # replies = [f"{company} appreciates this discussion on {t}" for t in tweets]
-        # memory["replies"] = replies
-        # return replies
-        memory["replies"] = 'You are good marketing agent you hash to reply to tweet by building good reply on tweet post reply, but replying and permoting my company name'
-        return memory["replies"] 
+        try:
+            flow_id = input_data.get("flow_id")
+            step = get_node_details(flow_id, 'Reply')[0]
+            reply = step.user_input
+            memory["replies"] = reply
+            return memory["replies"] 
+        
+        except Exception as e:
+            print(f"ERROR: {self.name} Error Adding Strategy Agent details: {e}")
+            return None
