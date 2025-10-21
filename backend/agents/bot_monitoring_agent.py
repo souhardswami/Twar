@@ -15,7 +15,7 @@ class BotMonitoringAgent(BaseAgent):
                 
                 # Check is account active and not used daily kpis 
                 if account_details.status and account_details.daily != account_details.used_daily:
-                    memory["bot_status"] = "inactive"
+                    memory["bot_status"] = "active"
                 memory["twitter_account_id"] = account_id
                 
         except Exception as e:
