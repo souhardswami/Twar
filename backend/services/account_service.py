@@ -52,3 +52,14 @@ def update_kpi_details(account_id, daily, weekly):
     kpi.weekly = weekly
     db.session.commit()
     return True
+
+def get_account_by_account_id(account_id):
+    try:
+        accounts = (
+            db.session.query(Bot)
+            .filter( Bot.id == account_id)
+            .all())
+        return accounts      
+    except Exception as ex:
+        print(f"Error: {ex} getting data for account id {account_id}")
+        return None

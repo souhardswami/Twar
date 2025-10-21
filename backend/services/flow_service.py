@@ -30,3 +30,14 @@ def create_next_steps(flow_id, source, target):
         db.session.rollback()
         print(f"Error: {ex} while creating next step for flow_id {flow_id}")
         return False
+
+def get_node_details(flow_id, label):
+    try:
+        steps = (
+            db.session.query(FlowStep)
+            .filter( FlowStep.flow_id == flow_id, FlowStep.label == label )
+            .all())
+        return steps      
+    except Exception as ex:
+        print(f"Error: {ex} getting data for flow_id {flow_id} and label {label}")
+        return None
