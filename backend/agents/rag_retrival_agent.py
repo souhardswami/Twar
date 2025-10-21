@@ -1,11 +1,15 @@
 from .base_agent import BaseAgent
+from services.rag_service import retrieve
 
 class RagRetrivalAgent(BaseAgent):
     def run(self, input_data, memory):
-        # safe_replies = memory.get("safe_replies", [])
-        # print(f"[{self.name}] Posting replies...")
-        # for r in safe_replies:
-        #     print(f"Posting: {r}")
-        # return {"status": "done", "count": len(safe_replies)}
+        try:
+            query = input_data.get('query')
+            username = input_data.get('user_id')
+            documents = retrieve(query, username)
+            memory['documents'] = documents
+            return documents
     
-        return 'web3 is emerging'
+        except Exception as e:
+            print(f"Error retrieval of Rag Document: {e}")
+            return None
