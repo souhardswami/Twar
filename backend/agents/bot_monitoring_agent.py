@@ -8,7 +8,7 @@ class BotMonitoringAgent(BaseAgent):
         memory["twitter_account_id"] = None
         try:
             flow_id = input_data.get("flow_id")
-            steps = get_node_details(flow_id, 'Hashtag')
+            steps = get_node_details(flow_id, 'Monitoring')
             if steps:
                 account_id = steps[0].user_input
                 account_details = get_account_by_account_id(account_id)[0]
