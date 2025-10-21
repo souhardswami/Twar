@@ -19,8 +19,13 @@ class FetchDataAgent(BaseAgent):
         )
         
     def run(self, input_data, memory):
-        hashtags = input_data.get('hashtags', '')
-        query = ' OR '.join(hashtags(','))
-        res = self._get_twitter_client().search_recent_tweets(query=query)
-        memory['tweets'] = res.data
-        return res.data
+        try:
+            hashtags = input_data.get('hashtags', '')
+            query = ' OR '.join(hashtags(','))
+            res = self._get_twitter_client().search_recent_tweets(query=query)
+            memory['tweets'] = res.data
+            return res.data
+        
+        except Exception as e:
+            print(f"Error Fetch data Agent: {e}")
+            return None
