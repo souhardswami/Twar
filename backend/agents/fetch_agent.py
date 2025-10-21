@@ -1,15 +1,26 @@
+import tweepy, openai, os
 from .base_agent import BaseAgent
 
 class FetchDataAgent(BaseAgent):
+    def _get_twitter_client(self, ):
+        # System Account
+        BEARER_TOKEN = os.getenv("BEARER_TOKEN")
+        CONSUMER_KEY = os.getenv("CONSUMER_KEY")
+        CONSUMER_SECRET = os.getenv("CONSUMER_SECRET")
+        # Todo - User account
+        oauth_token, oauth_token_secret = '', '' 
+        
+        return tweepy.Client(
+            bearer_token=BEARER_TOKEN,
+            consumer_key=CONSUMER_KEY,
+            consumer_secret=CONSUMER_SECRET,
+            access_token=oauth_token,
+            access_token_secret=oauth_token_secret
+        )
+        
     def run(self, input_data, memory):
-        # hashtags = memory.get("hashtags", [])
-        # print(f"[{self.name}] Fetching tweets for {hashtags}")
-        # # Placeholder for your Twitter API integration
-        # tweets = [f"Tweet about {tag}" for tag in hashtags]
-        # memory["tweets"] = tweets
-        # return tweets
-        memory['tweets'] = [
-            'we are building most popular web3 echosystem in solana place',
-            'rusk is usefull in solana'
-        ]
-        return  memory['tweets']
+        hashtags = input_data.get('hashtags', '')
+        query = ' OR '.join(hashtags(','))
+        res = self._get_twitter_client().search_recent_tweets(query=query)
+        memory['tweets'] = res.data
+        return res.data
