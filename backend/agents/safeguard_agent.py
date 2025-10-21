@@ -1,11 +1,15 @@
 from .base_agent import BaseAgent
+from services.flow_service import get_node_details
 
 class SafeguardAgent(BaseAgent):
     def run(self, input_data, memory):
-        # replies = memory.get("replies", [])
-        # print(f"[{self.name}] Checking for safe content")
-        # safe_replies = [r for r in replies if "spam" not in r]
-        # memory["safe_replies"] = safe_replies
-        # return safe_replies
-        memory["safe_replies"] = 'Not using valugur language'
-        return memory["safe_replies"]
+        try:
+            flow_id = input_data.get("flow_id")
+            step = get_node_details(flow_id, 'Safeguard')[0]
+            safe_replied = step.user_input
+            memory["safe_replies"] = safe_replied
+            return memory["safe_replies"]
+        
+        except Exception as e:
+            print(f"ERROR: {self.name} Error Adding SafeGuard details: {e}")
+            return None
