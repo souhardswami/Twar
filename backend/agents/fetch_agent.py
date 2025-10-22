@@ -1,4 +1,4 @@
-import tweepy, openai, os
+import tweepy, os
 from .base_agent import BaseAgent
 
 class FetchDataAgent(BaseAgent):
