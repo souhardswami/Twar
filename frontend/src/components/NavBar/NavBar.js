@@ -23,7 +23,7 @@ export default function NavBar() {
         </Button>
 
         <Flex gap={4}>
-          <Link as={RouterLink} to="/home" _hover={{ textDecoration: "none" }}>
+          <Link as={RouterLink} to="/" _hover={{ textDecoration: "none" }}>
             <Button variant="ghost">Home</Button>
           </Link>
 
