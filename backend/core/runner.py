@@ -42,7 +42,7 @@ def load_tools():
 
 def start_flow(flow_id, company_name):
     operations, tools = load_tools()
-    goal = f"Promote company {company_name} safely on Twitter (be helpful, non-spammy, follow policies)."
+    goal = f"Promote company {company_name} and 'flow_id':{flow_id} safely on Twitter (be helpful, non-spammy, follow policies)."
 
     master_agent = MasterAgent(
         goal=goal,
