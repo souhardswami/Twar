@@ -11,12 +11,17 @@ class BotMonitoringAgent(BaseAgent):
             steps = get_node_details(flow_id, 'Monitoring')
             if steps:
                 account_id = steps[0].user_input
-                account_details = get_account_by_account_id(account_id)[0]
+                account_details = get_account_by_account_id(account_id)
+                account_detail = account_details[0]
                 
                 # Check is account active and not used daily kpis 
-                if account_details.status and account_details.daily != account_details.used_daily:
+                if account_detail.status and account_detail.kpi.daily != account_detail.kpi.used_daily:
                     memory["bot_status"] = "active"
                 memory["twitter_account_id"] = account_id
+            return {
+                "bot_status" : memory["bot_status"],
+                "twitter_account_id" : memory["twitter_account_id"]
+            }
                 
         except Exception as e:
             print(f"Error monitoring bot: {e}")
