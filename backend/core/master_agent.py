@@ -14,6 +14,7 @@ class MasterAgent:
         self.memory= {}
         self.sleep_between_retries = 1
         self.json_retries = 1
+        self.max_steps = 10
         
     def _safe_memory_snapshot(self, max_chars: int = 2000):
     
@@ -21,8 +22,7 @@ class MasterAgent:
             mem_str = json.dumps(self.memory, default=str, indent=2)
         except Exception:
             mem_str = str(self.memory)
-        if len(mem_str) > max_chars:
-            return mem_str[: max_chars - 200] + "\n...truncated..."
+        
         return mem_str
 
     def _build_prompt(self):
@@ -31,31 +31,41 @@ class MasterAgent:
         memory_snapshot = self._safe_memory_snapshot()
 
         prompt = f"""
-                You are an autonomous executive agent whose goal is:
-                {self.goal}
+        You are an **autonomous marketing operations agent**.
 
-                Available tools (name: description):
-                {tool_list}
+        Your mission:
+        Promote the company **{self.goal}** on Twitter by finding relevant tweets, creating thoughtful replies, and posting them using approved bot accounts — while following safety guidelines.
 
-                Current memory (may be empty):
-                {memory_snapshot}
+        Available tools:
+        {tool_list}
 
-                Instructions:
-                1) Choose ONE tool from the available tools that best advances the goal given the current memory.
-                2) Provide the required input for the tool as a single string or JSON object.
-                3) Respond ONLY with a JSON object and NOTHING else. Format:
+        Current state (memory):
+        {memory_snapshot}
 
-                {{ "action": "<tool_name>", "input": <string-or-json> }}
+        Rules:
+        1. You may call one tool at a time.
+        2. Only call tools that make sense given the current memory state.
+        3. If the next step logically completes the workflow, return `{{ "action": "END", "input": "" }}`.
+        4. Always use valid JSON output. No markdown, no extra text.
 
-                Examples (valid JSON):
-                {{ "action": "Hashtag", "input": "#AI,#ML" }}
-                {{ "action": "Strategy Agent", "input": {{ "company": "Acme Inc", "tone": "friendly" }} }}
-                {{ "action": "END", "input": "" }}
+        Thinking steps:
+        - Observe the memory (see what’s already done).
+        - Decide the single next best tool to progress the campaign safely.
+        - Provide minimal necessary input for that tool.
 
-                If you think the workflow should stop, return action = "END".
+        Example outputs:
+        {{ "action": "Bot Monitoring", "input": {{ "flow_id": <flow_id> }} }}
+        {{ "action": "Hashtag", "input": {{ "flow_id": <flow_id> }} }}
+        {{ "action": "Fetch Data", "input": {{ "hashtags": <hashtags> }} }}
+        {{ "action": "Rag Retrieval Data", "input": {{ "query": <query>, "user_id": <company_name> }} }}
+        {{ "action": "Strategy Agent", "input": {{ "tweets": [...], "documents": [...] }} }}
+        {{ "action": "Safeguard Agent", "input": {{ "replies": [...] }} }}
+        {{ "action": "Reply Data", "input": {{ "tweet_id": "12345", "text": "Our product aligns with your idea!" }} }}
+        {{ "action": "END", "input": "" }}
 
-                Be concise and deterministic.
-                """
+        Output ONLY JSON. No explanations, no natural text.
+        """
+
         return prompt.strip()
 
     def _call_llm(self, prompt):
@@ -84,7 +94,7 @@ class MasterAgent:
         last_exception = None
 
         for attempt in range(self.json_retries + 1):
-            print(f"LLM thinking (attempt {attempt + 1}..." )
+            print(f"LLM thinking (attempt {attempt + 1}...)" )
             raw = self._call_llm(prompt)
             print(f"LLM raw response:\n {raw}")
             parsed = self._parse_json_response(raw)
@@ -113,7 +123,7 @@ class MasterAgent:
             return ""
 
     # ---------- Main run loop ----------
-    def run(self, verbose: bool = True):
+    def run(self):
         print(f"Starting MasterAgent run. Goal: {self.goal}")
         steps = 0
 
@@ -145,7 +155,6 @@ class MasterAgent:
                 print(f"Tool {action} completed. Result type: {type(result).__name__}" )
             except Exception as e:
                 print(f"Tool '{action}' raised exception: {e}")
-                # store failure marker and continue or break depending on desired policy
                 self.memory[f"{action}_error"] = str(e)
                 break
 
@@ -157,7 +166,6 @@ class MasterAgent:
             except Exception:
                 self.memory[action] = str(result)
 
-            # optional reflection each few steps
             if steps % 3 == 0:
                 try:
                     reflection = self.reflect()
