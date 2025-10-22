@@ -39,7 +39,7 @@ const LoginPage = () => {
         duration: 5000,
         isClosable: true,
       });
-      nav("/home");
+      nav("/");
     } catch (error) {
       toaster.create({
         title: "Login Failure.",
