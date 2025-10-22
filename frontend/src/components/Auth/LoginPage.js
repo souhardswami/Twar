@@ -71,7 +71,7 @@ const LoginPage = () => {
             <Heading as="h1" size="3xl" fontWeight="bold" mb={4}>
               Welcome Back
             </Heading>
-            <Text fontSize="lg" color="gray.600">
+            <Text fontSize="lg" color="grey.solid">
               Please enter your credentials to access your account
             </Text>
           </Box>

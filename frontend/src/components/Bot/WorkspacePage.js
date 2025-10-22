@@ -174,7 +174,7 @@ const WorkspacePage = () => {
             onChange={handleSearchChange}
             mr={2}
           />
-          <Button colorPalette="blue">
+          <Button colorPalette="teal">
             <a href={`${API_URL}/twitter/login`} target="_blank">
               {" "}
               Add Account

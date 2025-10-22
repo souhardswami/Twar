@@ -77,7 +77,7 @@ const RegisterPage = () => {
             <Heading as="h1" size="3xl" fontWeight="bold" mb={4}>
               Create Account
             </Heading>
-            <Text fontSize="lg" color="gray.600">
+            <Text fontSize="lg" color="grey.solid">
               Please enter your details to create a new account
             </Text>
           </Box>

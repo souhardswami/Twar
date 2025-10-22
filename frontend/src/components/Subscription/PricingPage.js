@@ -84,7 +84,7 @@ const PricingPage = ({ selectedPlan, onSelectPlan }) => {
             Pricing Plans
           </Heading>
 
-          <Text fontSize="lg" color="gray.200" textAlign="center" maxW="600px">
+          <Text fontSize="lg" color="grey.solid" textAlign="center" maxW="600px">
             Choose the plan that best fits your needs. Upgrade, downgrade, or
             cancel anytime.
           </Text>

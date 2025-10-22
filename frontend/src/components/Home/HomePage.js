@@ -47,7 +47,7 @@ const HomePage = () => {
                 <Box as="span"> Management</Box>
               </Box>
             </Heading>
-            <Text fontSize="xl" mb={8} color="gray.200">
+            <Text fontSize="xl" mb={8} color="grey.solid">
               Automate, optimize, and scale your Twitter presence with our
               powerful AI-powered solution
             </Text>
@@ -100,7 +100,7 @@ const HomePage = () => {
             <Heading as="h3" size="lg" mb={2}>
               Create Agentic Workflows
             </Heading>
-            <Text color="gray.200">
+            <Text color="grey.solid">
               Design and implement workflows for your AI agents to automate
               tasks and processes.
             </Text>
@@ -118,7 +118,7 @@ const HomePage = () => {
             <Heading as="h3" size="lg" mb={2}>
               Monitor Bots in Real-Time
             </Heading>
-            <Text color="gray.200">
+            <Text color="grey.solid">
               Keep track of your bots' performance and activities with real-time
               monitoring tools.
             </Text>
@@ -136,7 +136,7 @@ const HomePage = () => {
             <Heading as="h3" size="lg" mb={2}>
               RAG Support
             </Heading>
-            <Text color="gray.200">
+            <Text color="grey.solid">
               Utilize Retrieval-Augmented Generation (RAG) to improve the
               accuracy and relevance of your AI solutions.
             </Text>
@@ -144,7 +144,7 @@ const HomePage = () => {
         </Stack>
 
         <Box mt={16}>
-          <Text textAlign="center" color="gray.200" fontSize="sm">
+          <Text textAlign="center" color="gray.solid" fontSize="sm">
             © 2025 Twar. All rights reserved.
           </Text>
         </Box>
