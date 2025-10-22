@@ -73,7 +73,7 @@ Manage your connected Twitter accounts:
 ### 🔐 Login / Registration
 Secure authentication system for managing your access.  
 ![Login Page](public/Login_page_Light.png)  
-![Register Page](public/Register_Page_dark.png)
+![Register Page](public/Register_Page_Dark.png)
 
 ---
 
