@@ -163,7 +163,7 @@ const HomePage = () => {
 
         <Box mt={16}>
           <Text textAlign="center" color="gray.solid" fontSize="sm">
-            © 2025 Twar. All rights reserved.
+            © 2026 Twar. All rights reserved.
           </Text>
         </Box>
       </Container>
