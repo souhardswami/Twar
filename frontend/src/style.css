@@ -2,3 +2,21 @@
   background-color: #212122;
   color: white;
 }
+
+@keyframes visorGlow {
+  0% { 
+    filter: drop-shadow(0 0 40px #008080); 
+    transform: translateY(0px);
+  }
+  50% { 
+    filter: drop-shadow(0 0 20px #008080); 
+    transform: translateY(-10px);
+  }
+  100% { 
+    filter: drop-shadow(0 0 10px #008080);
+    transform: translateY(0px); 
+  }
+}
+.agent-svg {
+  animation: visorGlow 3s ease-in-out infinite;
+}
