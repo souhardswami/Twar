@@ -14,8 +14,27 @@ import {
 import { FaRobot, FaChartLine, FaCogs, FaArrowRight } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-     
+
+const MotionBox = motion(Box);
+
 const HomePage = () => {
+  
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2, 
+      },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+  };
+
+
   const navigate = useNavigate();
   return (
     <Box as="main" py={8} bgGradient="linear(135deg, #f5f6fa 0%, #c3cfe2 100%)">
@@ -37,27 +56,27 @@ const HomePage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <Heading
-                as="h1"
-                size="4xl"
-                mb={6}
-                fontWeight="bold"
-                lineHeight="1.2"
-              >
-                <Box
+            
+              <Heading as="h1" size="4xl" mb={6} fontWeight="bold" lineHeight="1.2">
+                <MotionBox
                   display="flex"
                   flexDir="row"
                   justifyContent="center"
                   flexWrap="wrap"
+                  variants={container}
+                  initial="hidden"
+                  animate="show"
                 >
-                  <Box as="span" mr={2}>
+                  <MotionBox variants={item} as="span" mr={2}>
                     Transform Your
-                  </Box>
-                  <Box as="span" color="teal.500" mr={2}>
+                  </MotionBox>
+                  <MotionBox variants={item} as="span" color="teal.500" mr={2}>
                     Twitter
-                  </Box>
-                  <Box as="span"> Management</Box>
-                </Box>
+                  </MotionBox>
+                  <MotionBox variants={item} as="span">
+                    Management
+                  </MotionBox>
+                </MotionBox>
               </Heading>
               <Text fontSize="xl" mb={8} color="grey.solid">
                 Automate, optimize, and scale your Twitter presence with our
@@ -94,7 +113,7 @@ const HomePage = () => {
               </motion.div>
             </VStack>
             <VStack>
-              <Image  className="agent-svg" height="340px" src="/agent6.png" alt="John Doe" />
+              <Image  className="agent-svg" height="400px" src="/agent6.png" alt="John Doe" />
             </VStack>
           </Stack>
           
