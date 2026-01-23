@@ -12,6 +12,7 @@ import {
   VStack,
   HStack,
   Badge,
+  IconButton,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +24,8 @@ import {
   FaArrowRight,
   FaTwitter,
   FaRocket,
+  FaGithub,
+  FaLinkedin,
 } from "react-icons/fa";
 // Import from local UI component for v3 support
 import { useColorModeValue } from "../ui/color-mode";
@@ -55,6 +58,9 @@ const HomePage = () => {
     "linear-gradient(to bottom right, var(--chakra-colors-gray-50), var(--chakra-colors-blue-50))",
     "linear-gradient(to bottom right, var(--chakra-colors-gray-900), var(--chakra-colors-gray-800))"
   );
+  // Alternating section backgrounds
+  const sectionBg = useColorModeValue("white", "gray.900");
+  const sectionBgAlt = useColorModeValue("gray.50", "gray.800");
   const cardBg = useColorModeValue("white", "gray.800");
 
   return (
@@ -69,7 +75,7 @@ const HomePage = () => {
           {/* Hero Content */}
           <MotionStack
             flex={1}
-            gap={6} // v3 uses gap instead of spacing in some contexts, but Stack supports both usually.
+            gap={6}
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
@@ -153,9 +159,18 @@ const HomePage = () => {
                 w="300px"
                 h="300px"
                 bg="teal.200"
-                filter="blur(70px)"
-                opacity={0.4}
+                filter="blur(70px)" // Slightly reduced blur for cleaner look
+                opacity={0.3}
                 zIndex={0}
+                animate={{
+                  rotate: [0, 360],
+                  scale: [1, 1.1, 1],
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
               />
 
               {/* Blob 2: Rotate Counter-Clockwise */}
@@ -163,12 +178,21 @@ const HomePage = () => {
                 position="absolute"
                 bottom="-20%"
                 left="-20%"
-                w="200px"
-                h="200px"
+                w="250px"
+                h="250px"
                 bg="blue.200"
                 filter="blur(70px)"
-                opacity={0.4}
+                opacity={0.3}
                 zIndex={0}
+                animate={{
+                  rotate: [0, -360],
+                  scale: [1, 1.2, 1],
+                }}
+                transition={{
+                  duration: 25,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
               />
 
               <Image
@@ -187,7 +211,7 @@ const HomePage = () => {
 
 
       {/* Features Section */}
-      <Box py={20} bg={useColorModeValue("white", "gray.900")}>
+      <Box py={20} bg={sectionBg}>
         <Container maxW="container.xl">
           <VStack gap={4} textAlign="center" mb={16}>
             <Badge colorPalette="purple">Features</Badge>
@@ -199,7 +223,7 @@ const HomePage = () => {
           </VStack>
 
           <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={10}>
-            {/* Feature 1 */}
+            {/* Feature Cards with hover effects */}
             <FeatureCard
               icon={FaRobot}
               title="Agentic Workflows"
@@ -208,7 +232,6 @@ const HomePage = () => {
               delay={0}
               cardBg={cardBg}
             />
-            {/* Feature 2 */}
             <FeatureCard
               icon={FaBrain}
               title="RAG Knowledge"
@@ -217,7 +240,6 @@ const HomePage = () => {
               delay={0.1}
               cardBg={cardBg}
             />
-            {/* Feature 3 */}
             <FeatureCard
               icon={FaShieldAlt}
               title="Safety First"
@@ -226,7 +248,6 @@ const HomePage = () => {
               delay={0.2}
               cardBg={cardBg}
             />
-            {/* Feature 4 */}
             <FeatureCard
               icon={FaChartLine}
               title="Real-time Analytics"
@@ -240,52 +261,73 @@ const HomePage = () => {
       </Box>
 
       {/* How It Works Section */}
-      <Box py={24} bg={bgGradient}>
+      <Box py={24} bg={sectionBgAlt} position="relative">
         <Container maxW="container.xl">
           <Heading textAlign="center" mb={16} size="xl">
             How It Works
           </Heading>
+
           <Stack
             direction={{ base: "column", md: "row" }}
             gap={8}
             justify="center"
             align="start"
+            position="relative"
           >
+            {/* Connector Line (Desktop) */}
+            <Box
+              display={{ base: "none", md: "block" }}
+              position="absolute"
+              top="30px"
+              left="15%"
+              right="15%"
+              height="2px"
+              borderTop="2px dashed"
+              borderColor="gray.300"
+              zIndex={0}
+            />
+
             <Step
               number="1"
               title="Connect Account"
               desc="Securely link your Twitter accounts to the Twar platform."
+              delay={0}
             />
             <Step
               number="2"
               title="Design Flow"
               desc="Use Agent Studio to define how agents should behave and react."
+              delay={0.2}
             />
             <Step
               number="3"
               title="Launch & Relax"
               desc="Activate your bots and watch them engage with your audience 24/7."
+              delay={0.4}
             />
           </Stack>
         </Container>
       </Box>
 
       {/* CTA Section */}
-      <Box py={20} textAlign="center">
+      <Box py={20} textAlign="center" bg={sectionBg}>
         <Container maxW="container.md">
-          <VStack gap={8} p={10} bg="teal.600" borderRadius="2xl" color="white" boxShadow="2xl">
+          <VStack gap={8} p={12} bg="teal.600" borderRadius="3xl" color="white" boxShadow="2xl">
             <Heading size="2xl">Ready to automate?</Heading>
-            <Text fontSize="xl">
+            <Text fontSize="xl" opacity={0.9}>
               Join the future of social media marketing today.
             </Text>
             <Button
               size="xl"
               bg="white"
               color="teal.600"
-              px={10}
-              py={4}
+              px={12}
+              py={6}
               fontSize="lg"
-              _hover={{ bg: "gray.100" }}
+              fontWeight="bold"
+              _hover={{ bg: "gray.100", transform: "scale(1.05)" }}
+              as={motion.button}
+              whileTap={{ scale: 0.95 }}
               onClick={() => navigate("/register")}
             >
               Get Started for Free <FaRocket style={{ marginLeft: "8px" }} />
@@ -295,19 +337,39 @@ const HomePage = () => {
       </Box>
 
       {/* Footer */}
-      <Box bg="gray.900" color="gray.400" py={10}>
+      <Box bg="gray.900" color="gray.400" py={12} borderTop="1px solid" borderColor="gray.800">
         <Container maxW="container.xl">
-          <Stack direction={{ base: "column", md: "row" }} justify="space-between" align="center">
-            <HStack gap={2}>
-              {/* <Icon as={FaTwitter} boxSize={6} color="white" /> */}
-              <Image src="/logo.png" alt="Logo" boxSize="50px" objectFit="cover" />
-              <Text color="white" fontWeight="bold" fontSize="lg">Twar</Text>
+          <Stack direction={{ base: "column", md: "row" }} justify="space-between" align="center" gap={6}>
+            <HStack gap={3}>
+              <Image src="/logo.png" alt="Logo" boxSize="40px" objectFit="contain" />
+              <Text color="white" fontWeight="bold" fontSize="xl">Twar</Text>
             </HStack>
-            <Text>© 2026 Twar. All rights reserved.</Text>
-            <HStack gap={6}>
-              <Text as="a" href="#" _hover={{ color: "white" }}>Privacy</Text>
-              <Text as="a" href="#" _hover={{ color: "white" }}>Terms</Text>
-              <Text as="a" href="#" _hover={{ color: "white" }}>Contact</Text>
+
+            <Text fontSize="sm">© {new Date().getFullYear()} Twar. All rights reserved.</Text>
+
+            <HStack gap={4}>
+              <IconButton
+                aria-label="Twitter"
+                // As FaXTwitter if available, but staying safe with FaTwitter
+                icon={<FaTwitter />}
+                variant="ghost"
+                color="gray.400"
+                _hover={{ color: "white", bg: "whiteAlpha.200" }}
+              />
+              <IconButton
+                aria-label="GitHub"
+                icon={<FaGithub />}
+                variant="ghost"
+                color="gray.400"
+                _hover={{ color: "white", bg: "whiteAlpha.200" }}
+              />
+              <IconButton
+                aria-label="LinkedIn"
+                icon={<FaLinkedin />}
+                variant="ghost"
+                color="gray.400"
+                _hover={{ color: "white", bg: "whiteAlpha.200" }}
+              />
             </HStack>
           </Stack>
         </Container>
@@ -316,22 +378,37 @@ const HomePage = () => {
   );
 };
 
+// Updated Feature Card with hover outline
 const FeatureCard = ({ icon, title, desc, color, delay, cardBg }) => (
   <MotionBox
     variants={fadeInUp}
     initial="hidden"
     whileInView="visible"
-    viewport={{ once: true }}
+    viewport={{ once: true, margin: "-50px" }}
     custom={delay}
     p={8}
     bg={cardBg}
-    borderRadius="xl"
-    boxShadow="lg"
-    _hover={{ transform: "translateY(-8px)", boxShadow: "xl" }}
+    borderRadius="2xl"
+    boxShadow="xl"
+    border="1px solid"
+    borderColor="transparent"
+    _hover={{
+      transform: "translateY(-8px)",
+      boxShadow: "2xl",
+      borderColor: "teal.100"
+    }}
     transition="all 0.3s ease"
   >
-    <Icon as={icon} w={10} h={10} color={color} mb={6} />
-    <Heading size="md" mb={4}>
+    <Box
+      p={3}
+      bg={`${color.split('.')[0]}.50`}
+      display="inline-block"
+      borderRadius="xl"
+      mb={6}
+    >
+      <Icon as={icon} w={6} h={6} color={color} />
+    </Box>
+    <Heading size="md" mb={3}>
       {title}
     </Heading>
     <Text color="gray.500" lineHeight="tall">
@@ -340,7 +417,8 @@ const FeatureCard = ({ icon, title, desc, color, delay, cardBg }) => (
   </MotionBox>
 );
 
-const Step = ({ number, title, desc }) => (
+// Updated Step to have background behind number to hide connector line
+const Step = ({ number, title, desc, delay }) => (
   <VStack
     gap={4}
     textAlign="center"
@@ -349,7 +427,12 @@ const Step = ({ number, title, desc }) => (
     initial="hidden"
     whileInView="visible"
     viewport={{ once: true }}
-    variants={fadeInUp}
+    custom={delay}
+    variants={{
+      hidden: { opacity: 0, y: 20 },
+      visible: { opacity: 1, y: 0, transition: { delay, duration: 0.5 } }
+    }}
+    zIndex={1} // Sit on top of the dashed line
   >
     <Box
       w="60px"
@@ -363,6 +446,8 @@ const Step = ({ number, title, desc }) => (
       alignItems="center"
       justifyContent="center"
       boxShadow="lg"
+      border="4px solid" // Border matches background to "cut" the line? 
+      borderColor={useColorModeValue("white", "gray.800")} // Dynamic border color
       mb={2}
     >
       {number}
